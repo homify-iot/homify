@@ -1,0 +1,15 @@
+version: "3"
+services:
+  gateway:
+    restart: always
+    build: services/gateway
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+  mongo:
+    image: mongo
+    volumes:
+      - ./services/gateway/data:/data/db
+    ports:
+      - "27017:27017"

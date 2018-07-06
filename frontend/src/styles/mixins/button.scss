@@ -1,0 +1,516 @@
+@import "@/styles/themes/default.scss";
+@import "@/styles/mixins/functions.scss";
+
+@mixin nb-right-gradient($left-color, $right-color) {
+  background-image: linear-gradient(to right, $left-color, $right-color);
+}
+
+@function btn-hero-gradient-left($color, $degrees: 20deg) {
+  @return adjust-hue($color, $degrees);
+}
+
+// Functions for box-shadow
+@function btn-hero-bevel($color) {
+  @return $btn-hero-bevel-size shade($color, 14%);
+}
+
+@function btn-hero-glow($color) {
+  @return $btn-hero-glow-size $color;
+}
+// Left colors
+@function btn-hero-primary-left-color() {
+  @return btn-hero-gradient-left($btn-primary-bg);
+}
+
+@function btn-hero-success-left-color() {
+  @return btn-hero-gradient-left($btn-success-bg);
+}
+
+@function btn-hero-warning-left-color() {
+  @return btn-hero-gradient-left($btn-warning-bg, 10deg);
+}
+
+@function btn-hero-info-left-color() {
+  @return btn-hero-gradient-left($btn-info-bg, -10deg);
+}
+
+@function btn-hero-danger-left-color() {
+  @return btn-hero-gradient-left($btn-danger-bg, -20deg);
+}
+
+@function btn-hero-secondary-left-color() {
+  @return btn-hero-gradient-left($btn-secondary-border);
+}
+
+// Middle colors
+@function btn-hero-primary-middle-color() {
+  @return mix(btn-hero-primary-left-color(), $btn-primary-bg);
+}
+
+@function btn-hero-success-middle-color() {
+  @return mix(btn-hero-success-left-color(), $btn-success-bg);
+}
+
+@function btn-hero-warning-middle-color() {
+  @return mix(btn-hero-warning-left-color(), $btn-warning-bg);
+}
+
+@function btn-hero-info-middle-color() {
+  @return mix(btn-hero-info-left-color(), $btn-info-bg);
+}
+
+@function btn-hero-danger-middle-color() {
+  @return mix(btn-hero-danger-left-color(), $btn-danger-bg);
+}
+
+@function btn-hero-secondary-middle-color() {
+  @return mix(btn-hero-secondary-left-color(), $btn-secondary-border);
+}
+// light gradients
+
+@function btn-hero-light-gradient($color-left, $color-right) {
+  $color-left: tint($color-left, 14%);
+  $color-right: tint($color-right, 14%);
+
+  @return linear-gradient(to right, $color-left, $color-right);
+}
+
+@function btn-hero-primary-light-gradient() {
+  $color-right: $btn-primary-bg;
+  $color-left: btn-hero-primary-left-color();
+
+  @return btn-hero-light-gradient($color-left, $color-right);
+}
+
+@function btn-hero-success-light-gradient() {
+  $color-right: $btn-success-bg;
+  $color-left: btn-hero-success-left-color();
+
+  @return btn-hero-light-gradient($color-left, $color-right);
+}
+
+@function btn-hero-warning-light-gradient() {
+  $color-right: $btn-warning-bg;
+  $color-left: btn-hero-warning-left-color();
+
+  @return btn-hero-light-gradient($color-left, $color-right);
+}
+
+@function btn-hero-info-light-gradient() {
+  $color-right: $btn-info-bg;
+  $color-left: btn-hero-info-left-color();
+
+  @return btn-hero-light-gradient($color-left, $color-right);
+}
+
+@function btn-hero-danger-light-gradient() {
+  $color-right: $btn-danger-bg;
+  $color-left: btn-hero-danger-left-color();
+
+  @return btn-hero-light-gradient($color-left, $color-right);
+}
+
+// dark gradients
+
+@function btn-hero-dark-gradient($color-left, $color-right) {
+  $color-left: shade($color-left, 14%);
+  $color-right: shade($color-right, 14%);
+
+  @return linear-gradient(to right, $color-left, $color-right);
+}
+
+@function btn-hero-primary-dark-gradient() {
+  $color-right: $btn-primary-bg;
+  $color-left: btn-hero-primary-left-color();
+
+  @return btn-hero-dark-gradient($color-left, $color-right);
+}
+
+@function btn-hero-success-dark-gradient() {
+  $color-right: $btn-success-bg;
+  $color-left: btn-hero-success-left-color();
+
+  @return btn-hero-dark-gradient($color-left, $color-right);
+}
+
+@function btn-hero-warning-dark-gradient() {
+  $color-right: $btn-warning-bg;
+  $color-left: btn-hero-warning-left-color();
+
+  @return btn-hero-dark-gradient($color-left, $color-right);
+}
+
+@function btn-hero-info-dark-gradient() {
+  $color-right: $btn-info-bg;
+  $color-left: btn-hero-info-left-color();
+
+  @return btn-hero-dark-gradient($color-left, $color-right);
+}
+
+@function btn-hero-danger-dark-gradient() {
+  $color-right: $btn-danger-bg;
+  $color-left: btn-hero-danger-left-color();
+
+  @return btn-hero-dark-gradient($color-left, $color-right);
+}
+// End functions
+
+// Help mixins
+@mixin btn-hero-text() {
+  text-shadow: $btn-hero-text-shadow;
+}
+
+@mixin btn-hero-hover($light-gradient) {
+  &:hover,
+  .hover {
+    background-image: $light-gradient;
+  }
+}
+
+@mixin btn-hero-focus($light-gradient) {
+  &:focus,
+  .focus {
+    background-image: $light-gradient;
+  }
+}
+
+@mixin btn-hero-active($dark-gradient) {
+  &:active,
+  .active {
+    background-image: $dark-gradient;
+    box-shadow: none;
+    border-color: transparent;
+  }
+}
+// End help mixins
+
+// Gradient
+@mixin btn-hero-primary-gradient() {
+  $color-right: $btn-primary-bg;
+  $color-left: btn-hero-primary-left-color();
+
+  @include nb-right-gradient($color-left, $color-right);
+}
+
+@mixin btn-hero-success-gradient() {
+  $color-right: $btn-success-bg;
+  $color-left: btn-hero-success-left-color();
+
+  @include nb-right-gradient($color-left, $color-right);
+}
+
+@mixin btn-hero-warning-gradient() {
+  $color-right: $btn-warning-bg;
+  $color-left: btn-hero-warning-left-color();
+
+  @include nb-right-gradient($color-left, $color-right);
+}
+
+@mixin btn-hero-info-gradient() {
+  $color-right: $btn-info-bg;
+  $color-left: btn-hero-info-left-color();
+
+  @include nb-right-gradient($color-left, $color-right);
+}
+
+@mixin btn-hero-danger-gradient() {
+  $color-right: $btn-danger-bg;
+  $color-left: btn-hero-danger-left-color();
+
+  @include nb-right-gradient($color-left, $color-right);
+}
+
+@mixin btn-hero-secondary-bg() {
+  background-color: $btn-secondary-bg;
+}
+
+// Bevel
+@function btn-hero-primary-bevel() {
+  @return btn-hero-bevel(btn-hero-primary-middle-color());
+}
+
+@function btn-hero-success-bevel() {
+  @return btn-hero-bevel(btn-hero-success-middle-color());
+}
+
+@function btn-hero-warning-bevel() {
+  @return btn-hero-bevel(btn-hero-warning-middle-color());
+}
+
+@function btn-hero-info-bevel() {
+  @return btn-hero-bevel(btn-hero-info-middle-color());
+}
+
+@function btn-hero-danger-bevel() {
+  @return btn-hero-bevel(btn-hero-danger-middle-color());
+}
+
+@function btn-hero-secondary-bevel() {
+  @return btn-hero-bevel(btn-hero-secondary-middle-color());
+}
+
+// Glow
+@function btn-hero-primary-glow() {
+  @return btn-hero-glow(btn-hero-primary-middle-color());
+}
+
+@function btn-hero-success-glow() {
+  @return btn-hero-glow(btn-hero-success-middle-color());
+}
+
+@function btn-hero-warning-glow() {
+  @return btn-hero-glow(btn-hero-warning-middle-color());
+}
+
+@function btn-hero-info-glow() {
+  @return btn-hero-glow(btn-hero-info-middle-color());
+}
+
+@function btn-hero-danger-glow() {
+  @return btn-hero-glow(btn-hero-danger-middle-color());
+}
+
+@function btn-hero-secondary-glow() {
+  @return btn-hero-glow(btn-hero-secondary-middle-color());
+}
+
+// Bevel-glow-shadow
+@mixin btn-hero-bevel-glow-shadow($bevel, $glow, $shadow) {
+  $box-shadow: $bevel, $glow;
+  @if ($shadow != "none") {
+    $box-shadow: $box-shadow, $shadow;
+  }
+  box-shadow: $box-shadow;
+}
+
+@mixin btn-hero-primary-bevel-glow-shadow() {
+  $bevel: btn-hero-primary-bevel();
+  $glow: btn-hero-primary-glow();
+  $shadow: $btn-hero-shadow;
+
+  @include btn-hero-bevel-glow-shadow($bevel, $glow, $shadow);
+}
+
+@mixin btn-hero-success-bevel-glow-shadow() {
+  $bevel: btn-hero-success-bevel();
+  $glow: btn-hero-success-glow();
+  $shadow: $btn-hero-shadow;
+
+  @include btn-hero-bevel-glow-shadow($bevel, $glow, $shadow);
+}
+
+@mixin btn-hero-warning-bevel-glow-shadow() {
+  $bevel: btn-hero-warning-bevel();
+  $glow: btn-hero-warning-glow();
+  $shadow: $btn-hero-shadow;
+
+  @include btn-hero-bevel-glow-shadow($bevel, $glow, $shadow);
+}
+
+@mixin btn-hero-info-bevel-glow-shadow() {
+  $bevel: btn-hero-info-bevel();
+  $glow: btn-hero-info-glow();
+  $shadow: $btn-hero-shadow;
+
+  @include btn-hero-bevel-glow-shadow($bevel, $glow, $shadow);
+}
+
+@mixin btn-hero-danger-bevel-glow-shadow() {
+  $bevel: btn-hero-danger-bevel();
+  $glow: btn-hero-danger-glow();
+  $shadow: $btn-hero-shadow;
+
+  @include btn-hero-bevel-glow-shadow($bevel, $glow, $shadow);
+}
+
+@mixin btn-hero-secondary-bevel-glow-shadow() {
+  $bevel: btn-hero-secondary-bevel();
+  $glow: btn-hero-secondary-glow();
+  $shadow: $btn-hero-shadow;
+
+  @include btn-hero-bevel-glow-shadow($bevel, $glow, $shadow);
+}
+
+// Border
+@mixin btn-hero-primary-border() {
+  border: none;
+}
+
+@mixin btn-hero-success-border() {
+  border: none;
+}
+
+@mixin btn-hero-warning-border() {
+  border: none;
+}
+
+@mixin btn-hero-info-border() {
+  border: none;
+}
+
+@mixin btn-hero-danger-border() {
+  border: none;
+}
+
+@mixin btn-hero-secondary-border() {
+  border: 2px solid $btn-secondary-border;
+}
+
+// Hover
+@mixin btn-hero-primary-hover() {
+  @include btn-hero-hover(btn-hero-primary-light-gradient());
+}
+
+@mixin btn-hero-success-hover() {
+  @include btn-hero-hover(btn-hero-success-light-gradient());
+}
+
+@mixin btn-hero-warning-hover() {
+  @include btn-hero-hover(btn-hero-warning-light-gradient());
+}
+
+@mixin btn-hero-info-hover() {
+  @include btn-hero-hover(btn-hero-info-light-gradient());
+}
+
+@mixin btn-hero-danger-hover() {
+  @include btn-hero-hover(btn-hero-danger-light-gradient());
+}
+
+@mixin btn-hero-secondary-hover() {
+  &:hover,
+  .hover {
+    background-color: rgba($btn-secondary-border), 0.2;
+  }
+}
+
+// Focus
+@mixin btn-hero-primary-focus() {
+  @include btn-hero-focus(btn-hero-primary-light-gradient());
+}
+
+@mixin btn-hero-success-focus() {
+  @include btn-hero-focus(btn-hero-success-light-gradient());
+}
+
+@mixin btn-hero-warning-focus() {
+  @include btn-hero-focus(btn-hero-warning-light-gradient());
+}
+
+@mixin btn-hero-info-focus() {
+  @include btn-hero-focus(btn-hero-info-light-gradient());
+}
+
+@mixin btn-hero-danger-focus() {
+  @include btn-hero-focus(btn-hero-danger-light-gradient());
+}
+
+@mixin btn-hero-secondary-focus() {
+  $color: $btn-secondary-border;
+
+  &:focus,
+  .focus {
+    border-color: tint($color, 14%);
+  }
+}
+
+// Active
+@mixin btn-hero-primary-active() {
+  @include btn-hero-active(btn-hero-primary-dark-gradient());
+}
+
+@mixin btn-hero-success-active() {
+  @include btn-hero-active(btn-hero-success-dark-gradient());
+}
+
+@mixin btn-hero-warning-active() {
+  @include btn-hero-active(btn-hero-warning-dark-gradient());
+}
+
+@mixin btn-hero-info-active() {
+  @include btn-hero-active(btn-hero-info-dark-gradient());
+}
+
+@mixin btn-hero-danger-active() {
+  @include btn-hero-active(btn-hero-danger-dark-gradient());
+}
+
+@mixin btn-hero-secondary-active() {
+  $color: $btn-secondary-border;
+
+  &:active,
+  .active {
+    border-color: shade($color, 14%);
+    box-shadow: none;
+    background: none;
+  }
+}
+
+// Disabled
+@mixin btn-hero-disabled() {
+  &:disabled {
+    opacity: $btn-disabled-opacity;
+    box-shadow: none;
+  }
+}
+
+// Line height
+@function btn-hero-line-height($font-size) {
+  @return calc((#{$font-size} * 1.25) + 4px);
+}
+
+@function btn-hero-line-height-lg() {
+  @return btn-hero-line-height($btn-font-size-lg);
+}
+
+@function btn-hero-line-height-md() {
+  @return btn-hero-line-height($btn-font-size-md);
+}
+
+@function btn-hero-line-height-sm() {
+  @return btn-hero-line-height($btn-font-size-sm);
+}
+
+@function btn-hero-line-height-tn() {
+  @return btn-hero-line-height($btn-font-size-tn);
+}
+
+@mixin btn-hero-line-height() {
+  line-height: btn-hero-line-height-md();
+
+  &.btn.btn-lg {
+    line-height: btn-hero-line-height-lg();
+  }
+
+  &.btn.btn-md {
+    line-height: btn-hero-line-height-md();
+  }
+
+  &.btn.btn-sm {
+    line-height: btn-hero-line-height-sm();
+  }
+
+  &.btn.btn-tn {
+    line-height: btn-hero-line-height-tn();
+  }
+}
+
+// Pulse
+@mixin btn-hero-primary-pulse() {
+  @include btn-pulse(hero-primary, $color-primary);
+}
+@mixin btn-hero-success-pulse() {
+  @include btn-pulse(hero-success, $color-success);
+}
+@mixin btn-hero-danger-pulse() {
+  @include btn-pulse(hero-danger, $color-danger);
+}
+@mixin btn-hero-info-pulse() {
+  @include btn-pulse(hero-info, $color-info);
+}
+@mixin btn-hero-warning-pulse() {
+  @include btn-pulse(hero-warning, $color-warning);
+}
+@mixin btn-hero-secondary-pulse() {
+  @include btn-pulse(hero-secondary, $btn-secondary-border);
+}

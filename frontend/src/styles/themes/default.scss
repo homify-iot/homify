@@ -1,0 +1,54 @@
+$font-main: Roboto;
+$font-secondary: Exo;
+$font-weight-thin: 200;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bolder: 500;
+$font-weight-bold: 600;
+$font-weight-ultra-bold: 800;
+// TODO: use it as a default font-size base-font-size: 16px,
+$font-size-xlg: 1.25rem;
+$font-size-lg: 1.125rem;
+$font-size: 1rem;
+$font-size-sm: 0.875rem;
+$font-size-xs: 0.75rem;
+$color-bg: #ebeff5;
+$color-bg-active: #e9edf2;
+$color-fg: #a4abb3;
+$color-fg-heading: #2a2a2a;
+$color-fg-text: #4b4b4b;
+$color-fg-highlight: #40dc7e;
+$separator: #ebeef2;
+$color-gray: rgba(81, 113, 165, 0.15);
+$color-neutral: transparent;
+$color-white: #ffffff;
+$color-disabled: rgba(255, 255, 255, 0.4);
+$color-primary: #8a7fff;
+$color-success: #40dc7e;
+$color-info: #4ca6ff;
+$color-warning: #ffa100;
+$color-danger: #ff4c6a;
+
+$navbar-bg-color: $color-white;
+
+$sidebar-bg-color: $color-white;
+
+//btn
+$btn-primary-bg: $color-primary;
+$btn-secondary-bg: transparent;
+$btn-info-bg: $color-info;
+$btn-success-bg: $color-success;
+$btn-warning-bg: $color-warning;
+$btn-danger-bg: $color-danger;
+$btn-secondary-border: #dadfe6;
+$btn-secondary-border-width: 2px;
+$btn-hero-shadow: none;
+$btn-hero-text-shadow: none;
+$btn-hero-bevel-size: 0 0 0 0;
+$btn-hero-glow-size: 0 0 0 0;
+
+//card
+$card-fg: $color-fg;
+$card-bg: $color-bg;
+$card-fg-text: $color-fg-text;
+$card-fg-heading: $color-fg-heading;

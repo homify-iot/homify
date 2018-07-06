@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "moduleResolution": "node",
+        "target": "es5",
+        "noImplicitAny": false,
+        "experimentalDecorators": true,
+        "rootDir": ".",
+        "sourceMap": true,
+        "allowSyntheticDefaultImports": true,
+        "lib": [
+            "dom",
+            "es2015.promise",
+            "es2017",
+            "esnext.asynciterable"
+        ],
+        "types": [
+            "jest"
+        ],
+        "baseUrl": "./",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
