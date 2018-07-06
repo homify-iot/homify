@@ -2,7 +2,10 @@ version: "3"
 services:
   gateway:
     restart: always
-    build: services/gateway
+    build: ./services/gateway
+    command: nodemon index.js --exec babel-node
+    volumes:
+        - ./services/gateway:/app
     ports:
       - "3000:3000"
     links:
@@ -10,6 +13,6 @@ services:
   mongo:
     image: mongo
     volumes:
-      - ./services/gateway/data:/data/db
+      - ./services/data:/data/db
     ports:
       - "27017:27017"
