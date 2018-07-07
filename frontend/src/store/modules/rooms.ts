@@ -1,4 +1,4 @@
-import axios from "axios";
+import { Http } from "@/services/httpService";
 
 const SET_ROOMS = "setRooms";
 const SET_DEVICE_NAME = "setDeviceName";
@@ -19,7 +19,7 @@ const mutations = {
 };
 const actions = {
   fetchRooms: async () => {
-    axios.get("/api/gateway/test")
+    Http.get("rooms")
       .then(res => {
         console.log(res);
       })

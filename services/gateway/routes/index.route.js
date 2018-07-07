@@ -1,8 +1,8 @@
 import express from "express";
-import gatewayRoutes from "./gateway.route";
+import roomRoutes from "./room.route";
 
 const router = express.Router();
 
-router.use("/gateway", gatewayRoutes);
+router.use("/rooms", roomRoutes);
 
 export default router;

@@ -2020,6 +2020,10 @@ lodash.get@4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
 
+lodash@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-1.3.1.tgz#a4663b53686b895ff074e2ba504dfb76a8e2b770"
+
 lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
@@ -2866,6 +2870,12 @@ supports-color@^5.3.0:
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.4.0.tgz#1c6b337402c2137605efe19f10fec390f6faab54"
   dependencies:
     has-flag "^3.0.0"
+
+swagger-node-express@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/swagger-node-express/-/swagger-node-express-2.1.3.tgz#4b1fee976e11284d276575911980b2258e379dab"
+  dependencies:
+    lodash "1.3.1"
 
 tar@^4:
   version "4.4.4"

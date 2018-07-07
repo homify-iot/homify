@@ -31,9 +31,4 @@ const RoomsSchema = new Schema({
 });
 export const Rooms = mongoose.model("rooms", RoomsSchema);
 
-Rooms.find({ "attributes.icon": /rooms/i })
-  .populate("devices.type")
-  .exec((err, rooms) => {
-    console.log(err, rooms);
-  });
 export default mongoose;
