@@ -1,15 +1,15 @@
 <template>
   <el-card v-if="device" :body-style="{ padding: '0' }" class="card">
     <div class="device-content" :class="{'off': !device.status}">
-      <div class="icon" :class="device.color" @click="switchDevice(device)">
+      <div class="icon" :class="device.type.color" @click="switchDevice(device)">
         <svgicon 
           class=""
-          :icon="device.icon" 
+          :icon="device.type.icon" 
           width="50" 
           height="50"/>
       </div>
       <div class="details">
-        <div class="title">{{ getDeviceName(device) }}</div>
+        <div class="title">{{ device.name }}</div>
         <div class="status">{{ device.status ? 'on': 'off' }}</div>
       </div>
     </div>
@@ -25,10 +25,6 @@ export default class DeviceSwitch extends Vue {
   @Prop() device;
 
   @Devices.Action toggleDevice;
-
-  getDeviceName(device) {
-    return (device.name && device.name.replace("_", " ")) || device.thingName;
-  }
 
   switchDevice(device) {
     this.toggleDevice({ name: device.thingName, status: !device.status });

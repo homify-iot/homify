@@ -9,12 +9,12 @@
         <router-link :to="{ name: 'home', params: { roomName: room.name }}">
           <el-card :body-style="{ padding: '0px' }" class="room-card">
             <div class="image-container">
-              <img :src="room.img" class="room-image">
+              <img :src="room.attributes.image" class="room-image">
             </div>
             <div class="room-details">
               <svgicon 
-                v-if="room.icon" 
-                :icon="room.icon" 
+                v-if="room.attributes.icon" 
+                :icon="room.attributes.icon" 
                 width="36" 
                 height="36" 
                 :original="true"/>
@@ -54,7 +54,7 @@ export default class Dashboard extends Vue {
   @Devices.Action fetchDevices;
 
   created() {
-    if (this.rooms.length === 0) this.fetchRooms();
+    this.fetchRooms();
   }
 }
 </script>

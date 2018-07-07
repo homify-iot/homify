@@ -24,7 +24,8 @@ const RoomsSchema = new Schema({
   },
   devices: [
     {
-      device: String,
+      _id: ObjectId,
+      name: String,
       type: { type: ObjectId, ref: "types" }
     }
   ]
