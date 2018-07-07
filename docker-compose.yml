@@ -1,11 +1,18 @@
 version: "3"
 services:
+  web:
+    build: ./frontend
+    volumes:
+        - ./frontend:/frontend:rw
+        - /frontend/node_modules/
+    ports:
+      - "8080:8080"
   gateway:
     restart: always
     build: ./services/gateway
     command: nodemon index.js --exec babel-node
     volumes:
-        - ./services/gateway:/app
+        - ./services/gateway:/backend
     ports:
       - "3000:3000"
     links:
