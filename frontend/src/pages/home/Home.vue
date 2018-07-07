@@ -1,6 +1,6 @@
 <template>
   <div class="home-layout">
-    <el-menu :default-active="selectedRoom.name" class="room-list">
+    <el-menu :default-active="selectedRoom && selectedRoom.name" class="room-list">
       <el-menu-item 
         class="room-item"
         v-for="(room,index) in rooms" 
@@ -16,7 +16,7 @@
         <div>{{ room.name }}</div>
       </el-menu-item>
     </el-menu>
-    <device-panel :devices="selectedRoom.devices"/>
+    <device-panel :devices="selectedRoom && selectedRoom.devices"/>
   </div>
 </template>
 
@@ -42,8 +42,7 @@ export default class Home extends Vue {
   get selectedRoom() {
     return typeof this.$route.params.roomName === "undefined"
       ? this.rooms[0]
-      : this.rooms.find(room => room.name === this.$route.params.roomName) ||
-          {};
+      : this.rooms.find(room => room.name === this.$route.params.roomName);
   }
 
   clickRoom({ index }) {

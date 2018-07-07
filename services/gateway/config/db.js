@@ -15,6 +15,14 @@ const TypeSchema = new Schema({
 });
 export const Types = mongoose.model("types", TypeSchema);
 
+const DeviceSchema = new Schema({
+  _id: ObjectId,
+  name: String,
+  type: { type: ObjectId, ref: "types" },
+  state: {}
+});
+export const Devices = mongoose.model("devices", DeviceSchema);
+
 const RoomsSchema = new Schema({
   _id: ObjectId,
   name: String,
@@ -23,11 +31,7 @@ const RoomsSchema = new Schema({
     icon: String
   },
   devices: [
-    {
-      _id: ObjectId,
-      name: String,
-      type: { type: ObjectId, ref: "types" }
-    }
+    { type: ObjectId, ref: "devices" }
   ]
 });
 export const Rooms = mongoose.model("rooms", RoomsSchema);

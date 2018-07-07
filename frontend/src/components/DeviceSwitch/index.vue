@@ -1,6 +1,6 @@
 <template>
   <el-card v-if="device" :body-style="{ padding: '0' }" class="card">
-    <div class="device-content" :class="{'off': !device.status}">
+    <div class="device-content" :class="{'off': !(device.state && device.state.status)}">
       <div class="icon" :class="device.type.color" @click="switchDevice(device)">
         <svgicon 
           class=""
@@ -10,7 +10,7 @@
       </div>
       <div class="details">
         <div class="title">{{ device.name }}</div>
-        <div class="status">{{ device.status ? 'on': 'off' }}</div>
+        <div class="status">{{ device.state && device.state.status ? 'on': 'off' }}</div>
       </div>
     </div>
   </el-card>

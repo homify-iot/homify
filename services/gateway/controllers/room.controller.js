@@ -5,7 +5,7 @@ export const createRoom = (req, res) => {
 
 export const getAllRooms = (req, res, next) => {
   Rooms.find({})
-    .populate("devices.type")
+    .populate({ path: "devices", populate: { path: "type" } })
     .exec((err, rooms) => {
       if (err) {
         next(err);
