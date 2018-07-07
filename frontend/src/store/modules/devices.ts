@@ -1,4 +1,3 @@
-const SET_DEVICES = "setDevices";
 const state = {
   devices: []
 };
@@ -20,8 +19,8 @@ const mutations = {
   }
 };
 const actions = {
-  fetchDevices: async ({ state, commit }, queryString: string) => {},
-  toggleDevice: ({ state, commit }, { name, status }) => {}
+  fetchDevices: async () => { },
+  toggleDevice: () => { }
 };
 
 export const devices = {

@@ -34,7 +34,7 @@ const actions = {
     if (!view.name || state.visitedTabs.some(v => v.path === view.path)) return;
     commit("ADD_TABS", view);
   },
-  delTab({ commit, state }, path) {
+  delTab({ commit }, path) {
     commit("DEL_TAB", path);
   }
 };

@@ -5,15 +5,28 @@
     "target": "es5",
     "noImplicitAny": false,
     "experimentalDecorators": true,
-    "rootDir": ".",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "lib": ["dom", "es2015.promise", "es2017", "esnext.asynciterable"],
-    "types": ["jest"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "lib": [
+      "dom",
+      "es2015.promise",
+      "es2017",
+      "esnext.asynciterable"
+    ],
+    "types": [
+      "node",
+      "jest"
+    ],
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     }
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ],
 }

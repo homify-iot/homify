@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-property-decorator";
 import { Rooms, Devices } from "@/store/vuex-decorators";
 import DeviceSwitch from "@/components/DeviceSwitch/index.vue";
 @Component({

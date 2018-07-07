@@ -41,7 +41,7 @@ export default class Layout extends Vue {
   @Settings.Action closeSideBar;
 
   @Watch("$route")
-  routeChange(route) {
+  routeChange() {
     if (this.device === "mobile" && this.sidebar.opened) {
       this.closeSideBar({ withoutAnimation: false });
     }

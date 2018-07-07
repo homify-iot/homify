@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const SET_ROOMS = "setRooms";
 const SET_DEVICE_NAME = "setDeviceName";
 
@@ -16,8 +18,13 @@ const mutations = {
   }
 };
 const actions = {
-  fetchRooms: async ({ state, commit }) => {},
-  fetchDevice: async ({ state, commit }, thingName) => {}
+  fetchRooms: async () => {
+    axios.get("/api/gateway/test")
+      .then(res => {
+        console.log(res);
+      })
+  },
+  fetchDevice: async () => { }
 };
 
 export const rooms = {

@@ -4,7 +4,6 @@
 const path = require('path');
 
 const proxyTarget = process.env.PROXY_TARGET
-
 const proxySettings = {
   target: proxyTarget,
   secure: false,
@@ -20,17 +19,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/graphql': proxySettings
+      '/api/**': proxySettings
     },
-    // proxyTable: {
-    //   [apiUrl]: {
-    //     target: process.env.SERVER_URL,
-    //     // changeOrigin: true,
-    //     pathRewrite: {
-    //       // [`^${apiUrl}`]: ''
-    //     }
-    //   }
-    // },
 
     // Various Dev Server settings
     host: host, // can be overwritten by process.env.HOST
@@ -77,7 +67,7 @@ module.exports = {
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
     productionGzip: false,
-    productionGzipExtensions: ['js', 'css'],
+    productionGzipExtensions: [ 'js', 'css' ],
 
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:

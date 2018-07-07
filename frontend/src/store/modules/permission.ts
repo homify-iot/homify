@@ -11,7 +11,7 @@ const mutations = {
   }
 };
 const actions = {
-  fetchRoutes: async ({ dispatch, commit }) => {
+  fetchRoutes: async ({ commit }) => {
     commit(SET_ROUTES, menuRoutes);
   }
 };
