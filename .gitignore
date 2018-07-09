@@ -1,6 +1,7 @@
 **/node_modules
 /dist
 /services/data
+/services/mqtt
 
 **/.env
 

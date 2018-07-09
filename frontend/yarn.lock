@@ -1929,7 +1929,7 @@ concat-stream@1.6.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-concat-stream@^1.5.0, concat-stream@^1.6.0:
+concat-stream@^1.5.0, concat-stream@^1.6.0, concat-stream@^1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.2.tgz#904bdf194cd3122fc675c77fc4ac3d4ff0fd1a34"
   dependencies:
@@ -2649,7 +2649,7 @@ encodeurl@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
 
-end-of-stream@^1.0.0, end-of-stream@^1.1.0:
+end-of-stream@^1.0.0, end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.4.1.tgz#ed29634d19baba463b6ce6b80a37213eab71ec43"
   dependencies:
@@ -5401,7 +5401,7 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-mqtt-packet@^5.4.0:
+mqtt-packet@^5.4.0, mqtt-packet@^5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/mqtt-packet/-/mqtt-packet-5.6.0.tgz#923fb704d0ce0bd6ac81c7e1cc09469b1512d2fd"
   dependencies:
@@ -5426,6 +5426,24 @@ mqtt@2.15.1:
     reinterval "^1.1.0"
     split2 "^2.1.1"
     websocket-stream "^5.0.1"
+    xtend "^4.0.1"
+
+mqtt@^2.15.0:
+  version "2.18.2"
+  resolved "https://registry.yarnpkg.com/mqtt/-/mqtt-2.18.2.tgz#5c01b412d23db399aa5230e7d4e71a3fcef3e64a"
+  dependencies:
+    commist "^1.0.0"
+    concat-stream "^1.6.2"
+    end-of-stream "^1.4.1"
+    help-me "^1.0.1"
+    inherits "^2.0.3"
+    minimist "^1.2.0"
+    mqtt-packet "^5.6.0"
+    pump "^3.0.0"
+    readable-stream "^2.3.6"
+    reinterval "^1.1.0"
+    split2 "^2.1.1"
+    websocket-stream "^5.1.2"
     xtend "^4.0.1"
 
 ms@2.0.0:
@@ -6489,6 +6507,13 @@ public-encrypt@^4.0.0:
 pump@^2.0.0, pump@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/pump/-/pump-2.0.1.tgz#12399add6e4cf7526d973cbc8b5ce2e2908b3909"
+  dependencies:
+    end-of-stream "^1.1.0"
+    once "^1.3.1"
+
+pump@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/pump/-/pump-3.0.0.tgz#b4a2116815bde2f4e1ea602354e8c75565107a64"
   dependencies:
     end-of-stream "^1.1.0"
     once "^1.3.1"
@@ -8225,6 +8250,12 @@ vue-loader@^13.3.0:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
+vue-mqtt@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/vue-mqtt/-/vue-mqtt-2.0.2.tgz#81ab24e1d170c01ae0c564d71f10ec03b6f84476"
+  dependencies:
+    mqtt "^2.15.0"
+
 vue-parser@^1.1.5:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/vue-parser/-/vue-parser-1.1.6.tgz#3063c8431795664ebe429c23b5506899706e6355"
@@ -8435,7 +8466,7 @@ websocket-extensions@>=0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
 
-websocket-stream@^5.0.1:
+websocket-stream@^5.0.1, websocket-stream@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/websocket-stream/-/websocket-stream-5.1.2.tgz#1c31c627bcdf34f1a9bdacc9daa15bfa4816d9ad"
   dependencies:

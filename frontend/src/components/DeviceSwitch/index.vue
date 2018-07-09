@@ -19,6 +19,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Devices } from "@/store/vuex-decorators";
+import { client } from "@/services/mqtt";
 
 @Component
 export default class DeviceSwitch extends Vue {
@@ -26,8 +27,12 @@ export default class DeviceSwitch extends Vue {
 
   @Devices.Action toggleDevice;
 
+  created() {
+    client.subscribe(this.device.name);
+  }
+
   switchDevice(device) {
-    this.toggleDevice({ name: device.thingName, status: !device.status });
+    client.publish(device.name, !device.state.status + "");
   }
 }
 </script>
