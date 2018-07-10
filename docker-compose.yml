@@ -15,8 +15,9 @@ services:
         - ./services/gateway:/backend
     ports:
       - "3000:3000"
-    links:
+    depends_on:
       - mongo
+      - mqtt
   mongo:
     image: mongo
     volumes:

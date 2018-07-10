@@ -36,4 +36,11 @@ const RoomsSchema = new Schema({
 });
 export const Rooms = mongoose.model("rooms", RoomsSchema);
 
+mongoose.connection
+  .on("connected", () => {
+    console.log(`Mongoose connection open on ${config.db}:${config.db_port}`);
+  })
+  .on("error", err => {
+    console.log(`Connection error: ${err.message}`);
+  });
 export default mongoose;

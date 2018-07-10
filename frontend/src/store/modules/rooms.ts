@@ -1,14 +1,18 @@
-import { Http } from "@/services/httpService";
+import { Http } from "@/services/http.service";
 
 const SET_ROOMS = "setRooms";
 
 const state = {
-  rooms: []
+  rooms: [],
+  devices: []
 };
 const getters = {};
 const mutations = {
   [SET_ROOMS]: (state, rooms) => {
     state.rooms = rooms;
+    state.devices = rooms.reduce((curr, next) => {
+      return [...curr, ...next.devices || []]
+    }, [])
   }
 };
 const actions = {
