@@ -32,10 +32,10 @@ export default class MqttClient {
   handleMessage (topic, message) {
     const state = JSON.parse(message);
     const [ category, type, device_id, action ] = topic.split('/');
+    console.log(topic, state);
     if (action === 'update') {
       if (type === 'Lightbulb') {
         //todo: write to db
-        console.log(state);
         this.sendResponse({ _id: device_id, type: { type }, state });
       }
     }

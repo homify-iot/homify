@@ -45,7 +45,7 @@ export default class MqttClient {
   }
   update(device) {
     const topic = `devices/${device.type.type}/${device._id}/update`;
-    const target = Object.assign({}, device.state, { status: !device.state });
+    const target = Object.assign({}, device.state, { status: !device.state.status });
     this.client.publish(topic, JSON.stringify(target));
   }
 }

@@ -5,20 +5,21 @@ const SET_DEVICE_STATE = "setDeviceState";
 
 const state = {
   rooms: [],
-  devices: []
 };
 const getters = {};
 const mutations = {
   [SET_ROOMS]: (state, rooms) => {
     state.rooms = rooms;
-    state.devices = rooms.reduce((curr, next) => {
-      return [...curr, ...next.devices || []]
-    }, [])
   },
   [SET_DEVICE_STATE]: (state, device) => {
-    state.devices = state.devices.map(_device => {
-      _device._id === device._id;
-      return { ..._device, ...device }
+    state.rooms = state.rooms.map(room => {
+      const devices = room.devices.map(_device => {
+        if (_device._id === device._id) {
+          return { ..._device, ...device };
+        }
+        return _device
+      })
+      return { ...room, devices };
     })
   }
 };
