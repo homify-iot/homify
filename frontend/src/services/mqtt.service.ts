@@ -1,4 +1,6 @@
 import mqtt from "mqtt";
+import store from "@/store";
+import { UPDATE_DEVICE_STATE } from "@/store/event-types"
 export default class MqttClient {
   client: any;
   constructor(private url, private options = {}) {
@@ -24,16 +26,26 @@ export default class MqttClient {
       console.log("iot client error", err);
     });
 
-    this.client.on("message", (topic, message) => {
-      console.log("new message", topic, JSON.parse(message.toString()));
-    });
+    this.client.on("message", this.handleMessage);
   }
-  register(deviceId) {
-    const topic = `devices/${deviceId}/response`;
+  handleMessage(topic, message) {
+    const state = JSON.parse(message);
+    const [{ }, { }, device_id, action] = topic.split('/');
+    if (action === 'response') {
+      const device = {
+        _id: device_id,
+        state
+      }
+      store.dispatch(UPDATE_DEVICE_STATE, device)
+    }
+  }
+  register(device) {
+    const topic = `devices/${device.type.type}/${device._id}/response`;
     this.client.subscribe(topic);
   }
-  update(deviceId, stateObject) {
-    const topic = `devices/${deviceId}/update`;
-    this.client.publish(topic, stateObject);
+  update(device) {
+    const topic = `devices/${device.type.type}/${device._id}/update`;
+    const target = Object.assign({}, device.state, { status: !device.state });
+    this.client.publish(topic, JSON.stringify(target));
   }
 }

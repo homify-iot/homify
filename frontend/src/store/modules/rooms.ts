@@ -1,6 +1,7 @@
 import { Http } from "@/services/http.service";
 
 const SET_ROOMS = "setRooms";
+const SET_DEVICE_STATE = "setDeviceState";
 
 const state = {
   rooms: [],
@@ -13,12 +14,21 @@ const mutations = {
     state.devices = rooms.reduce((curr, next) => {
       return [...curr, ...next.devices || []]
     }, [])
+  },
+  [SET_DEVICE_STATE]: (state, device) => {
+    state.devices = state.devices.map(_device => {
+      _device._id === device._id;
+      return { ..._device, ...device }
+    })
   }
 };
 const actions = {
   fetchRooms: ({ commit }) => {
     Http.get("rooms")
       .then(res => commit(SET_ROOMS, res.data))
+  },
+  updateDeviceState: ({ commit }, device) => {
+    commit(SET_DEVICE_STATE, device)
   }
 };
 

@@ -26,15 +26,27 @@ export default class MqttClient {
       console.log("iot client error", err);
     });
 
-    this.client.on("message", (topic, message) => {
-      console.log("new message", topic, JSON.parse(message.toString()));
-    });
+    this.client.on("message", this.handleMessage.bind(this));
   }
+
+  handleMessage (topic, message) {
+    const state = JSON.parse(message);
+    const [ category, type, device_id, action ] = topic.split('/');
+    if (action === 'update') {
+      if (type === 'Lightbulb') {
+        //todo: write to db
+        console.log(state);
+        this.sendResponse({ _id: device_id, type: { type }, state });
+      }
+    }
+  }
+
   register () {
     this.client.subscribe("devices/#");
   }
-  update (deviceId, stateObject) {
-    const topic = `devices/${deviceId}/response`;
-    this.client.publish(topic, stateObject);
+
+  sendResponse (device) {
+    const topic = `devices/${device.type.type}/${device._id}/response`;
+    this.client.publish(topic, JSON.stringify(device.state));
   }
 }

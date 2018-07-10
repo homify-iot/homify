@@ -28,11 +28,11 @@ export default class DeviceSwitch extends Vue {
   @Devices.Action toggleDevice;
 
   created() {
-    mqtt.register(this.device._id);
+    mqtt.register(this.device);
   }
 
   switchDevice(device) {
-    mqtt.update(device._id, !device.state.status + "");
+    mqtt.update(device);
   }
 }
 </script>
