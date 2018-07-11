@@ -9,15 +9,18 @@
   "author": "Andrew Yang",
   "license": "GPL-3.0",
   "dependencies": {
-    "@babel/core": "^7.0.0-beta.52",
-    "@babel/node": "^7.0.0-beta.52",
-    "@babel/preset-env": "^7.0.0-beta.52",
-    "babel-preset-env": "^1.7.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "joi": "^13.4.0",
     "miio": "^0.15.6",
     "mongoose": "^5.2.1",
     "mqtt": "^2.18.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.52",
+    "@babel/node": "^7.0.0-beta.52",
+    "@babel/preset-env": "^7.0.0-beta.52",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^5.1.0"
   }
 }

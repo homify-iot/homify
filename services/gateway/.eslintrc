@@ -1,0 +1,31 @@
+{
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "expect": true,
+    "sinon": true
+  },
+  "rules": {
+    "newline-per-chained-call": [
+      "error"
+    ],
+    "no-restricted-globals": [
+      "error",
+      "event",
+      "fdescribe"
+    ],
+    "lines-between-class-members": [
+      "error",
+      "always"
+    ],
+    "no-multiple-empty-lines": "error",
+    "no-console": "off"
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  }
+}

@@ -8,12 +8,15 @@ export default class MqttClient {
     this.attachDebugHandlers();
     this.register();
   }
+
   connect () {
     this.client = mqtt.connect(this.url, this.options);
   }
+
   disconnect () {
     this.client.end();
   }
+
   attachDebugHandlers () {
     this.client.on("reconnect", () => {
       console.log("reconnect");
@@ -29,17 +32,22 @@ export default class MqttClient {
 
     this.client.on("message", this.handleMessage.bind(this));
   }
+
   registerDevices (devices) {
     this.devices = devices;
   }
+
   handleMessage (topic, message) {
     const state = JSON.parse(message);
-    const [ _, device_id, action ] = topic.split('/');
+    const [ , device_id, action ] = topic.split('/');
     if (action === 'update') {
       console.log(topic, state);
-      Devices.findOneAndUpdate({ _id: device_id }, { state }, { new: true }).exec().then(device => {
-        this.sendResponse(device)
-      })
+      Devices
+        .findOneAndUpdate({ _id: device_id }, { state }, { new: true })
+        .exec()
+        .then(device => {
+          this.sendResponse(device)
+        })
         .catch(err => console.log(2, err))
     }
   }

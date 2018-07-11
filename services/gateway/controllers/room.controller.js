@@ -1,5 +1,5 @@
 import { Rooms } from "../config/db"
-export const createRoom = (req, res) => {
+export const createRoom = () => {
 
 }
 
