@@ -1,4 +1,5 @@
 import mqtt from "mqtt";
+import { Devices } from "../config/db";
 export default class MqttClient {
   constructor(url, options = {}) {
     this.url = url;
@@ -28,16 +29,18 @@ export default class MqttClient {
 
     this.client.on("message", this.handleMessage.bind(this));
   }
-
+  registerDevices (devices) {
+    this.devices = devices;
+  }
   handleMessage (topic, message) {
     const state = JSON.parse(message);
-    const [ category, type, device_id, action ] = topic.split('/');
-    console.log(topic, state);
+    const [ _, device_id, action ] = topic.split('/');
     if (action === 'update') {
-      if (type === 'Lightbulb') {
-        //todo: write to db
-        this.sendResponse({ _id: device_id, type: { type }, state });
-      }
+      console.log(topic, state);
+      Devices.findOneAndUpdate({ _id: device_id }, { state }, { new: true }).exec().then(device => {
+        this.sendResponse(device)
+      })
+        .catch(err => console.log(2, err))
     }
   }
 
@@ -46,7 +49,7 @@ export default class MqttClient {
   }
 
   sendResponse (device) {
-    const topic = `devices/${device.type.type}/${device._id}/response`;
+    const topic = `devices/${device._id}/response`;
     this.client.publish(topic, JSON.stringify(device.state));
   }
 }

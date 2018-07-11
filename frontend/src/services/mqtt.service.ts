@@ -30,7 +30,8 @@ export default class MqttClient {
   }
   handleMessage(topic, message) {
     const state = JSON.parse(message);
-    const [{ }, { }, device_id, action] = topic.split('/');
+    console.log(topic, state);
+    const [{ }, device_id, action] = topic.split('/');
     if (action === 'response') {
       const device = {
         _id: device_id,
@@ -40,11 +41,11 @@ export default class MqttClient {
     }
   }
   register(device) {
-    const topic = `devices/${device.type.type}/${device._id}/response`;
+    const topic = `devices/${device._id}/response`;
     this.client.subscribe(topic);
   }
   update(device) {
-    const topic = `devices/${device.type.type}/${device._id}/update`;
+    const topic = `devices/${device._id}/update`;
     const target = Object.assign({}, device.state, { status: !device.state.status });
     this.client.publish(topic, JSON.stringify(target));
   }

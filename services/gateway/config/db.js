@@ -9,7 +9,7 @@ export const Floor = mongoose.model("floors", FloorSchema);
 
 const TypeSchema = new Schema({
   _id: ObjectId,
-  type: { type: String },
+  type_name: String,
   color: String,
   icon: String
 });
