@@ -1,7 +1,6 @@
-import { Rooms } from "../config/db"
+import { Rooms } from "../config/db";
 export const createRoom = () => {
-
-}
+};
 
 export const getAllRooms = (req, res, next) => {
   Rooms.find({})
@@ -12,5 +11,5 @@ export const getAllRooms = (req, res, next) => {
       } else {
         res.json(rooms);
       }
-    })
-}
+    });
+};
