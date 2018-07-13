@@ -11,21 +11,23 @@ export default class Overload {
   }
 
   registerController (device) {
-    const service = new ControlService(device);
-    this.controllers[ device._id ] = {
-      device, service
-    };
-    if (device.type) {
-      const Plugin = require(`../plugins/${device.type.type_name}`).default;
-      new Plugin(device, service);
+    const service = new ControlService(device, this.client);
+    this.controllers[ device._id ] = service;
+    this.responseHandler({ service });
+  }
+
+  responseHandler ({ service }) {
+    if (service.device.type) {
+      this.Plugin = new (require(`../plugins/${service.device.type.type_name}`).default);
+      this.Plugin.attachPlugin(service);
       service.on("accept", (state) => {
         Devices
-          .findOneAndUpdate({ _id: device._id }, { state }, { new: true })
+          .findOneAndUpdate({ _id: service.device._id }, { state }, { new: true })
           .exec()
           .then(device => {
             this.sendResponse(device);
           })
-          .catch(err => console.log(2, err));
+          .catch(console.error);
       });
     }
   }
@@ -38,9 +40,13 @@ export default class Overload {
   attachClient (client) {
     this.client = client;
     client.on("message", (topic, message) => {
-      const state = JSON.parse(message);
-      const [ , device_id, action ] = topic.split("/");
-      this.controllers[ device_id ].service.emit(action, state);
+      const [ ...args ] = topic.split("/");
+      if (args[ 0 ] === "devices") {
+        const state = JSON.parse(message);
+        const device_id = args[ 1 ];
+        const action = args[ 2 ];
+        this.controllers[ device_id ].emit(action, state);
+      }
     });
   }
 }

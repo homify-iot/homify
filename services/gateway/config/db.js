@@ -11,7 +11,8 @@ const TypeSchema = new Schema({
   _id: ObjectId,
   type_name: String,
   color: String,
-  icon: String
+  icon: String,
+  config: {}
 });
 export const Types = mongoose.model("types", TypeSchema);
 
@@ -19,7 +20,8 @@ const DeviceSchema = new Schema({
   _id: ObjectId,
   name: String,
   type: { type: ObjectId, ref: "types" },
-  state: {}
+  state: {},
+  config: {}
 });
 export const Devices = mongoose.model("devices", DeviceSchema);
 

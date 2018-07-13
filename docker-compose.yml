@@ -27,8 +27,13 @@ services:
   mqtt:
     image: toke/mosquitto
     container_name: mqtt
+    networks:
+    - microservicesnet
     ports:
       - "1883:1883"
       - "9001:9001"
     volumes:
-    - ./services/mqtt/config:/mqtt:ro
+      - ./services/mqtt/config:/mqtt:ro
+networks:
+  microservicesnet:
+    driver: bridge

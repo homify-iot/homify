@@ -5,8 +5,9 @@ import MqttClient from "./services/mqtt.service";
 import Overload from "./services/overload.service";
 import { Devices } from "./config/db";
 
-export const mqtt = new MqttClient("ws://mqtt:9001", { clientId: "gateway" + Math.floor(Date.now() / 1000) });
+export const mqtt = new MqttClient("ws://192.168.1.2:9001", { clientId: "gateway" + Math.floor(Date.now() / 1000) });
 export const overload = new Overload();
+overload.attachClient(mqtt.client);
 Devices
   .find({})
   .populate("type")
@@ -14,7 +15,6 @@ Devices
   .then(devices => {
     overload.registerAllControllers(devices);
   });
-overload.attachClient(mqtt.client);
 
 mongoose.connect(
   `mongodb://${config.db}:${config.db_port}/${config.db_name}`,

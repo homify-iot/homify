@@ -28,31 +28,14 @@ export default class MqttClient {
     this.client.on("error", err => {
       console.log("iot client error", err);
     });
-
-    // this.client.on("message", this.handleMessage.bind(this));
   }
 
   registerDevices (devices) {
     this.devices = devices;
   }
 
-  // handleMessage (topic, message) {
-  //   const state = JSON.parse(message);
-  //   const [ , device_id, action ] = topic.split('/');
-  //   if (action === 'update') {
-  //     console.log(topic, state);
-  //     Devices
-  //       .findOneAndUpdate({ _id: device_id }, { state }, { new: true })
-  //       .exec()
-  //       .then(device => {
-  //         this.sendResponse(device)
-  //       })
-  //       .catch(err => console.log(2, err))
-  //   }
-  // }
-
   register () {
-    this.client.subscribe("devices/#");
+    this.client.subscribe("#");
   }
 
   sendResponse (device) {

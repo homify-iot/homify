@@ -14,7 +14,7 @@ Vue.use(Element, {
   size: "medium" // set element-ui default size
 });
 import MqttClient from "@/services/mqtt.service";
-export const mqtt = new MqttClient('ws://localhost:9001', { clientId: 'web' + Math.floor(Date.now() / 1000) });
+export const mqtt = new MqttClient('mqtt://192.168.1.2:9001', { clientId: 'web' + Math.floor(Date.now() / 1000) });
 
 new Vue({
   router,
