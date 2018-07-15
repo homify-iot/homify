@@ -2,9 +2,9 @@
   "name": "gateway",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "nodemon index.js --exec babel-node"
+    "start": "ts-node-dev index"
   },
   "author": "Andrew Yang",
   "license": "GPL-3.0",
@@ -14,13 +14,13 @@
     "joi": "^13.4.0",
     "miio": "^0.15.6",
     "mongoose": "^5.2.1",
-    "mqtt": "^2.18.2"
+    "mqtt": "^2.18.2",
+    "rxjs": "^6.2.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.52",
-    "@babel/node": "^7.0.0-beta.52",
-    "@babel/preset-env": "^7.0.0-beta.52",
-    "babel-preset-env": "^1.7.0",
-    "eslint": "^5.1.0"
+    "@types/node": "^10.5.2",
+    "eslint": "^5.1.0",
+    "ts-node-dev": "^1.0.0-pre.26",
+    "typescript": "^2.9.2"
   }
 }

@@ -1,4 +1,4 @@
-import express from "express";
+import * as express from "express";
 import { getAllRooms } from "../controllers/room.controller";
 
 const router = express.Router();

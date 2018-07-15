@@ -2,21 +2,21 @@ import ControlService from "./control.service";
 import { Devices } from "../config/db";
 
 export default class Overload {
-  constructor() {
-    this.controllers = {};
-  }
+  public controllers = {};
+  public client;
+  public Plugin;
 
-  registerAllControllers (devices) {
+  registerAllControllers(devices) {
     devices.forEach(d => this.registerController(d));
   }
 
-  registerController (device) {
+  registerController(device) {
     const service = new ControlService(device, this.client);
-    this.controllers[ device._id ] = service;
+    this.controllers[device._id] = service;
     this.responseHandler({ service });
   }
 
-  responseHandler ({ service }) {
+  responseHandler({ service }) {
     if (service.device.type) {
       this.Plugin = new (require(`../plugins/${service.device.type.type_name}`).default);
       this.Plugin.attachPlugin(service);
@@ -32,20 +32,20 @@ export default class Overload {
     }
   }
 
-  sendResponse (device) {
+  sendResponse(device) {
     const topic = `devices/${device._id}/response`;
     this.client.publish(topic, JSON.stringify(device.state));
   }
 
-  attachClient (client) {
+  attachClient(client) {
     this.client = client;
     client.on("message", (topic, message) => {
-      const [ ...args ] = topic.split("/");
-      if (args[ 0 ] === "devices") {
+      const [...args] = topic.split("/");
+      if (args[0] === "devices") {
         const state = JSON.parse(message);
-        const device_id = args[ 1 ];
-        const action = args[ 2 ];
-        this.controllers[ device_id ].emit(action, state);
+        const device_id = args[1];
+        const action = args[2];
+        this.controllers[device_id].emit(action, state);
       }
     });
   }

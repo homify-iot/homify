@@ -10,7 +10,6 @@ services:
   gateway:
     restart: always
     build: ./services/gateway
-    command: nodemon index.js --exec babel-node
     volumes:
         - ./services/gateway:/backend
     ports:

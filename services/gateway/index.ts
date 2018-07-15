@@ -5,9 +5,10 @@ import MqttClient from "./services/mqtt.service";
 import Overload from "./services/overload.service";
 import { Devices } from "./config/db";
 
-export const mqtt = new MqttClient("ws://192.168.1.2:9001", { clientId: "gateway" + Math.floor(Date.now() / 1000) });
+export const mqtt = new MqttClient();
+mqtt.connect();
 export const overload = new Overload();
-overload.attachClient(mqtt.client);
+// overload.attachClient(mqtt.client);
 Devices
   .find({})
   .populate("type")
