@@ -26,8 +26,6 @@ services:
   mqtt:
     image: toke/mosquitto
     container_name: mqtt
-    networks:
-    - microservicesnet
     ports:
       - "1883:1883"
       - "9001:9001"

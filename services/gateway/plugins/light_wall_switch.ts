@@ -1,38 +1,62 @@
-export default class {
-  public service;
-  public device;
-  attachPlugin(service) {
-    this.service = service;
-    this.device = service.device;
-    this.service.on("update", this.getUpdate.bind(this));
-  }
+import { Subject } from "rxjs";
+import { IMqttMessage } from "../types/mqtt.model";
+import MqttClientService from "../services/mqtt.service";
+import { filter, switchMap, tap } from "rxjs/operators";
 
-  getUpdate(state) {
+interface State {
+  status: boolean
+}
+export default class {
+  send: string;
+  receive: string;
+  on: string;
+  off: string;
+  state: State;
+  send_code: string
+  topic: string;
+  constructor(
+    private device: any,
+    private msgObserver: Subject<IMqttMessage>,
+    private mqttService: MqttClientService) {
     if (this.device.type && this.device.type.config) {
       const { send, receive } = this.device.type.config.mqtt;
       const { on, off } = this.device.config.code;
-      const send_code = state.status ? on : off;
-      this.service.mqttClient.publish(send, `#${send_code}`);
-      this.service.mqttClient.on("message", this.handleMessage(send_code, receive, state));
+      this.send = send;
+      this.receive = receive;
+      this.on = on;
+      this.off = off;
     }
+    this.msgObserver
+      .pipe(
+        tap((packet: IMqttMessage) => {
+          this.state = JSON.parse(packet.payload.toString());
+          this.topic = packet.topic;
+          this.send_code = this.state.status ? this.on : this.off;
+        }),
+        switchMap(this.sendCode),
+    ).subscribe();
+
+    this.mqttService.observe(this.receive)
+      .pipe(
+        filter(this.filterReceiveCode),
+        switchMap(this.updateAccept)
+      )
+      .subscribe();
   }
 
-  handleMessage(send_code, receive, state) {
-    return (topic, message) => {
-      if (topic === receive) {
-        if (send_code === this.getCode(message)) {
-          this.updateAccept(state);
-        }
-      }
-    };
+  filterReceiveCode = (packet: IMqttMessage) => {
+    const msg = JSON.parse(packet.payload.toString()).RfCode;
+    const receive_code = msg.replace("#", "").toLowerCase();
+    return this.send_code === receive_code;
   }
 
-  getCode(message) {
-    const msg = JSON.parse(message.toString()).RfCode;
-    return msg.replace("#", "").toLowerCase();
+  sendCode = () => {
+    return this.mqttService.publish(this.send, `#${this.send_code}`)
   }
 
-  updateAccept(state) {
-    this.service.emit("accept", state);
+  updateAccept = () => {
+    const state = JSON.stringify(this.state);
+    const acceptTopic = this.topic.replace("update", "accept");
+    return this.mqttService.publish(acceptTopic, state);
   }
 } 

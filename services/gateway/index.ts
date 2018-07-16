@@ -5,10 +5,10 @@ import MqttClient from "./services/mqtt.service";
 import Overload from "./services/overload.service";
 import { Devices } from "./config/db";
 
-export const mqtt = new MqttClient();
-mqtt.connect();
-export const overload = new Overload();
-// overload.attachClient(mqtt.client);
+export const mqttService = new MqttClient();
+mqttService.observe('devices/#');
+
+export const overload = new Overload(mqttService);
 Devices
   .find({})
   .populate("type")

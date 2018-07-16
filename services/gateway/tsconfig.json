@@ -5,6 +5,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "lib": [
       "es2015.promise",
       "es2017",

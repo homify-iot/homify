@@ -1,4 +1,4 @@
-import mqtt, { IClientSubscribeOptions, connect, ISubscriptionGrant } from "mqtt";
+import { IClientSubscribeOptions, connect, ISubscriptionGrant } from "mqtt";
 import {
   BehaviorSubject,
   merge,
@@ -8,7 +8,6 @@ import {
   Subject,
   Unsubscribable,
   using,
-  UnaryFunction
 } from 'rxjs';
 import {
   filter,
@@ -17,7 +16,7 @@ import {
   refCount
 } from 'rxjs/operators';
 import { IMqttMessage, MqttConnectionState, IOnConnectEvent, IMqttServiceOptions, IMqttClient, IPublishOptions, IOnErrorEvent } from "../types/mqtt.model";
-export default class MqttClient {
+export default class MqttClientService {
   public observables: { [filter: string]: Observable<IMqttMessage> } = {};
 
   public state: BehaviorSubject<MqttConnectionState> = new BehaviorSubject(MqttConnectionState.CLOSED);
@@ -30,14 +29,15 @@ export default class MqttClient {
 
   constructor(private client?: IMqttClient) {
     this.connect();
+    this.state.subscribe();
   }
 
   connect(options?: IMqttServiceOptions, client?: IMqttClient) {
     options = options || {};
     const protocol = options.protocol || 'ws';
-    const hostname = options.hostname || 'localhost';
+    const hostname = options.hostname || 'mqtt';
     const port = options.port || 9001;
-    const path = options.path || '/';
+    const path = options.path || '';
     this._url = `${protocol}://${hostname}:${port}/${path}`;
     const mergedOptions = Object.assign({
       clientId: this._clientId,
@@ -92,7 +92,7 @@ export default class MqttClient {
         // refcount is decreased on unsubscribe.
         () => {
           const subscription: Subscription = new Subscription();
-          this.client.subscribe(filterString, opts, (err, granted: ISubscriptionGrant[]) => {
+          this.client.subscribe(filterString, opts, (_err, granted: ISubscriptionGrant[]) => {
             if (granted) { // granted can be undefined when an error occurs when the client is disconnecting
               granted.forEach((granted_: ISubscriptionGrant) => {
                 if (granted_.qos === 128) {
@@ -112,7 +112,7 @@ export default class MqttClient {
         // observableFactory: Create the observable that is consumed from.
         // This part is not executed until the Observable returned by
         // `observe` gets actually subscribed.
-        (subscription: Unsubscribable | void) => merge(rejected, this.messages))
+        (_subscription: Unsubscribable | void) => merge(rejected, this.messages))
         .pipe(
           filter((msg: IMqttMessage) => this.filterMatchesTopic(filterString, msg.topic)),
           publishFn(),
@@ -178,7 +178,7 @@ export default class MqttClient {
     this.state.next(MqttConnectionState.CLOSED);
   }
 
-  private _handleOnConnect = (e: IOnConnectEvent) => {
+  private _handleOnConnect = (_e: IOnConnectEvent) => {
     Object.keys(this.observables).forEach((filter: string) => {
       this.client.subscribe(filter);
     });
@@ -196,7 +196,7 @@ export default class MqttClient {
     console.error(e);
   }
 
-  private _handleOnMessage = (topic: string, msg, packet: IMqttMessage) => {
+  private _handleOnMessage = (_topic: string, _msg, packet: IMqttMessage) => {
     if (packet.cmd === 'publish') {
       this.messages.next(packet);
     }
@@ -204,9 +204,5 @@ export default class MqttClient {
 
   private _generateClientId() {
     return 'gateway-' + Math.random().toString(36).substr(2, 19);
-  }
-  sendResponse(device) {
-    const topic = `devices/${device._id}/response`;
-    this.client.publish(topic, JSON.stringify(device.state));
   }
 }
