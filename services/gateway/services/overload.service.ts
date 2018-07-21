@@ -16,7 +16,7 @@ export default class Overload {
       const acceptMsg = msg.pipe(filter(this.filterAction('accept')));
       const Plugin = require(`../plugins/${device.type.type_name}`).default;
       new Plugin(device, updateMsg, this.mqttService);
-      acceptMsg.subscribe(this.onAcceptUpdate(device))
+      acceptMsg.subscribe(this.onAcceptUpdate(device));
     }
   }
 

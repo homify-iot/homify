@@ -4,6 +4,7 @@
 /services/mqtt
 
 **/.env
+.DS_Store
 
 # Log files
 npm-debug.log*

@@ -23,7 +23,6 @@
             </div>
           </el-card>
         </router-link>
-        
       </el-col>
     </el-row>
   </div>
@@ -36,6 +35,7 @@ import Navbar from "@/pages/layout/components/Navbar.vue";
 import Tabs from "@/pages/layout/components/Tabs.vue";
 import AppMain from "@/pages/layout/components/AppMain.vue";
 import DeviceSwitch from "@/components/DeviceSwitch/index.vue";
+
 import { Rooms, Devices } from "@/store/vuex-decorators";
 @Component({
   components: {

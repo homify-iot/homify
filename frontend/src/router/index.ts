@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Layout from "@/pages/layout/Layout.vue";
 import Dashboard from "@/pages/dashboard/Dashboard.vue";
 import Home from "@/pages/home/Home.vue";
+import Floorplan from "@/pages/floorplan/Floorplan.vue";
 import store from "@/store";
 import { FETCH_ROUTES, ADD_TABS } from "@/store/event-types";
 
@@ -20,6 +21,12 @@ export const menuRoutes = [
     name: "home",
     component: Home,
     meta: { title: "My Home", icon: "home", noCache: true }
+  },
+  {
+    path: "/floorplan",
+    name: "floorplan",
+    component: Floorplan,
+    meta: { title: "Floorplan", icon: "google-maps", noCache: true }
   },
   {
     path: "/map",
