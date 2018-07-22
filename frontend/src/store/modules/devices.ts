@@ -1,26 +1,47 @@
+import { Http } from "@/services/http.service";
+import { mqtt } from "@/main";
+
+const SET_ROOMS = "setRooms";
+const SET_DEVICE_STATE = "setDeviceState";
+
 const state = {
-  devices: []
+  rooms: [],
 };
 const getters = {
-  getFrequentDevices: state => {
-    return state.devices.slice(0, 3);
+  devices: (state) => {
+    return state.rooms.reduce((pre, cur) => pre.concat(...cur.devices), []);
+  },
+  floorplanDevices: (_, getters) => {
+    return getters.devices.filter(d => d.floorplan);
   }
 };
 const mutations = {
-  setDevices: (state, devices) => {
-    state.devices = devices;
+  [SET_ROOMS]: (state, rooms) => {
+    state.rooms = rooms;
   },
-  setStatus: (state, { name, status }) => {
-    state.devices.forEach(device => {
-      if (device.thingName === name) {
-        device.status = status;
-      }
-    });
+  [SET_DEVICE_STATE]: (state, device) => {
+    state.rooms = state.rooms.map(room => {
+      const devices = room.devices.map(_device => {
+        if (_device._id === device._id) {
+          return { ..._device, ...device };
+        }
+        return _device
+      })
+      return { ...room, devices };
+    })
   }
 };
 const actions = {
-  fetchDevices: async () => { },
-  toggleDevice: () => { }
+  fetchRooms: ({ commit }) => {
+    Http.get("rooms")
+      .then(res => commit(SET_ROOMS, res.data))
+  },
+  updateDevice: (_, device) => {
+    mqtt.update(device);
+  },
+  updateDeviceState: ({ commit }, device) => {
+    commit(SET_DEVICE_STATE, device)
+  }
 };
 
 export const devices = {

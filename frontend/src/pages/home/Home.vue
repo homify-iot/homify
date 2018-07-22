@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { Rooms } from "@/store/vuex-decorators";
+import { Devices } from "@/store/vuex-decorators";
 import DevicePanel from "@/pages/home/components/devicePanel.vue";
 
 @Component({
@@ -31,13 +31,7 @@ import DevicePanel from "@/pages/home/components/devicePanel.vue";
   }
 })
 export default class Home extends Vue {
-  @Rooms.State("rooms") rooms;
-
-  @Rooms.Action fetchRooms;
-
-  created() {
-    this.fetchRooms();
-  }
+  @Devices.State("rooms") rooms;
 
   get selectedRoom() {
     return typeof this.$route.params.roomName === "undefined"

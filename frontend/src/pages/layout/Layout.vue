@@ -19,7 +19,7 @@ import Sidebar from "@/pages/layout/components/Sidebar/Sidebar.vue";
 import Navbar from "@/pages/layout/components/Navbar.vue";
 import Tabs from "@/pages/layout/components/Tabs.vue";
 import AppMain from "@/pages/layout/components/AppMain.vue";
-import { Permission, Settings } from "@/store/vuex-decorators";
+import { Permission, Settings, Devices } from "@/store/vuex-decorators";
 
 @Component({
   components: {
@@ -40,6 +40,8 @@ export default class Layout extends Vue {
 
   @Settings.Action closeSideBar;
 
+  @Devices.Action fetchRooms;
+
   @Watch("$route")
   routeChange() {
     if (this.device === "mobile" && this.sidebar.opened) {
@@ -50,6 +52,10 @@ export default class Layout extends Vue {
   WIDTH = 1024;
 
   RATIO = 3;
+
+  created() {
+    this.fetchRooms();
+  }
 
   beforeMount() {
     window.addEventListener("resize", this.resizeHandler);

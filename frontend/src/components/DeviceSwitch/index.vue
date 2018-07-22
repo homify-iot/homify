@@ -1,7 +1,7 @@
 <template>
   <el-card v-if="device" :body-style="{ padding: '0' }" class="card">
     <div class="device-content" :class="{'off': !(device.state && device.state.status)}">
-      <div class="icon" :class="device.type.color" @click="switchDevice(device)">
+      <div class="icon" :class="device.type.color" @click="updateDevice(device)">
         <svgicon 
           class=""
           :icon="device.type.icon" 
@@ -19,21 +19,12 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Devices } from "@/store/vuex-decorators";
-import { mqtt } from "@/main";
 
 @Component
 export default class DeviceSwitch extends Vue {
   @Prop() device;
 
-  @Devices.Action toggleDevice;
-
-  created() {
-    mqtt.register(this.device);
-  }
-
-  switchDevice(device) {
-    mqtt.update(device);
-  }
+  @Devices.Action updateDevice;
 }
 </script>
 

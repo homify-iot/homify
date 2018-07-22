@@ -21,6 +21,8 @@ services:
     image: mongo
     volumes:
       - ./services/data:/data/db
+    logging:
+      driver: none
     ports:
       - "27017:27017"
   mqtt:
@@ -31,6 +33,3 @@ services:
       - "9001:9001"
     volumes:
       - ./services/mqtt/config:/mqtt:ro
-networks:
-  microservicesnet:
-    driver: bridge

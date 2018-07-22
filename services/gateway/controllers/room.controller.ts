@@ -7,6 +7,7 @@ export const getAllRooms = (_req, res, next) => {
     .populate({ path: "devices", populate: { path: "type" } })
     .exec((err, rooms) => {
       if (err) {
+        console.log(err);
         next(err);
       } else {
         res.json(rooms);

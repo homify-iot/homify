@@ -38,14 +38,14 @@
         width="266.212" 
         height="377.67" 
         class="light off"
-        ref="light_1"/>
+        ref="5b40a2fbc614ec34104b3e8a"/>
       <rect 
-        x="528.052" 
+        x="524.052" 
         y="108.53" 
         width="155.674" 
         height="377.67" 
         class="light off"
-        ref="light_2"/>
+        ref="5b40a2d2c614ec34104b3e60"/>
       <path 
         d="M113.583 103.667h1543.75v388H113.583v-388z" 
         stroke-width="8.333" 
@@ -1776,21 +1776,31 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-property-decorator";
+import { Rooms } from "@/store/vuex-decorators";
 
 @Component
 export default class Floorplan extends Vue {
-  lights: HTMLElement[] = [];
+  @Rooms.Getter("floorplanDevices") floorplanDevices;
+
+  @Watch("floorplanDevices")
+  onDevices(device) {
+    device.forEach(device => {
+      const ref = this.$refs[device._id] as HTMLElement;
+      ref.onclick = () => ref.classList.toggle("off");
+    });
+  }
+
+  things: HTMLElement[] = [];
 
   created() {}
 
   mounted() {
-    this.lights.push(this.$refs.light_1 as HTMLElement);
-    this.lights.push(this.$refs.light_2 as HTMLElement);
-
-    this.lights.forEach(light => {
-      light.onclick = () => light.classList.toggle("off");
-    });
+    // this.lights.push(this.$refs.light_1 as HTMLElement);
+    // this.lights.push(this.$refs.light_2 as HTMLElement);
+    // this.lights.forEach(light => {
+    //   light.onclick = () => light.classList.toggle("off");
+    // });
   }
 }
 </script>

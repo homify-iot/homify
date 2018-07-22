@@ -5,6 +5,7 @@ export default class MqttClient {
   client: any;
   constructor(private url, private options = {}) {
     this.connect();
+    this.register();
     this.attachDebugHandlers();
   }
   connect() {
@@ -40,8 +41,8 @@ export default class MqttClient {
       store.dispatch(UPDATE_DEVICE_STATE, device)
     }
   }
-  register(device) {
-    const topic = `devices/${device._id}/response`;
+  register() {
+    const topic = `devices/+/response`;
     this.client.subscribe(topic);
   }
   update(device) {
