@@ -1,6 +1,4 @@
 import { Rooms } from "../config/db";
-export const createRoom = () => {
-};
 
 export const getAllRooms = (_req, res, next) => {
   Rooms.find({})

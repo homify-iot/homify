@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import config from "./config";
 const Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
+
 const FloorSchema = new Schema({
   floor: { type: String }
 });
@@ -32,11 +33,17 @@ const RoomsSchema = new Schema({
     image: String,
     icon: String
   },
-  devices: [
-    { type: ObjectId, ref: "devices" }
-  ]
+  devices: [{ type: ObjectId, ref: "devices" }]
 });
 export const Rooms = mongoose.model("rooms", RoomsSchema);
+
+const FloorplanSchema = new Schema({
+  _id: ObjectId,
+  tag: String,
+  device: { type: ObjectId, ref: "devices" },
+  attributes: {}
+});
+export const FloorPlans = mongoose.model("floorplans", FloorplanSchema);
 
 mongoose.connection
   .on("connected", () => {

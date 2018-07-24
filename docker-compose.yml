@@ -21,8 +21,6 @@ services:
     image: mongo
     volumes:
       - ./services/data:/data/db
-    logging:
-      driver: none
     ports:
       - "27017:27017"
   mqtt:
