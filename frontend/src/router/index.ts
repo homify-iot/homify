@@ -26,7 +26,7 @@ export const menuRoutes = [
     path: "/floorplan",
     name: "floorplan",
     component: Floorplan,
-    meta: { title: "Floorplan", icon: "google-maps", noCache: true }
+    meta: { title: "Floorplan", icon: "floorplan", noCache: true }
   },
   {
     path: "/map",
@@ -57,7 +57,7 @@ const router = new Router({
   mode: "history",
   routes: [...mainRoutes]
 });
-router.beforeEach((to, { }, next) => {
+router.beforeEach((to, {}, next) => {
   store.dispatch(ADD_TABS, to);
   store.dispatch(FETCH_ROUTES);
   next();

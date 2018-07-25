@@ -38,13 +38,4 @@ export default class Floorplan extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.light {
-  fill: #f2ec6f;
-  &.off {
-    fill-opacity: 0;
-  }
-  &:hover {
-    cursor: pointer;
-  }
-}
 </style>

@@ -16,7 +16,7 @@
         <div>{{ room.name }}</div>
       </el-menu-item>
     </el-menu>
-    <device-panel :devices="selectedRoom && selectedRoom.devices"/>
+    <device-panel :devices="devices" :device-list="selectedRoom && selectedRoom.devices"/>
   </div>
 </template>
 
@@ -32,6 +32,8 @@ import DevicePanel from "@/pages/home/components/devicePanel.vue";
 })
 export default class Home extends Vue {
   @Devices.State("rooms") rooms;
+
+  @Devices.State("devices") devices;
 
   get selectedRoom() {
     return typeof this.$route.params.roomName === "undefined"

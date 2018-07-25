@@ -42,6 +42,8 @@ export default class Layout extends Vue {
 
   @Devices.Action fetchRooms;
 
+  @Devices.Action fetchDevices;
+
   @Watch("$route")
   routeChange() {
     if (this.device === "mobile" && this.sidebar.opened) {
@@ -55,6 +57,7 @@ export default class Layout extends Vue {
 
   created() {
     this.fetchRooms();
+    this.fetchDevices();
   }
 
   beforeMount() {

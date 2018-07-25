@@ -1,1 +1,1 @@
-import './floorplan'
+import './floor'

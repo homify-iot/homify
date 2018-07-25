@@ -4,9 +4,9 @@
       :lg="6" 
       :sm="12" 
       class="device-item"
-      v-for="(device,index) in devices"
-      :key="index">
-      <device-switch :device="device" />
+      v-for="id in deviceList"
+      :key="id">
+      <device-switch :device="device(id)" />
     </el-col>
   </el-row>
 </template>
@@ -22,6 +22,12 @@ import DeviceSwitch from "@/components/DeviceSwitch/index.vue";
 })
 export default class DevicePanel extends Vue {
   @Prop() devices;
+
+  @Prop() deviceList;
+
+  get device() {
+    return id => this.devices.find(d => d._id === id);
+  }
 }
 </script>
 

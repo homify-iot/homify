@@ -6,11 +6,10 @@ import Overload from "./services/overload.service";
 import { Devices } from "./config/db";
 
 export const mqttService = new MqttClient();
-mqttService.observe('devices/#');
+mqttService.observe("devices/#");
 
 export const overload = new Overload(mqttService);
-Devices
-  .find({})
+Devices.find({})
   .populate("type")
   .exec()
   .then(devices => {
@@ -19,7 +18,10 @@ Devices
 
 mongoose.connect(
   `mongodb://${config.db}:${config.db_port}/${config.db_name}`,
-  { useNewUrlParser: true }
+  {
+    reconnectTries: Number.MAX_VALUE,
+    reconnectInterval: 500
+  }
 );
 
 // listen on port config.port
