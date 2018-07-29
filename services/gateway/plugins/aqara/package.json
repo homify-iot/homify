@@ -1,0 +1,15 @@
+{
+  "name": "xiaomi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "miio": "miio discover"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lumi-aqara": "^1.6.0",
+    "miio": "^0.15.6"
+  }
+}

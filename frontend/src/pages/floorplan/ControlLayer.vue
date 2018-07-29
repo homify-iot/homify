@@ -7,8 +7,8 @@
       :key="index" 
       v-bind="fp.attributes"
       class="control-layer"
-      :class="{'off': !(fp.device.state && fp.device.state.status)}"
-      @click="updateDevice(fp.device)"/>
+      :class="{'off': !(device(fp).state && device(fp).state.status)}"
+      @click="updateDevice(device(fp))"/>
   </g>
 </template>
 
@@ -20,17 +20,12 @@ import { Devices } from "@/store/vuex-decorators";
 export default class ControlLayer extends Vue {
   @Prop() floorplan;
 
+  @Prop() devices;
+
   @Devices.Action updateDevice;
 
-  mounted() {
-    // const group = SVG("fp");
-    // this.floorplan.forEach(fp => {
-    //   const elm = group[fp.tag]().attr(fp.attributes);
-    //   if (!fp.device.state.status) elm.addClass("off");
-    //   elm.click(() => {
-    //     this.updateDevice(fp.device);
-    //   });
-    // });
+  get device() {
+    return fp => this.devices.find(d => d._id === fp.device);
   }
 }
 </script>
