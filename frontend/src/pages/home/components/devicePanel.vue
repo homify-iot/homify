@@ -6,7 +6,7 @@
       class="device-item"
       v-for="id in deviceList"
       :key="id">
-      <device-switch :device="device(id)" />
+      <device-switch v-if="device(id)" :device="device(id)" />
     </el-col>
   </el-row>
 </template>

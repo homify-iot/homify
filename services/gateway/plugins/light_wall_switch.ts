@@ -8,8 +8,9 @@ interface State {
   status: boolean;
 }
 export default class implements Plugin {
-  onlineStatus: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  health: BehaviorSubject<boolean> = new BehaviorSubject(null);
   status: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  $: (action: string) => Observable<IMqttMessage>;
   device: any;
   send: string;
   receive: string;
@@ -22,10 +23,6 @@ export default class implements Plugin {
 
   registerDevice(device) {
     this.device = device;
-    const updateObserver: Observable<IMqttMessage> = mqttService.getStreaming(
-      device,
-      "update"
-    );
     if (this.device.type && this.device.type.config) {
       const { send, receive } = this.device.type.config.mqtt;
       const { on, off } = this.device.config.code;
@@ -34,8 +31,9 @@ export default class implements Plugin {
       this.on = on;
       this.off = off;
     }
+    this.$ = mqttService.getStreaming(device);
 
-    updateObserver
+    this.$("update")
       .pipe(
         tap((packet: IMqttMessage) => {
           this.state = JSON.parse(packet.payload.toString());

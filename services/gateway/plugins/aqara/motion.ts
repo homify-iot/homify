@@ -11,7 +11,7 @@ export default class implements Plugin {
   state: State;
   topic: string;
   device: any;
-  onlineStatus: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  health: BehaviorSubject<boolean> = new BehaviorSubject(false);
   status: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(
     // private device: any,

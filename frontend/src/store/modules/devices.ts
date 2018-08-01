@@ -1,6 +1,5 @@
 import { Http } from "@/services/http.service";
 import { mqtt } from "@/main";
-
 const SET_ROOMS = "setRooms";
 const SET_DEVICES = "setDeivces";
 const SET_FLOORPLAN = "setFloorplan";
@@ -33,10 +32,14 @@ const actions = {
     Http.get("rooms").then(res => commit(SET_ROOMS, res.data));
   },
   fetchDevices: ({ commit }) => {
-    Http.get("devices").then(res => commit(SET_DEVICES, res.data));
+    Http.get("devices").then(({ data }) => commit(SET_DEVICES, data));
   },
   fetchFloorplan: ({ commit }) => {
     Http.get("floorplan").then(res => commit(SET_FLOORPLAN, res.data));
+  },
+  getState: (_, device) => {
+    const topic = `devices/${device._id}/get`;
+    mqtt.unsafePublish(topic, null);
   },
   updateDevice: (_, device) => {
     mqtt.update(device);

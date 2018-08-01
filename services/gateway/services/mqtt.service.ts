@@ -215,12 +215,14 @@ export default class MqttClientService {
     return match();
   }
 
-  public getStreaming(device: any, action: string): Observable<IMqttMessage> {
+  public getStreaming = (device: any) => (
+    action: string
+  ): Observable<IMqttMessage> => {
     return this.messages.pipe(
       filter(this._filterId(device)),
       filter(this._filterAction(action))
     );
-  }
+  };
 
   private _handleOnClose = () => {
     this.state.next(MqttConnectionState.CLOSED);

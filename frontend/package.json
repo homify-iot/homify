@@ -23,6 +23,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.4.3",
     "roboto-fontface": "^0.9.0",
+    "rxjs": "^6.2.2",
     "svg.js": "^2.6.5",
     "tslint": "^5.10.0",
     "typeface-exo": "0.0.54",

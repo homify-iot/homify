@@ -1,42 +1,50 @@
 import miio from "miio";
 // import { IMqttMessage } from "../../types/mqtt.model";
 import { mqttService } from "../../";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Observable, BehaviorSubject, from } from "rxjs";
 import { Plugin } from "../../services/plugin";
 import { IMqttMessage } from "../../types/mqtt.model";
+import { switchMapTo, map, tap } from "rxjs/operators";
 export default class implements Plugin {
-  topic: string;
   device: any;
-  onlineStatus: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  status: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  topic: string;
+  health: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  status: BehaviorSubject<any> = new BehaviorSubject(null);
+  $: (action: string) => Observable<IMqttMessage>;
+
   constructor() {}
   registerDevice(device) {
     this.device = device;
     miio
       .device({
-        address: this.device.config.address
+        address: device.config.address
       })
       .then(this.handleDevice)
       .catch(err => {
-        this.onlineStatus.next(false);
+        this.health.next(false);
         console.error(err);
       });
-    const updateObserver: Observable<IMqttMessage> = mqttService.getStreaming(
-      device,
-      "update"
-    );
-    updateObserver.subscribe((packet: IMqttMessage) => {
-      const state = JSON.parse(packet.payload.toString());
-      console.log(state);
-    });
+    this.$ = mqttService.getStreaming(device);
   }
-  handleDevice = device => {
+
+  private handleDevice = device => {
     console.log("Connected to", device);
-    this.onlineStatus.next(true);
+    this.health.next(true);
     if (device.matches("type:power-strip")) {
-      // device.power().then(power => this.status.next(power));
+      this.$("update").subscribe((packet: IMqttMessage) => {
+        const state = JSON.parse(packet.payload.toString());
+        console.log(55, state);
+      });
+      this.$("get")
+        .pipe(
+          tap(res => console.log(13213, res)),
+          switchMapTo(from(device.power())),
+          map(power => ({ status: power }))
+        )
+        .subscribe(this.status);
+      // from(device.power()).subscribe(res => console.log(123, res));
       // device.setPower(false).then(console.log);
-      device.on("powerChanged", power => this.status.next(power));
+      device.on("powerChanged", power => this.status.next({ status: power }));
     }
     // const children = device.children();
     // for (const child of children) {

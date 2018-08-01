@@ -1,8 +1,8 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 
 export interface Plugin {
   device: any;
-  onlineStatus: BehaviorSubject<boolean>;
-  status: BehaviorSubject<boolean>;
+  health: BehaviorSubject<boolean>;
+  status: BehaviorSubject<any> | Subject<any>;
   registerDevice: (device: any) => void;
 }

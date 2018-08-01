@@ -1,5 +1,5 @@
 <template>
-  <el-card v-if="device" :body-style="{ padding: '0' }" class="card">
+  <el-card :body-style="{ padding: '0' }" class="card">
     <div class="device-content" :class="{'off': !(device.state && device.state.status)}">
       <div class="icon" :class="device.type.color" @click="updateDevice(device)">
         <svgicon 
