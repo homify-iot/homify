@@ -13,13 +13,20 @@ Devices.find({})
   .exec()
   .then(registerAllControllers);
 
-mongoose.connect(
-  `mongodb://${config.db}:${config.db_port}/${config.db_name}`,
-  {
-    reconnectTries: Number.MAX_VALUE,
-    reconnectInterval: 500
-  }
-);
+const connectWithRetry = () => {
+  console.log("MongoDB connection with retry");
+  mongoose
+    .connect(`mongodb://${config.db}:${config.db_port}/${config.db_name}`)
+    .then(() => {
+      console.log("MongoDB is connected");
+    })
+    .catch(err => {
+      console.log(err);
+      setTimeout(connectWithRetry, 5000);
+    });
+};
+
+connectWithRetry();
 
 // listen on port config.port
 app.listen(config.port, () => {

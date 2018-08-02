@@ -1,5 +1,5 @@
 // import miio from "miio";
-import { BehaviorSubject } from "rxjs";
+import { Subject } from "rxjs";
 // import { IMqttMessage } from "../../types/mqtt.model";
 import MqttClientService from "../../services/mqtt.service";
 import { Plugin } from "../../services/plugin";
@@ -11,8 +11,8 @@ export default class implements Plugin {
   state: State;
   topic: string;
   device: any;
-  health: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  status: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  $health: Subject<boolean> = new Subject();
+  $status: Subject<boolean> = new Subject();
   constructor(
     // private device: any,
     // private msgObserver: Subject<IMqttMessage>,

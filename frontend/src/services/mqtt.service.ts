@@ -19,8 +19,7 @@ import {
   IPublishOptions,
   IOnErrorEvent
 } from "@/types/mqtt.model";
-import store from "@/store";
-import { UPDATE_DEVICE_STATE } from "@/store/event-types";
+
 export default class MqttClient {
   public observables: { [filter: string]: Observable<IMqttMessage> } = {};
 
@@ -238,8 +237,7 @@ export default class MqttClient {
     console.error(e);
   };
 
-  private _handleOnMessage = (topic: string, msg, packet: IMqttMessage) => {
-    console.log(123, topic, msg, packet);
+  private _handleOnMessage = (_topic: string, _msg, packet: IMqttMessage) => {
     if (packet.cmd === "publish") {
       this.messages.next(packet);
     }
@@ -253,28 +251,22 @@ export default class MqttClient {
         .substr(2, 19)
     );
   }
-  handleMessage(topic, message) {
-    const state = JSON.parse(message);
-    console.log(topic, state);
-    const [{}, device_id, action] = topic.split("/");
-    if (action === "response") {
-      const device = {
-        _id: device_id,
-        state
-      };
-      store.dispatch(UPDATE_DEVICE_STATE, device);
-    }
-  }
-  getState(device) {
-    const topic = `devices/${device._id}/get`;
-    console.log(topic);
-    this.client.publish(topic, null);
-  }
-  update(device) {
-    const topic = `devices/${device._id}/update`;
-    const target = Object.assign({}, device.state, {
-      status: !device.state.status
-    });
-    this.client.publish(topic, JSON.stringify(target));
-  }
+
+  public getStreaming = (id?: string) => (
+    action: string
+  ): Observable<IMqttMessage> => {
+    return this.messages.pipe(
+      filter(this._filterId(id)),
+      filter(this._filterAction(action))
+    );
+  };
+
+  private _filterId = (id: string) => (packet: IMqttMessage) => {
+    const [, device_id] = packet.topic.split("/");
+    return !id || device_id === id.toString();
+  };
+  private _filterAction = (target: string) => (packet: IMqttMessage) => {
+    const [, , action] = packet.topic.split("/");
+    return action === target;
+  };
 }

@@ -1,5 +1,5 @@
 import { Http } from "@/services/http.service";
-import { mqtt } from "@/main";
+import { updateDevice } from "@/mqtt";
 const SET_ROOMS = "setRooms";
 const SET_DEVICES = "setDeivces";
 const SET_FLOORPLAN = "setFloorplan";
@@ -37,12 +37,8 @@ const actions = {
   fetchFloorplan: ({ commit }) => {
     Http.get("floorplan").then(res => commit(SET_FLOORPLAN, res.data));
   },
-  getState: (_, device) => {
-    const topic = `devices/${device._id}/get`;
-    mqtt.unsafePublish(topic, null);
-  },
   updateDevice: (_, device) => {
-    mqtt.update(device);
+    updateDevice(device);
   },
   updateDeviceState: ({ commit }, device) => {
     commit(SET_DEVICE_STATE, device);

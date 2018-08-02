@@ -215,15 +215,6 @@ export default class MqttClientService {
     return match();
   }
 
-  public getStreaming = (device: any) => (
-    action: string
-  ): Observable<IMqttMessage> => {
-    return this.messages.pipe(
-      filter(this._filterId(device)),
-      filter(this._filterAction(action))
-    );
-  };
-
   private _handleOnClose = () => {
     this.state.next(MqttConnectionState.CLOSED);
   };
@@ -261,9 +252,18 @@ export default class MqttClientService {
     );
   }
 
-  private _filterId = device => (packet: IMqttMessage) => {
+  public getStreaming = (id: string) => (
+    action: string
+  ): Observable<IMqttMessage> => {
+    return this.messages.pipe(
+      filter(this._filterId(id)),
+      filter(this._filterAction(action))
+    );
+  };
+
+  private _filterId = (id: string) => (packet: IMqttMessage) => {
     const [, device_id] = packet.topic.split("/");
-    return device_id === device._id.toString();
+    return !id || device_id === id.toString();
   };
   private _filterAction = (target: string) => (packet: IMqttMessage) => {
     const [, , action] = packet.topic.split("/");

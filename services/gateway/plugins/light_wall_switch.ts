@@ -1,4 +1,4 @@
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { IMqttMessage } from "../types/mqtt.model";
 import { filter, switchMap, tap } from "rxjs/operators";
 import { Plugin } from "../services/plugin";
@@ -8,8 +8,8 @@ interface State {
   status: boolean;
 }
 export default class implements Plugin {
-  health: BehaviorSubject<boolean> = new BehaviorSubject(null);
-  status: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  $health: Subject<boolean> = new Subject();
+  $status: Subject<any> = new Subject();
   $: (action: string) => Observable<IMqttMessage>;
   device: any;
   send: string;
@@ -31,7 +31,7 @@ export default class implements Plugin {
       this.on = on;
       this.off = off;
     }
-    this.$ = mqttService.getStreaming(device);
+    this.$ = mqttService.getStreaming(device._id);
 
     this.$("update")
       .pipe(
@@ -46,11 +46,8 @@ export default class implements Plugin {
 
     mqttService
       .observe(this.receive)
-      .pipe(
-        filter(this.filterReceiveCode),
-        switchMap(this.updateAccept)
-      )
-      .subscribe();
+      .pipe(filter(this.filterReceiveCode))
+      .subscribe(() => this.$status.next(this.state));
   }
   filterReceiveCode = (packet: IMqttMessage) => {
     const msg = JSON.parse(packet.payload.toString()).RfCode;
@@ -60,11 +57,5 @@ export default class implements Plugin {
 
   sendCode = () => {
     return mqttService.publish(this.send, `#${this.send_code}`);
-  };
-
-  updateAccept = () => {
-    const state = JSON.stringify(this.state);
-    const acceptTopic = this.topic.replace("update", "accept");
-    return mqttService.publish(acceptTopic, state);
   };
 }

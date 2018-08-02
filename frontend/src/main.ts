@@ -9,13 +9,11 @@ import * as svgicon from "vue-svgicon";
 
 Vue.use(svgicon);
 import "./assets/icons";
+import "@/mqtt";
 Vue.config.productionTip = false;
 Vue.use(Element, {
   size: "medium" // set element-ui default size
 });
-import MqttClient from "@/services/mqtt.service";
-export const mqtt = new MqttClient();
-mqtt.observe("devices/+/response");
 
 new Vue({
   router,
