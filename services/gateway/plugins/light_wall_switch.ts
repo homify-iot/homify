@@ -1,6 +1,6 @@
 import { Observable, Subject } from "rxjs";
 import { IMqttMessage } from "../types/mqtt.model";
-import { filter, switchMap, tap } from "rxjs/operators";
+import { filter, switchMap, tap, share } from "rxjs/operators";
 import { Plugin } from "../services/plugin";
 import { mqttService } from "../";
 
@@ -49,6 +49,11 @@ export default class implements Plugin {
       .pipe(filter(this.filterReceiveCode))
       .subscribe(() => this.$status.next(this.state));
   }
+
+  public onStatus(): Observable<{}> {
+    return this.$status.pipe(share());
+  }
+
   filterReceiveCode = (packet: IMqttMessage) => {
     const msg = JSON.parse(packet.payload.toString()).RfCode;
     const receive_code = msg.replace("#", "").toLowerCase();

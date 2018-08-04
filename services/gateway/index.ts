@@ -2,11 +2,20 @@ import app from "./config/express";
 import config from "./config/config";
 import mongoose from "./config/db";
 import MqttClient from "./services/mqtt.service";
-import { registerAllControllers } from "./services/overload.service";
+import Overload from "./services/overload.service";
 import { Devices } from "./config/db";
 
 export const mqttService = new MqttClient();
 mqttService.observe("devices/#");
+mqttService.observables["devices/#"].subscribe(packet => {
+  const { topic, payload } = packet;
+  const state = JSON.parse(payload.toString());
+  console.log(topic, state);
+});
+
+const registerAllControllers = devices => {
+  devices.forEach(d => new Overload(d));
+};
 
 Devices.find({})
   .populate("type")

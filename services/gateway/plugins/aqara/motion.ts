@@ -1,8 +1,9 @@
 // import miio from "miio";
-import { Subject } from "rxjs";
+import { Subject, Observable } from "rxjs";
 // import { IMqttMessage } from "../../types/mqtt.model";
 import MqttClientService from "../../services/mqtt.service";
 import { Plugin } from "../../services/plugin";
+import { share } from "rxjs/operators";
 
 interface State {
   status: boolean;
@@ -26,6 +27,11 @@ export default class implements Plugin {
   registerDevice(device) {
     this.device = device;
   }
+
+  public onStatus(): Observable<{}> {
+    return this.$status.pipe(share());
+  }
+
   handleDevice = device => {
     // console.log("Connected to", device);
     const children = device.children();

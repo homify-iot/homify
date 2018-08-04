@@ -3,7 +3,7 @@ import { mqttService } from "../../";
 import { Observable, Subject, fromEvent, from } from "rxjs";
 import { Plugin } from "../../services/plugin";
 import { IMqttMessage } from "../../types/mqtt.model";
-import { map, switchMap } from "rxjs/operators";
+import { map, share } from "rxjs/operators";
 export default class implements Plugin {
   device: any;
   topic: string;
@@ -26,6 +26,10 @@ export default class implements Plugin {
       });
   }
 
+  public onStatus(): Observable<{}> {
+    return this.$status.pipe(share());
+  }
+
   private handleDevice = device => {
     console.log("Connected to", device);
     this.$health.next(true);
@@ -35,18 +39,29 @@ export default class implements Plugin {
           map((packet: IMqttMessage) => {
             const { status } = JSON.parse(packet.payload.toString());
             return status;
-          }),
-          switchMap((status: boolean) => from(device.setPower(status))),
-          map(status => ({ status: !status }))
+          })
         )
-        .subscribe(res => this.$status.next(res));
+        .subscribe(status => {
+          from(device.setPower(status)).subscribe();
+          // this.$status.next({ status });
+          // this.$status.next(state);
+          // from(device.power())
+          //   .pipe(map(status => ({ status })))
+          //   .subscribe(status => {
+          //     console.log(111, status);
+          //     this.$status.next(status);
+          //   });
+        });
       // from(device.power())
       //   .pipe(map(status => ({ status })))
-      //   .subscribe(this.$status);
+      //   .subscribe(status => this.$status.next(status));
 
       fromEvent(device, "powerChanged")
         .pipe(map(([status]) => ({ status })))
-        .subscribe(res => this.$status.next(res));
+        .subscribe(res => {
+          console.log("powerChanged", res);
+          this.$status.next(res);
+        });
     }
   };
 }
