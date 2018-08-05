@@ -8,17 +8,18 @@ import { share } from "rxjs/operators";
 interface State {
   status: boolean;
 }
-export default class implements Plugin {
+export default class extends Plugin {
   state: State;
   topic: string;
   device: any;
-  $health: Subject<boolean> = new Subject();
-  $status: Subject<boolean> = new Subject();
+  health$: Subject<boolean> = new Subject();
+  status$: Subject<boolean> = new Subject();
   constructor(
     // private device: any,
     // private msgObserver: Subject<IMqttMessage>,
     private mqttService: MqttClientService
   ) {
+    super();
     // miio
     //   .device({ address: "192.168.1.9" })
     //   .then(this.handleDevice)
@@ -29,7 +30,11 @@ export default class implements Plugin {
   }
 
   public onStatus(): Observable<{}> {
-    return this.$status.pipe(share());
+    return this.status$.pipe(share());
+  }
+
+  public onHealth(): Observable<{}> {
+    return this.health$.pipe(share());
   }
 
   handleDevice = device => {

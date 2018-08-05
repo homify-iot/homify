@@ -1,57 +1,58 @@
 import miio from "miio";
-import { mqttService } from "../../";
-import { Observable, Subject, merge, fromEvent } from "rxjs";
-import { Plugin } from "../../services/plugin";
+// import { mqttService } from "../../";
+import { Observable, Subject, of, fromEvent } from "rxjs";
 import { IMqttMessage } from "../../types/mqtt.model";
 import { map, share, switchMap, delay } from "rxjs/operators";
-export default class implements Plugin {
+export default class {
   device: any;
-  topic: string;
-  $health: Subject<boolean> = new Subject();
-  $status: Subject<any> = new Subject();
-  $: (action: string) => Observable<IMqttMessage>;
+  private health$: Subject<boolean> = new Subject();
+  private status$: Subject<any> = new Subject();
 
-  constructor() {}
-  registerDevice(device) {
-    this.device = device;
-    this.$ = mqttService.getStreaming(device._id);
+  constructor(device) {
     miio
       .device({
         address: device.config.address
       })
-      .then(this.handleDevice)
+      .then(this._handleDevice)
       .catch(err => {
-        this.$health.next(false);
+        this.health$.next(false);
         console.error(err);
       });
   }
 
-  public onStatus(): Observable<{}> {
-    return this.$status.pipe(share());
+  public setState(target): Observable<{}> {
+    return of(target).pipe(
+      map(this._getMqttMessage),
+      switchMap(
+        status => this.device.setPower(status),
+        tartgetStatus => ({ status: tartgetStatus })
+      ),
+      delay(10)
+    );
   }
 
-  private getMqttMessage(packet: IMqttMessage) {
+  public onStatus(): Observable<{}> {
+    return this.status$.pipe(share());
+  }
+
+  public onHealth(): Observable<{}> {
+    return this.health$.pipe(share());
+  }
+  private _getMqttMessage(packet: IMqttMessage) {
     const { status } = JSON.parse(packet.payload.toString());
     return status;
   }
 
-  private handleDevice = device => {
+  private _handleDevice = device => {
+    this.device = device;
     console.log("Connected to", device);
-    this.$health.next(true);
+    this.health$.next(true);
     if (device.matches("type:power-strip")) {
-      merge(
-        fromEvent(device, "powerChanged").pipe(map(([status]) => ({ status }))),
-        this.$("update").pipe(
-          map(this.getMqttMessage),
-          switchMap(
-            status => device.setPower(status),
-            tartgetStatus => ({ status: tartgetStatus })
-          ),
-          delay(10)
-        )
-      ).subscribe(status => {
-        this.$status.next(status);
-      });
+      fromEvent(device, "powerChanged")
+        .pipe(map(([status]) => ({ status })))
+        .subscribe(status => {
+          this.status$.next(status);
+        });
     }
   };
 }

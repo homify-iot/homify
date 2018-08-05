@@ -7,9 +7,9 @@ import { mqttService } from "../";
 interface State {
   status: boolean;
 }
-export default class implements Plugin {
-  $health: Subject<boolean> = new Subject();
-  $status: Subject<any> = new Subject();
+export default class extends Plugin {
+  health$: Subject<boolean> = new Subject();
+  status$: Subject<any> = new Subject();
   $: (action: string) => Observable<IMqttMessage>;
   device: any;
   send: string;
@@ -19,7 +19,9 @@ export default class implements Plugin {
   state: State;
   send_code: string;
   topic: string;
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   registerDevice(device) {
     this.device = device;
@@ -47,13 +49,15 @@ export default class implements Plugin {
     mqttService
       .observe(this.receive)
       .pipe(filter(this.filterReceiveCode))
-      .subscribe(() => this.$status.next(this.state));
+      .subscribe(() => this.status$.next(this.state));
   }
 
   public onStatus(): Observable<{}> {
-    return this.$status.pipe(share());
+    return this.status$.pipe(share());
   }
-
+  public onHealth(): Observable<{}> {
+    return this.health$.pipe(share());
+  }
   filterReceiveCode = (packet: IMqttMessage) => {
     const msg = JSON.parse(packet.payload.toString()).RfCode;
     const receive_code = msg.replace("#", "").toLowerCase();

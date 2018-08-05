@@ -1,8 +1,8 @@
-// import { BehaviorSubject, ReplaySubject, Subject } from "rxjs";
+import { Observable } from "rxjs";
 
-export interface Plugin {
+export class Plugin {
   device: any;
   // $health: BehaviorSubject<boolean> | Subject<any>;
   // $status: BehaviorSubject<any> | Subject<any> | ReplaySubject<any>;
-  registerDevice: (device: any) => void;
+  setState: (value) => Observable<any>;
 }
