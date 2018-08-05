@@ -2,8 +2,9 @@
   <el-card :body-style="{ padding: '0' }" class="card">
     <div class="device-content" :class="{'off': !(device.state && device.state.status)}">
       <div class="icon" :class="device.type.color" @click="updateDevice(device)">
+        <img v-if="device.type.image" :src="device.type.image" style="width: 100%">
         <svgicon 
-          class=""
+          v-else
           :icon="device.type.icon" 
           width="50" 
           height="50"/>
@@ -11,6 +12,10 @@
       <div class="details">
         <div class="title">{{ device.name }}</div>
         <div class="status">{{ device.state && device.state.status ? 'on': 'off' }}</div>
+      </div>
+      <div class="status-bar">
+        <svgicon 
+          :icon="device.online?'wifi':'offline'" />
       </div>
     </div>
   </el-card>
@@ -104,6 +109,7 @@ export default class DeviceSwitch extends Vue {
   .details {
     padding: 0 0.5rem;
     display: flex;
+    flex: 1;
     flex-direction: column;
     justify-content: center;
     .title {
@@ -118,6 +124,9 @@ export default class DeviceSwitch extends Vue {
       text-transform: uppercase;
       color: $card-fg;
     }
+  }
+  .status-bar {
+    padding: 0.5rem;
   }
 }
 </style>

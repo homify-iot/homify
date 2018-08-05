@@ -21,6 +21,7 @@ const DeviceSchema = new Schema({
   _id: ObjectId,
   name: String,
   type: { type: ObjectId, ref: "types" },
+  online: Boolean,
   state: {},
   config: {}
 });

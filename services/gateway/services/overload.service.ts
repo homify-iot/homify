@@ -24,21 +24,25 @@ export default class Overload {
     }
   }
 
-  handleHealth = (status: boolean) => {
-    const topic = `devices/${this.device._id}/health_check`;
-    mqttService.publish(topic, JSON.stringify(status)).subscribe();
+  handleHealth = (online: boolean) => {
+    this.handleChanges("health_check", "online", online);
   };
+
   handleStatus = (state: any) => {
     console.log("handleStatus", this.device.name, state);
-    const topic = `devices/${this.device._id}/response`;
+    this.handleChanges("response", "state", state);
+  };
+
+  handleChanges = (action, type, value) => {
+    const topic = `devices/${this.device._id}/${action}`;
     mqttService
-      .publish(topic, JSON.stringify(state))
+      .publish(topic, JSON.stringify(value))
       .pipe(
         switchMapTo(
           from(
             Devices.findOneAndUpdate(
               { _id: this.device._id },
-              { state },
+              { [type]: value },
               { new: true }
             ).exec()
           )
@@ -47,13 +51,3 @@ export default class Overload {
       .subscribe();
   };
 }
-
-// const registerController = device => {
-//   if (device.type) {
-//     const Plugin = require(`../plugins/${device.type.type_name}`).default;
-//     const service = new Plugin();
-//     service.registerDevice(device);
-//     service.$health.subscribe(handleHealth(device));
-//     service.onStatus().subscribe(handleStatus(device));
-//   }
-// };

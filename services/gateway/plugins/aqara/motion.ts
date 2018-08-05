@@ -20,6 +20,7 @@ export default class extends Plugin {
     private mqttService: MqttClientService
   ) {
     super();
+    this.health$.next(true);
     // miio
     //   .device({ address: "192.168.1.9" })
     //   .then(this.handleDevice)

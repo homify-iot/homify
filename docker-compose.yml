@@ -1,5 +1,13 @@
 version: "3"
 services:
+  mongo:
+    image: mongo
+    volumes:
+      - ./services/data:/data/db
+    ports:
+      - "27017:27017"
+    logging:
+      driver: none
   web:
     build: ./frontend
     volumes:
@@ -17,14 +25,6 @@ services:
     depends_on:
       - mongo
       - mqtt
-  mongo:
-    image: mongo
-    volumes:
-      - ./services/data:/data/db
-    ports:
-      - "27017:27017"
-    logging:
-      driver: none
   mqtt:
     image: toke/mosquitto
     container_name: mqtt

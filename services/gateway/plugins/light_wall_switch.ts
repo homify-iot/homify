@@ -1,4 +1,4 @@
-import { Observable, Subject } from "rxjs";
+import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { IMqttMessage } from "../types/mqtt.model";
 import { filter, switchMap, tap, share } from "rxjs/operators";
 import { Plugin } from "../services/plugin";
@@ -8,7 +8,7 @@ interface State {
   status: boolean;
 }
 export default class extends Plugin {
-  health$: Subject<boolean> = new Subject();
+  health$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   status$: Subject<any> = new Subject();
   $: (action: string) => Observable<IMqttMessage>;
   device: any;
@@ -21,6 +21,7 @@ export default class extends Plugin {
   topic: string;
   constructor() {
     super();
+    this.health$.next(true);
   }
 
   registerDevice(device) {
