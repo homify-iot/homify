@@ -1,11 +1,11 @@
 <template>
   <el-card :body-style="{ padding: '0' }" class="card">
     <div class="device-content" :class="{'off': !(device.state && device.state.status)}">
-      <div class="icon" :class="device.type.color" @click="updateDevice(device)">
-        <img v-if="device.type.image" :src="device.type.image" style="width: 100%">
+      <div class="icon" :class="device.attribute.color" @click="updateDevice(device)">
+        <img v-if="device.attribute.image" :src="device.attribute.image" style="width: 100%">
         <svgicon 
           v-else
-          :icon="device.type.icon" 
+          :icon="device.attribute.icon" 
           width="50" 
           height="50"/>
       </div>

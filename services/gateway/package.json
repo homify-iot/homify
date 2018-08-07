@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node-dev index"
+    "start": "ts-node-dev -r tsconfig-paths/register index"
   },
   "author": "Andrew Yang",
   "license": "GPL-3.0",
@@ -12,6 +12,7 @@
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "joi": "^13.4.0",
+    "miio": "^0.15.6",
     "mongoose": "^5.2.1",
     "mqtt": "^2.18.2",
     "rxjs": "^6.2.2"
@@ -20,6 +21,7 @@
     "@types/node": "^10.5.2",
     "eslint": "^5.1.0",
     "ts-node-dev": "^1.0.0-pre.26",
+    "tsconfig-paths": "^3.5.0",
     "typescript": "^2.9.2"
   }
 }

@@ -10,10 +10,8 @@ export const Floor = mongoose.model("floors", FloorSchema);
 
 const TypeSchema = new Schema({
   _id: ObjectId,
-  type_name: String,
-  color: String,
-  icon: String,
-  config: {}
+  platform: String,
+  type_name: String
 });
 export const Types = mongoose.model("types", TypeSchema);
 
@@ -23,7 +21,9 @@ const DeviceSchema = new Schema({
   type: { type: ObjectId, ref: "types" },
   online: Boolean,
   state: {},
-  config: {}
+  config: {},
+  attribute: {},
+  platform: { type: ObjectId, ref: "devices" }
 });
 export const Devices = mongoose.model("devices", DeviceSchema);
 

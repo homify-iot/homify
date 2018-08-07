@@ -1,7 +1,6 @@
 import miio from "miio";
-// import { mqttService } from "../../";
 import { Observable, Subject, of, fromEvent } from "rxjs";
-import { IMqttMessage } from "../../types/mqtt.model";
+import { IMqttMessage } from "@/types/mqtt.model";
 import { map, share, switchMap, delay } from "rxjs/operators";
 export default class {
   device: any;
@@ -15,8 +14,8 @@ export default class {
       })
       .then(this._handleDevice)
       .catch(err => {
-        this.health$.next(false);
         console.error(err);
+        this.health$.next(false);
       });
   }
 

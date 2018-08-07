@@ -7,13 +7,12 @@
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "lib": [
-      "es2015.promise",
-      "es2017",
-      "esnext.asynciterable"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "downlevelIteration": true,
+    "lib": ["es2015.promise", "es2017", "esnext.asynciterable"],
+    "typeRoots": ["node_modules/@types"],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["*"]
+    }
   }
 }

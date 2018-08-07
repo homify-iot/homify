@@ -1,8 +1,8 @@
 import { Observable, BehaviorSubject, Subject } from "rxjs";
-import { IMqttMessage } from "../types/mqtt.model";
+import { IMqttMessage } from "@/types/mqtt.model";
 import { filter, switchMap, tap, share } from "rxjs/operators";
-import { Plugin } from "../services/plugin";
-import { mqttService } from "../";
+import { Plugin } from "@/services/plugin";
+import { mqttService } from "@/index";
 
 interface State {
   status: boolean;

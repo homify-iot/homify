@@ -5,7 +5,7 @@ import { UPDATE_DEVICE_STATE } from "@/store/event-types";
 import { merge } from "rxjs";
 
 export const mqttClient = new MqttClient();
-mqttClient.observe("devices/+/response");
+mqttClient.observe("devices/#");
 merge(
   mqttClient.getStreaming()("response"),
   mqttClient.getStreaming()("health_check")
@@ -16,7 +16,7 @@ merge(
   let device;
   if (action === "response") {
     device = { _id, state: value };
-  } else if (action === "online") {
+  } else if (action === "health_check") {
     device = { _id, online: value };
   }
   store.dispatch(UPDATE_DEVICE_STATE, device);

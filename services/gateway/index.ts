@@ -17,7 +17,7 @@ const registerAllControllers = devices => {
   devices.forEach(d => new Overload(d));
 };
 Devices.find({})
-  .populate("type")
+  .populate("type platform")
   .exec()
   .then(registerAllControllers);
 

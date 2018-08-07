@@ -9,18 +9,21 @@ export default class Overload {
   $: (action: string) => Observable<IMqttMessage>;
 
   constructor(private device) {
-    if (this.device.type) {
-      this.$ = mqttService.getStreaming(this.device._id);
-      const Plugin = require(`../plugins/${this.device.type.type_name}`)
-        .default;
+    try {
+      const { platform, type_name } = this.device.type;
+      const moduleName = `@/plugins/${platform}/${type_name}`;
+      const Plugin = require(moduleName).default;
       this.service = new Plugin(this.device);
-
+      this.$ = mqttService.getStreaming(this.device._id);
       this.$("update")
         .pipe(switchMap(res => this.service.setState(res)))
         .subscribe(this.handleStatus);
 
       this.service.onHealth().subscribe(this.handleHealth);
       this.service.onStatus().subscribe(this.handleStatus);
+    } catch (e) {
+      console.log(this.device.name, e);
+      this.handleHealth(false);
     }
   }
 
