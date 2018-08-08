@@ -50,6 +50,8 @@ export default class {
     if (device.matches("cap:children")) {
       const children = device.children();
       for (const child of children) {
+        console.log(child);
+
         if (child.matches("type:wall-switch")) {
           child
             .child("0")

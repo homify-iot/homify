@@ -11,9 +11,21 @@ export const Floor = mongoose.model("floors", FloorSchema);
 const TypeSchema = new Schema({
   _id: ObjectId,
   platform: String,
-  type_name: String
+  type_name: String,
+  attributes: {}
 });
 export const Types = mongoose.model("types", TypeSchema);
+
+const EntitySchema = new Schema({
+  _id: ObjectId,
+  name: String,
+  type: { type: ObjectId, ref: "types" },
+  online: Boolean,
+  state: {},
+  config: {}
+});
+
+export const Entities = mongoose.model("entities", EntitySchema);
 
 const DeviceSchema = new Schema({
   _id: ObjectId,
@@ -22,7 +34,7 @@ const DeviceSchema = new Schema({
   online: Boolean,
   state: {},
   config: {},
-  attribute: {},
+  entities: [{ type: ObjectId, ref: "entities" }],
   platform: { type: ObjectId, ref: "devices" }
 });
 export const Devices = mongoose.model("devices", DeviceSchema);
@@ -41,8 +53,7 @@ export const Rooms = mongoose.model("rooms", RoomsSchema);
 const FloorplanSchema = new Schema({
   _id: ObjectId,
   tag: String,
-  device: { type: ObjectId, ref: "devices" },
-  attributes: {}
+  device: { type: ObjectId, ref: "devices" }
 });
 export const FloorPlans = mongoose.model("floorplans", FloorplanSchema);
 

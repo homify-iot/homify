@@ -1,21 +1,21 @@
 <template>
   <el-card :body-style="{ padding: '0' }" class="card">
-    <div class="device-content" :class="{'off': !(device.state && device.state.status)}">
-      <div class="icon" :class="device.attribute.color" @click="updateDevice(device)">
-        <img v-if="device.attribute.image" :src="device.attribute.image" style="width: 100%">
+    <div class="device-content" :class="{'off': !(entity.state && entity.state.status)}">
+      <div class="icon" :class="entity.type.attribute.color" @click="updateDevice(entity)">
+        <img v-if="entity.type.attribute.image" :src="entity.type.attribute.image" style="width: 100%">
         <svgicon 
           v-else
-          :icon="device.attribute.icon" 
+          :icon="entity.type.attribute.icon" 
           width="50" 
           height="50"/>
       </div>
       <div class="details">
-        <div class="title">{{ device.name }}</div>
-        <div class="status">{{ device.state && device.state.status ? 'on': 'off' }}</div>
+        <div class="title">{{ entity.name }}</div>
+        <div class="status">{{ entity.state && entity.state.status ? 'on': 'off' }}</div>
       </div>
       <div class="status-bar">
         <svgicon 
-          :icon="device.online?'wifi':'offline'" />
+          :icon="entity.online?'wifi':'offline'" />
       </div>
     </div>
   </el-card>
@@ -27,7 +27,7 @@ import { Devices } from "@/store/vuex-decorators";
 
 @Component
 export default class DeviceSwitch extends Vue {
-  @Prop() device;
+  @Prop() entity;
 
   @Devices.Action updateDevice;
 }

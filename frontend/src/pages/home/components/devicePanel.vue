@@ -4,9 +4,9 @@
       :lg="6" 
       :sm="12" 
       class="device-item"
-      v-for="id in deviceList"
+      v-for="id in entity_ids"
       :key="id">
-      <device-switch v-if="device(id)" :device="device(id)" />
+      <device-switch v-if="entities[id]" :entity="entities[id]" />
     </el-col>
   </el-row>
 </template>
@@ -14,6 +14,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import DeviceSwitch from "@/components/DeviceSwitch/index.vue";
+import { pluck, concat, unnest } from "ramda";
 
 @Component({
   components: {
@@ -23,10 +24,13 @@ import DeviceSwitch from "@/components/DeviceSwitch/index.vue";
 export default class DevicePanel extends Vue {
   @Prop() devices;
 
-  @Prop() deviceList;
+  @Prop() entities;
 
-  get device() {
-    return id => this.devices.find(d => d._id === id);
+  get entity_ids() {
+    return concat(
+      pluck("_id")(this.devices),
+      unnest(pluck("entities")(this.devices))
+    );
   }
 }
 </script>
