@@ -16,17 +16,6 @@ const TypeSchema = new Schema({
 });
 export const Types = mongoose.model("types", TypeSchema);
 
-const EntitySchema = new Schema({
-  _id: ObjectId,
-  name: String,
-  type: { type: ObjectId, ref: "types" },
-  online: Boolean,
-  state: {},
-  config: {}
-});
-
-export const Entities = mongoose.model("entities", EntitySchema);
-
 const DeviceSchema = new Schema({
   _id: ObjectId,
   name: String,
@@ -34,7 +23,7 @@ const DeviceSchema = new Schema({
   online: Boolean,
   state: {},
   config: {},
-  entities: [{ type: ObjectId, ref: "entities" }],
+  children: [{ type: { type: ObjectId, ref: "types" } }],
   platform: { type: ObjectId, ref: "devices" }
 });
 export const Devices = mongoose.model("devices", DeviceSchema);

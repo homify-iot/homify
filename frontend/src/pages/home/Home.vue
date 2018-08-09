@@ -16,7 +16,7 @@
         <div>{{ room.name }}</div>
       </el-menu-item>
     </el-menu>
-    <device-panel v-if="selectedRoom && selectedRoom.devices" :devices="selectedRoom.devices" :entities="entities"/>
+    <device-panel v-if="selectedRoom && selectedRoom.devices" :devices="selectedDevices"/>
   </div>
 </template>
 
@@ -24,6 +24,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Devices } from "@/store/vuex-decorators";
 import DevicePanel from "@/pages/home/components/devicePanel.vue";
+import { innerJoin } from "ramda";
 
 @Component({
   components: {
@@ -35,12 +36,18 @@ export default class Home extends Vue {
 
   @Devices.State devices;
 
-  @Devices.State entities;
-
   get selectedRoom() {
     return typeof this.$route.params.roomName === "undefined"
       ? this.rooms[0]
       : this.rooms.find(room => room.name === this.$route.params.roomName);
+  }
+
+  get selectedDevices() {
+    return innerJoin(
+      (d, id) => d._id === id,
+      this.devices,
+      this.selectedRoom.devices
+    );
   }
 
   clickRoom({ index }) {

@@ -1,20 +1,34 @@
 <template>
   <el-row class="device-list">
-    <el-col 
-      :lg="6" 
-      :sm="12" 
-      class="device-item"
-      v-for="id in entity_ids"
-      :key="id">
-      <device-switch v-if="entities[id]" :entity="entities[id]" />
-    </el-col>
+    <div 
+      v-for="device in devices"
+      :key="device._id">
+      <div v-if="hasChildren(device)">
+        <el-col 
+          :lg="6" 
+          :sm="12" 
+          class="device-item"
+          v-if="hasChildren(device)"
+          v-for="(child,index) in device.children" 
+          :key="index">
+          <device-switch :device="child" />
+        </el-col>
+      </div>
+      <el-col 
+        v-else
+        :lg="6" 
+        :sm="12" 
+        class="device-item">
+        <device-switch :device="device" />
+      </el-col>
+    </div>
   </el-row>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import DeviceSwitch from "@/components/DeviceSwitch/index.vue";
-import { pluck, concat, unnest } from "ramda";
+import { length } from "ramda";
 
 @Component({
   components: {
@@ -24,13 +38,8 @@ import { pluck, concat, unnest } from "ramda";
 export default class DevicePanel extends Vue {
   @Prop() devices;
 
-  @Prop() entities;
-
-  get entity_ids() {
-    return concat(
-      pluck("_id")(this.devices),
-      unnest(pluck("entities")(this.devices))
-    );
+  get hasChildren() {
+    return device => length(device.children);
   }
 }
 </script>

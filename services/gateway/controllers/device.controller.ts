@@ -2,14 +2,7 @@ import { Devices } from "../config/db";
 
 export const getAllDevices = (_req, res, next) => {
   Devices.find({})
-    .populate("type platform entities")
-    .populate({
-      path: "entities",
-      populate: {
-        path: "type",
-        model: "types"
-      }
-    })
+    .populate("type platform children.type")
     .exec((err, rooms) => {
       if (err) {
         console.log(err);
