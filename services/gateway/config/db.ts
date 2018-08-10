@@ -21,10 +21,14 @@ const DeviceSchema = new Schema({
   name: String,
   type: { type: ObjectId, ref: "types" },
   online: Boolean,
+  is_platform: Boolean,
   state: {},
-  config: {},
-  children: [{ type: { type: ObjectId, ref: "types" } }],
-  platform: { type: ObjectId, ref: "devices" }
+  config: {
+    children: [{ type: ObjectId, ref: "devices" }],
+    model: String,
+    address: String
+  },
+  children: [{ type: { type: ObjectId, ref: "types" } }]
 });
 export const Devices = mongoose.model("devices", DeviceSchema);
 

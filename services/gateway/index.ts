@@ -16,8 +16,8 @@ mqttService.observables["devices/#"].subscribe(packet => {
 const registerAllControllers = devices => {
   devices.forEach(d => new Overload(d));
 };
-Devices.find({})
-  .populate("type platform")
+Devices.find({ is_platform: true })
+  .populate("type config.children")
   .exec()
   .then(registerAllControllers);
 

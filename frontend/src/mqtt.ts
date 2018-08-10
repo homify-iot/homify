@@ -25,7 +25,7 @@ merge(
 export const updateDevice = device => {
   const topic = `devices/${device._id}/update`;
   const target = Object.assign({}, device.state, {
-    status: !device.state.status
+    status: !device.state || !device.state.status
   });
   mqttClient.unsafePublish(topic, JSON.stringify(target));
 };
