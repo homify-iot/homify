@@ -7,8 +7,6 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "lib": [
       "dom",
       "es2015.promise",

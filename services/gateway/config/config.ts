@@ -1,5 +1,7 @@
 import Joi from "joi";
 import dotenv from "dotenv";
+import components from "./components"
+
 dotenv.config();
 
 const envVarsSchema = Joi.object({
@@ -24,7 +26,8 @@ const config = {
   port: envVars.SERVER_PORT,
   db: envVars.DB,
   db_name: envVars.DB_NAME,
-  db_port: envVars.DB_PORT
+  db_port: envVars.DB_PORT,
+  homify_config: components
 };
 
 export default config;

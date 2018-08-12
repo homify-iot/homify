@@ -5,14 +5,20 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "downlevelIteration": true,
-    "lib": ["es2015.promise", "es2017", "esnext.asynciterable"],
-    "typeRoots": ["node_modules/@types"],
+    "lib": [
+      "es2015.promise",
+      "es2017",
+      "esnext.asynciterable"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "baseUrl": "./",
     "paths": {
-      "@/*": ["*"]
+      "@/*": [
+        "*"
+      ]
     }
   }
 }

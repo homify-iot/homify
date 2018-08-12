@@ -1,40 +1,31 @@
 import app from "./config/express";
 import config from "./config/config";
-import mongoose from "./config/db";
 import MqttClient from "./services/mqtt.service";
-import Overload from "./services/overload.service";
-import { Devices } from "./config/db";
+import { bootstrap } from "./core"
+import { map } from "rxjs/operators";
 
 export const mqttService = new MqttClient();
 mqttService.observe("devices/#");
+
 mqttService.observables["devices/#"].subscribe(packet => {
   const { topic, payload } = packet;
   const state = JSON.parse(payload.toString());
   console.log(topic, state);
 });
 
-const registerAllControllers = devices => {
-  devices.forEach(d => new Overload(d));
-};
-Devices.find({ is_platform: true })
-  .populate("type config.children")
-  .exec()
-  .then(registerAllControllers);
-
-const connectWithRetry = () => {
-  console.log("MongoDB connection with retry");
-  mongoose
-    .connect(`mongodb://${config.db}:${config.db_port}/${config.db_name}`)
-    .then(() => {
-      console.log("MongoDB is connected");
-    })
-    .catch(err => {
-      console.log(err);
-      setTimeout(connectWithRetry, 5000);
-    });
-};
-
-connectWithRetry();
+export const homify = bootstrap(config.homify_config);
+homify.components$
+  .pipe(
+    map(components => components.map(c => ({
+      id: c.id,
+      name: c.name
+    })))
+  )
+  .subscribe(res => {
+    console.log(123, res);
+    mqttService
+      .unsafePublish("components", JSON.stringify(res))
+  })
 
 // listen on port config.port
 app.listen(config.port, () => {

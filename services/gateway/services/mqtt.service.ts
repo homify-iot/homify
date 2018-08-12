@@ -39,9 +39,9 @@ export default class MqttClientService {
 
   connect(options?: IMqttServiceOptions, client?: IMqttClient) {
     options = options || {};
-    const protocol = options.protocol || "ws";
-    const hostname = options.hostname || "mqtt";
-    const port = options.port || 9001;
+    const protocol = options.protocol || "mqtt";
+    const hostname = options.hostname || "localhost";
+    const port = options.port || 1883;
     const path = options.path || "";
     this._url = `${protocol}://${hostname}:${port}/${path}`;
     const mergedOptions = Object.assign(

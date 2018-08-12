@@ -6,13 +6,21 @@ import { merge } from "rxjs";
 
 export const mqttClient = new MqttClient();
 mqttClient.observe("devices/#");
+
+mqttClient.observe("components")
+  .subscribe((packet: IMqttMessage) => {
+    const { topic, payload } = packet;
+    const value = JSON.parse(payload.toString());
+    console.log(value);
+  })
+
 merge(
   mqttClient.getStreaming()("response"),
   mqttClient.getStreaming()("health_check")
 ).subscribe((packet: IMqttMessage) => {
   const { topic, payload } = packet;
   const value = JSON.parse(payload.toString());
-  const [{}, _id, action] = topic.split("/");
+  const [{ }, _id, action] = topic.split("/");
   let device;
   if (action === "response") {
     device = { _id, state: value };

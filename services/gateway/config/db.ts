@@ -10,7 +10,6 @@ export const Floor = mongoose.model("floors", FloorSchema);
 
 const TypeSchema = new Schema({
   _id: ObjectId,
-  platform: String,
   type_name: String,
   attributes: {}
 });
@@ -21,7 +20,6 @@ const DeviceSchema = new Schema({
   name: String,
   type: { type: ObjectId, ref: "types" },
   online: Boolean,
-  is_platform: Boolean,
   state: {},
   config: {
     children: [{ type: ObjectId, ref: "devices" }],
@@ -31,6 +29,13 @@ const DeviceSchema = new Schema({
   children: [{ type: { type: ObjectId, ref: "types" } }]
 });
 export const Devices = mongoose.model("devices", DeviceSchema);
+
+const PlatformSchema = new Schema({
+  _id: ObjectId,
+  name: String,
+  installed: Boolean
+});
+export const Platform = mongoose.model("platforms", PlatformSchema);
 
 const RoomsSchema = new Schema({
   _id: ObjectId,

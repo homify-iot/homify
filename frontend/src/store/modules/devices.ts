@@ -29,10 +29,10 @@ const mutations = {
 };
 const actions = {
   fetchRooms: ({ commit }) => {
-    Http.get("rooms").then(res => commit(SET_ROOMS, res.data));
+    // Http.get("rooms").then(res => commit(SET_ROOMS, res.data));
   },
   fetchDevices: ({ commit }) => {
-    Http.get("devices").then(({ data }) => commit(SET_DEVICES, data));
+    // Http.get("devices").then(({ data }) => commit(SET_DEVICES, data));
   },
   fetchFloorplan: ({ commit }) => {
     Http.get("floorplan").then(res => commit(SET_FLOORPLAN, res.data));
