@@ -1,10 +1,10 @@
 import * as express from "express";
-import { getAllRooms } from "../controllers/room.controller";
+import { getAllEntities } from "../controllers/entity.controller";
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(getAllRooms);
+  .get(getAllEntities);
 
 export default router;

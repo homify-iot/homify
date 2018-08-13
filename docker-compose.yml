@@ -1,5 +1,11 @@
 version: "3"
 services:
+  mongo:
+    image: mongo
+    volumes:
+      - ./services/data:/data/db
+    ports:
+      - "27017:27017"
   mqtt:
     image: toke/mosquitto
     container_name: mqtt

@@ -1,7 +1,21 @@
-import { Subject } from "rxjs"
+import Entity from "../_entity";
 
-export default class SwithcDevice {
-  state: Subject<boolean>
-  turnOn() { }
-  turnOff() { }
+export default abstract class SwithcDevice extends Entity {
+  get type() {
+    return "switch"
+  }
+  get isOn() {
+    return this.state;
+  }
+
+  public abstract getCurrentState();
+
+  public abstract turnOn();
+
+  public abstract turnOff();
+
+  public abstract toggle();
+
+  public abstract listenChanges();
+
 }

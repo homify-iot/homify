@@ -1,7 +1,8 @@
 import miio from "miio";
 import { homify } from "@/index";
-import SwitchDevice from "./_switch"
-import { Subject } from "rxjs"
+import SwithcDevice from "./_switch"
+import { fromEvent } from "rxjs";
+import { map } from "rxjs/operators";
 
 export const setup_platform = (config) => {
   miio.device({ address: config.host })
@@ -13,27 +14,44 @@ export const setup_platform = (config) => {
     .catch(console.log);
 }
 
-class PowerStrip {
-  name;
-  attrs;
-  id;
-  model;
-  state: Subject<boolean> = new Subject();
+class PowerStrip extends SwithcDevice {
   constructor(private device, private config) {
-    this.id = device.id;
+    super();
+    this.entity_id = device.id;
     this.name = "PowerStrip " + device.id;
-    this.model = device.model;
-    this.getState();
+    this.image = "https://fb1-cw.lnwfile.com/_/cw/_raw/nl/tn/x8.jpg";
+    this.getCurrentState();
+    this.listenChanges();
   }
-  async getState() {
+
+  async getCurrentState() {
     const result = await this.device.power();
-    this.state.next(result);
+    this.state$.next(result);
   }
+
   async turnOn() {
-    const result = await this.device.setPower(true);
+    await this.device.setPower(true);
   }
 
   async turnOff() {
-    const result = await this.device.setPower(false);
+    await this.device.setPower(false);
+  }
+
+  async toggle() {
+    await this.device.setPower(!this.state);
+  }
+
+  async listenChanges() {
+    fromEvent(this.device, "powerChanged")
+      .pipe(map(([status]) => status))
+      .subscribe(this.state$);
+  }
+
+  serviceHandler(service) {
+    try {
+      this[service]();
+    } catch (e) {
+      console.log(`Method ${service} not implemented.`);
+    }
   }
 }

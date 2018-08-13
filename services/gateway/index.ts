@@ -2,7 +2,6 @@ import app from "./config/express";
 import config from "./config/config";
 import MqttClient from "./services/mqtt.service";
 import { bootstrap } from "./core"
-import { map } from "rxjs/operators";
 
 export const mqttService = new MqttClient();
 mqttService.observe("devices/#");
@@ -14,18 +13,17 @@ mqttService.observables["devices/#"].subscribe(packet => {
 });
 
 export const homify = bootstrap(config.homify_config);
-homify.components$
-  .pipe(
-    map(components => components.map(c => ({
-      id: c.id,
-      name: c.name
-    })))
-  )
-  .subscribe(res => {
-    console.log(123, res);
-    mqttService
-      .unsafePublish("components", JSON.stringify(res))
-  })
+// homify.components$
+//   .pipe(
+//     map(components => components.map(c => ({
+//       id: c.id,
+//       name: c.name
+//     })))
+//   )
+//   .subscribe(res => {
+//     mqttService
+//       .unsafePublish("components", JSON.stringify(res))
+//   })
 
 // listen on port config.port
 app.listen(config.port, () => {

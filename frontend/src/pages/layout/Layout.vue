@@ -19,7 +19,12 @@ import Sidebar from "@/pages/layout/components/Sidebar/Sidebar.vue";
 import Navbar from "@/pages/layout/components/Navbar.vue";
 import Tabs from "@/pages/layout/components/Tabs.vue";
 import AppMain from "@/pages/layout/components/AppMain.vue";
-import { Permission, Settings, Devices } from "@/store/vuex-decorators";
+import {
+  Permission,
+  Settings,
+  Devices,
+  Entities
+} from "@/store/vuex-decorators";
 
 @Component({
   components: {
@@ -40,7 +45,7 @@ export default class Layout extends Vue {
 
   @Settings.Action closeSideBar;
 
-  @Devices.Action fetchRooms;
+  @Entities.Action fetchEntities;
 
   @Devices.Action fetchDevices;
 
@@ -56,8 +61,7 @@ export default class Layout extends Vue {
   RATIO = 3;
 
   created() {
-    this.fetchRooms();
-    this.fetchDevices();
+    this.fetchEntities();
   }
 
   beforeMount() {
