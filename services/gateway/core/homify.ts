@@ -10,7 +10,7 @@ export default class Homify {
       entity_id: c.entity_id,
       name: c.name,
       state: c.state,
-      icom: c.icon,
+      icon: c.icon,
       image: c.image,
       type: c.type,
       available: c.available

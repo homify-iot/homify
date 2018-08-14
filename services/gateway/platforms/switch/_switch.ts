@@ -1,6 +1,6 @@
 import Entity from "../_entity";
 
-export default abstract class SwithcDevice extends Entity {
+export default abstract class SwitchDevice extends Entity {
   get type() {
     return "switch"
   }

@@ -1,7 +1,7 @@
 export default {
   "discovery":
   {
-    "xiaomi_miio": {
+    "xiaomi": {
       gateways: [],
       cacheTIme: 300,
     }
