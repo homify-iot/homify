@@ -4,12 +4,13 @@ import { broadcastStateChange, serviceRegister } from "@/core/bus";
 import { IMqttMessage } from "@/types/mqtt.model";
 
 export default abstract class Entity {
-  entity_id;
-  name;
+  entity_id: string;
+  name: string;
   attrs;
-  state;
-  icon;
-  image;
+  state: boolean;
+  icon: string;
+  image: string;
+  available: boolean = false;
   state$: Subject<boolean> = new Subject();
   constructor() {
     this.state$
@@ -23,7 +24,9 @@ export default abstract class Entity {
   register = () => {
     serviceRegister(this.entity_id)
       .subscribe((packet: IMqttMessage) => {
-        this.serviceHandler(packet.payload.toString())
+        const { payload } = packet;
+        const service = JSON.parse(payload.toString());
+        this.serviceHandler(service)
       })
   }
   public abstract serviceHandler(service);

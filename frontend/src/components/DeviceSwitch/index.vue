@@ -1,21 +1,21 @@
 <template>
   <el-card :body-style="{ padding: '0' }" class="card">
-    <div class="device-content" :class="{'off': !(device.state && device.state.status)}">
-      <div class="icon" :class="device.type.attribute.color" @click="updateDevice(device)">
-        <img v-if="device.type.attribute.image" :src="device.type.attribute.image" style="width: 100%">
+    <div class="device-content" :class="{'off': !isOn}">
+      <div class="icon" :class="color" @click="toggleDevice(entity)">
+        <img v-if="entity.image" :src="entity.image" style="width: 100%">
         <svgicon 
           v-else
-          :icon="device.type.attribute.icon" 
+          :icon="entity.icon" 
           width="50" 
           height="50"/>
       </div>
       <div class="details">
-        <div class="title">{{ device.name }}</div>
-        <div class="status">{{ device.state && device.state.status ? 'on': 'off' }}</div>
+        <div class="title">{{ entity.name }}</div>
+        <div class="status">{{ isOn ? 'on': 'off' }}</div>
       </div>
       <div class="status-bar">
         <svgicon 
-          :icon="device.online?'wifi':'offline'" />
+          :icon="entity.available?'wifi':'offline'" />
       </div>
     </div>
   </el-card>
@@ -23,13 +23,22 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { Devices } from "@/store/vuex-decorators";
+import { Entities } from "@/store/vuex-decorators";
 
 @Component
 export default class DeviceSwitch extends Vue {
-  @Prop() device;
+  @Prop({ default: () => ({}) })
+  entity;
 
-  @Devices.Action updateDevice;
+  @Entities.Action toggleDevice;
+
+  get isOn() {
+    return this.entity.state;
+  }
+
+  get color() {
+    return this.entity.type === "switch" ? "warning" : "primary";
+  }
 }
 </script>
 

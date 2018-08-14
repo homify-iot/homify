@@ -12,7 +12,8 @@ export default class Homify {
       state: c.state,
       icom: c.icon,
       image: c.image,
-      type: c.type
+      type: c.type,
+      available: c.available
     }))
   }
 

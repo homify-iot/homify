@@ -6,5 +6,5 @@ export const broadcastStateChange = (entity: Entity, newState: any) => {
 }
 
 export const serviceRegister = (entity_id: string) => {
-  return mqttService.observe(`services/${entity_id}`)
+  return mqttService.observe(`service/${entity_id}`)
 }

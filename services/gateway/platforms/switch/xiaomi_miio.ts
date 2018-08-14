@@ -1,8 +1,8 @@
 import miio from "miio";
 import { homify } from "@/index";
 import SwithcDevice from "./_switch"
-import { fromEvent } from "rxjs";
-import { map } from "rxjs/operators";
+import { fromEvent, from } from "rxjs";
+import { map, delay } from "rxjs/operators";
 
 export const setup_platform = (config) => {
   miio.device({ address: config.host })
@@ -20,6 +20,7 @@ class PowerStrip extends SwithcDevice {
     this.entity_id = device.id;
     this.name = "PowerStrip " + device.id;
     this.image = "https://fb1-cw.lnwfile.com/_/cw/_raw/nl/tn/x8.jpg";
+    this.available = true;
     this.getCurrentState();
     this.listenChanges();
   }
@@ -30,15 +31,20 @@ class PowerStrip extends SwithcDevice {
   }
 
   async turnOn() {
-    await this.device.setPower(true);
+    from(this.device.setPower(true))
+      .pipe(delay(10))
+      .subscribe(() => this.state$.next(true))
   }
 
   async turnOff() {
-    await this.device.setPower(false);
+    from(this.device.setPower(false))
+      .pipe(delay(10))
+      .subscribe(() => this.state$.next(false))
   }
 
   async toggle() {
     await this.device.setPower(!this.state);
+    this.state$.next(!this.state);
   }
 
   async listenChanges() {
