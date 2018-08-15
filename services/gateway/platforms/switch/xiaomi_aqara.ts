@@ -1,9 +1,11 @@
 import { homify } from "@/index";
 import { XiaomiGenericSwitch } from "./_switch"
+import { createDebug } from "services/debug.service";
 
+const log = createDebug("Platform:xiaomi_aqara");
 
 export const setup_platform = (device) => {
-  console.log('Connected to', device);
+  log('Connected ', device.miioModel);
   if (device.miioModel === "lumi.ctrl_neutral2") {
     for (const childSwitch of device.children()) {
       const component = new XiaomiWallSwitch(childSwitch);

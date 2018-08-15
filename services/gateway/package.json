@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node-dev -r tsconfig-paths/register index"
+    "start": "DEBUG=homify:* ts-node-dev -r tsconfig-paths/register index"
   },
   "author": "Andrew Yang",
   "license": "GPL-3.0",
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@types/node": "^10.5.2",
+    "debug": "^3.1.0",
     "eslint": "^5.1.0",
     "ts-node-dev": "^1.0.0-pre.26",
     "tsconfig-paths": "^3.5.0",

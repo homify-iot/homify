@@ -1,8 +1,11 @@
 import { homify } from "@/index";
 import { XiaomiGenericSwitch } from "./_switch"
+import { createDebug } from "services/debug.service";
+
+const log = createDebug("Platform:xiaomi_miio");
 
 export const setup_platform = (device) => {
-  console.log('Connected to', device);
+  log('Connected ', device.miioModel);
   if (device.miioModel === "zimi.powerstrip.v2") {
     const component = new PowerStrip(device);
     homify.add_component(component);

@@ -1,8 +1,10 @@
 import miio from "miio";
 import { load_platform } from "core";
+import { createDebug } from "services/debug.service";
+const log = createDebug("Loading component");
 
 export const setup = (config) => {
-  console.log('loading', config);
+  log(config);
   const devices = miio.devices({
     cacheTime: config.cacheTime,
     skipSubDevices: true

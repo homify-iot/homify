@@ -2,13 +2,15 @@ import app from "./config/express";
 import config from "./config/config";
 import MqttClient from "./services/mqtt.service";
 import { bootstrap } from "./core"
+import { createDebug } from "services/debug.service";
 
 export const mqttService = new MqttClient();
 
 export const homify = bootstrap(config.homify_config);
 
-// listen on port config.port
+const log = createDebug("Server");
+
 app.listen(config.port, () => {
-  console.info(`server started on port ${config.port} (${config.env})`);
+  log(`server started on port ${config.port} (${config.env})`);
 });
 export default app;

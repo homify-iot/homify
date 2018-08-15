@@ -26,7 +26,6 @@ const actions = {
     commit(SET_ENTITIES, entities)
   },
   toggleDevice: ({ }, entity) => {
-    // entity.state = !entity.state;
     const service = entity.state ? "turnOff" : "turnOn";
     callService(entity, service).subscribe()
   }

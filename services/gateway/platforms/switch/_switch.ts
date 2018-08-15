@@ -1,6 +1,9 @@
 import Entity from "../_entity";
 import { fromEvent, from } from "rxjs";
 import { map, delay, filter } from "rxjs/operators";
+import { createDebug } from "services/debug.service";
+
+const log = createDebug("Platform:Switch")
 
 export abstract class SwitchDevice extends Entity {
   get type() {
@@ -63,7 +66,7 @@ export abstract class XiaomiGenericSwitch extends SwitchDevice {
     try {
       this[service]();
     } catch (e) {
-      console.log(`Method ${service} not implemented.`);
+      log(`Method ${service} not implemented.`);
     }
   }
 }

@@ -1,5 +1,8 @@
 import { broadcastStateChange, serviceRegister } from "@/core/bus";
 import { IMqttMessage } from "@/types/mqtt.model";
+import { createDebug } from "services/debug.service";
+
+const log = createDebug("Entity")
 
 export default abstract class Entity {
   entity_id: string;
@@ -26,7 +29,7 @@ export default abstract class Entity {
       .subscribe((packet: IMqttMessage) => {
         const { topic, payload } = packet;
         const service = JSON.parse(payload.toString());
-        console.log(topic, service);
+        log(topic, service);
         this.serviceHandler(service);
       })
   }
