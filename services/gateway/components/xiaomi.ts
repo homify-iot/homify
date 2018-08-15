@@ -1,7 +1,6 @@
 import miio from "miio";
 import { load_platform } from "core";
 
-
 export const setup = (config) => {
   console.log('loading', config);
   const devices = miio.devices({

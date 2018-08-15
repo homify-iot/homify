@@ -4,26 +4,8 @@ import MqttClient from "./services/mqtt.service";
 import { bootstrap } from "./core"
 
 export const mqttService = new MqttClient();
-mqttService.observe("devices/#");
-
-mqttService.observables["devices/#"].subscribe(packet => {
-  const { topic, payload } = packet;
-  const state = JSON.parse(payload.toString());
-  console.log(topic, state);
-});
 
 export const homify = bootstrap(config.homify_config);
-// homify.components$
-//   .pipe(
-//     map(components => components.map(c => ({
-//       id: c.id,
-//       name: c.name
-//     })))
-//   )
-//   .subscribe(res => {
-//     mqttService
-//       .unsafePublish("components", JSON.stringify(res))
-//   })
 
 // listen on port config.port
 app.listen(config.port, () => {

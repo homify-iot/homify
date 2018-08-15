@@ -1,6 +1,8 @@
 import Entity from "../_entity";
+import { fromEvent, from } from "rxjs";
+import { map, delay, filter } from "rxjs/operators";
 
-export default abstract class SwitchDevice extends Entity {
+export abstract class SwitchDevice extends Entity {
   get type() {
     return "switch"
   }
@@ -18,4 +20,50 @@ export default abstract class SwitchDevice extends Entity {
 
   public abstract listenChanges();
 
+}
+
+export abstract class XiaomiGenericSwitch extends SwitchDevice {
+  constructor(private device) {
+    super();
+    this.entity_id = device.id;
+    this.available = true;
+    this.getCurrentState();
+    this.listenChanges();
+  }
+
+  async getCurrentState() {
+    const result = await this.device.power();
+    this.state = result;
+  }
+
+  async turnOn() {
+    from(this.device.setPower(true))
+      .pipe(delay(10))
+      .subscribe(() => this.state = true)
+  }
+
+  async turnOff() {
+    from(this.device.setPower(false))
+      .pipe(delay(10))
+      .subscribe(() => this.state = false)
+  }
+
+  async toggle() {
+    await this.device.setPower(!this.state);
+    this.state = !this.state;
+  }
+
+  async listenChanges() {
+    fromEvent(this.device, "powerChanged")
+      .pipe(map(([state]) => state), filter(state => state !== undefined))
+      .subscribe((state) => this.state = state);
+  }
+
+  serviceHandler(service) {
+    try {
+      this[service]();
+    } catch (e) {
+      console.log(`Method ${service} not implemented.`);
+    }
+  }
 }

@@ -9,9 +9,6 @@ const envVarsSchema = Joi.object({
     .allow(["development", "production", "test", "provision"])
     .default("development"),
   SERVER_PORT: Joi.number().default(3000),
-  DB: Joi.string().default("mongo"),
-  DB_NAME: Joi.string().default("homify"),
-  DB_PORT: Joi.number().default(27017)
 })
   .unknown()
   .required();
@@ -24,9 +21,6 @@ if (error) {
 const config = {
   env: envVars.NODE_ENV,
   port: envVars.SERVER_PORT,
-  db: envVars.DB,
-  db_name: envVars.DB_NAME,
-  db_port: envVars.DB_PORT,
   homify_config: components
 };
 
