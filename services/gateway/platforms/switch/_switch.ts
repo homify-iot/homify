@@ -28,8 +28,6 @@ export abstract class SwitchDevice extends Entity {
 export abstract class XiaomiGenericSwitch extends SwitchDevice {
   constructor(private device) {
     super();
-    this.entity_id = device.id;
-    this.available = true;
     this.getCurrentState();
     this.listenChanges();
   }

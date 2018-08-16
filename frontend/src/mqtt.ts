@@ -23,7 +23,6 @@ export const callService = (entity, service) => {
   return mqttClient.publish(topic, JSON.stringify(service));
 }
 
-
 export const updateDevice = device => {
   const topic = `devices/${device._id}/update`;
   const target = Object.assign({}, device.state, {

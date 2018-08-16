@@ -11,17 +11,20 @@ export interface EntityObject {
   icon: string,
   image: string,
   type: string,
-  available: boolean
+  available: boolean,
+  state_update_time: Date
 }
 export default abstract class Entity {
-  entity_id: string;
-  name: string;
-  attrs: any[];
+  abstract entity_id: string;
+  abstract name: string;
+  state_attrs: any[];
   icon: string;
   image: string;
   type: string;
-  available: boolean = false;
+  abstract available: boolean = false;
   _state: boolean;
+  state_update_time: Date;
+  type_attrs: {}
 
   get state() {
     return this._state;
@@ -31,6 +34,7 @@ export default abstract class Entity {
     if (newState !== this._state) {
       broadcastStateChange(this, newState).subscribe();
     }
+    this.state_update_time = new Date();
     this._state = newState;
   }
 
@@ -48,11 +52,12 @@ export default abstract class Entity {
     return {
       entity_id: this.entity_id,
       name: this.name,
-      state: this._state,
+      state: this.state,
       icon: this.icon,
       image: this.image,
       type: this.type,
-      available: this.available
+      available: this.available,
+      state_update_time: this.state_update_time
     }
   }
 
