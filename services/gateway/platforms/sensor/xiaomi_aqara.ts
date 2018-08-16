@@ -14,9 +14,7 @@ export const setup_platform = (device) => {
 class XiaomiSensor extends Entity {
   constructor(_device) {
     super();
-    this.name = "motion sensor";
-    // this.image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpSah187ddN15p9mx63JUb13w6_F0AzlUKVfJ9-JWwakmuCMLv";
-    this.icon = "device/lightbulb";
+    this.name = "Motion sensor";
   }
   serviceHandler(service) {
     try {

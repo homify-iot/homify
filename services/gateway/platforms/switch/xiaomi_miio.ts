@@ -18,5 +18,4 @@ class PowerStrip extends XiaomiGenericSwitch {
     this.name = "PowerStrip";
     this.image = "https://fb1-cw.lnwfile.com/_/cw/_raw/nl/tn/x8.jpg";
   }
-
 }

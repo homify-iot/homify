@@ -11,36 +11,17 @@ mqttClient.observe("entity/+/state_changed")
     store.commit("entities/setState", { entity_id, newState });
   })
 
-// merge(
-//   mqttClient.getStreaming()("response"),
-//   mqttClient.getStreaming()("health_check")
-// ).subscribe((packet: IMqttMessage) => {
-//   const { topic, payload } = packet;
-//   const value = JSON.parse(payload.toString());
-//   const [{ }, _id, action] = topic.split("/");
-//   let device;
-//   if (action === "response") {
-//     device = { _id, state: value };
-//   } else if (action === "health_check") {
-//     device = { _id, online: value };
-//   }
-//   store.dispatch(UPDATE_DEVICE_STATE, device);
-// });
+mqttClient.observe("entity/entities_changed")
+  .subscribe((packet: IMqttMessage) => {
+    const entities = JSON.parse(packet.payload.toString());
+    store.commit("entities/setEntities", entities);
+  })
+
 
 export const callService = (entity, service) => {
   const topic = `service/${entity.entity_id}`;
   return mqttClient.publish(topic, JSON.stringify(service));
 }
-
-// export const registerStateObserver = () => {
-//   mqttClient.observe("components")
-//     .subscribe((packet: IMqttMessage) => {
-//       const { topic, payload } = packet;
-//       const value = JSON.parse(payload.toString());
-//       console.log(value);
-//     })
-//   return mqttClient.observe(`entity/${entity.entity_id}/state_changed`)
-// }
 
 
 export const updateDevice = device => {

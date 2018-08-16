@@ -16,7 +16,7 @@ export interface EntityObject {
 export default abstract class Entity {
   entity_id: string;
   name: string;
-  attrs;
+  attrs: any[];
   icon: string;
   image: string;
   type: string;
@@ -48,7 +48,7 @@ export default abstract class Entity {
     return {
       entity_id: this.entity_id,
       name: this.name,
-      state: this.state,
+      state: this._state,
       icon: this.icon,
       image: this.image,
       type: this.type,
