@@ -1,25 +1,30 @@
 import { Subject } from "rxjs"
+import { EntityObject } from "platforms/_entity";
+import { debounceTime, distinctUntilChanged, switchMap } from "../node_modules/rxjs/operators";
+import { broadcastEntitiesChange } from "core/bus";
 
 export default class Homify {
   public config = {};
-  public components = [];
-  public components$: Subject<any[]> = new Subject();
+  public entities: EntityObject[];
+  private onUpdate$: Subject<EntityObject[]> = new Subject();
 
-  get entities() {
-    return this.components.map(c => ({
-      entity_id: c.entity_id,
-      name: c.name,
-      state: c.state,
-      icon: c.icon,
-      image: c.image,
-      type: c.type,
-      available: c.available
-    }))
+  constructor() {
+    this.entities = new Proxy([], {
+      set: (target, property, entity) => {
+        target[property] = entity;
+        this.onUpdate$.next(target);
+        return true;
+      }
+    })
+    this.onUpdate$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(broadcastEntitiesChange)
+    ).subscribe()
   }
 
   add_component(device) {
     device.register();
-    this.components.push(device);
-    this.components$.next(this.components);
+    this.entities.push(device.toObject());
   }
 }

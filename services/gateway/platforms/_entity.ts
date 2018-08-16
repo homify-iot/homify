@@ -4,12 +4,22 @@ import { createDebug } from "services/debug.service";
 
 const log = createDebug("Entity")
 
+export interface EntityObject {
+  entity_id: string,
+  name: string,
+  state: boolean,
+  icon: string,
+  image: string,
+  type: string,
+  available: boolean
+}
 export default abstract class Entity {
   entity_id: string;
   name: string;
   attrs;
   icon: string;
   image: string;
+  type: string;
   available: boolean = false;
   _state: boolean;
 
@@ -33,5 +43,18 @@ export default abstract class Entity {
         this.serviceHandler(service);
       })
   }
+
+  toObject(): EntityObject {
+    return {
+      entity_id: this.entity_id,
+      name: this.name,
+      state: this.state,
+      icon: this.icon,
+      image: this.image,
+      type: this.type,
+      available: this.available
+    }
+  }
+
   public abstract serviceHandler(service);
 }

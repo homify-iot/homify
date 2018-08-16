@@ -19,6 +19,8 @@ export const setup = (config) => {
         for (const child of children) {
           if (child.matches("type:wall-switch")) {
             load_platform("switch", DOMAIN, child);
+          } else if (child.matches("type:sensor")) {
+            load_platform("sensor", DOMAIN, child);
           }
         }
       };
@@ -28,12 +30,10 @@ export const setup = (config) => {
         const DOMAIN = "xiaomi_miio";
         load_platform(type, DOMAIN, device.device);
       }
-
     }
   });
 
   devices.on('unavailable', device => {
-    console.log(2, device);
-    // Device is no longer available and is destroyed
+    log('unavailable', device);
   });
 }

@@ -2,7 +2,7 @@ import { homify } from "@/index";
 import { XiaomiGenericSwitch } from "./_switch"
 import { createDebug } from "services/debug.service";
 
-const log = createDebug("Platform:xiaomi_aqara");
+const log = createDebug("Platform:switch:xiaomi_aqara");
 
 export const setup_platform = (device) => {
   log('Connected ', device.miioModel);
