@@ -13,7 +13,7 @@
         <div class="title">{{ entity.name }}</div>
         <div class="state-info">
           <div class="status">{{ isOn ? 'on': 'off' }}</div>
-          <timeago :datetime="entity.state_update_time" :auto-update="60" />
+          <timeago v-if="entity.state_update_time" :datetime="entity.state_update_time" :auto-update="60" />
         </div>
       </div>
       <div class="status-bar">
