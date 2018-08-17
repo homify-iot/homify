@@ -14,6 +14,8 @@ Vue.config.productionTip = false;
 Vue.use(Element, {
   size: "medium" // set element-ui default size
 });
+import VueTimeago from 'vue-timeago';
+Vue.use(VueTimeago);
 
 new Vue({
   router,

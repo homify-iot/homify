@@ -33,6 +33,7 @@
     "vue-mqtt": "^2.0.2",
     "vue-property-decorator": "^6.0.0",
     "vue-router": "^3.0.1",
+    "vue-timeago": "^5.0.0",
     "vuex": "^3.0.1",
     "vuex-class": "^0.3.1"
   },

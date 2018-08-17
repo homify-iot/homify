@@ -14,9 +14,11 @@ export const setup_platform = (device) => {
 }
 class XiaomiMotionSensor extends Entity {
   entity_id: string;
+  icon: string = "device/motion"
   name: string;
   available: boolean;
-
+  autoIdleTimeout: number = 1000 * 60;
+  idleTimer;
   constructor(private device) {
     super();
     this.entity_id = device.id;
@@ -27,7 +29,11 @@ class XiaomiMotionSensor extends Entity {
 
   async listenChanges() {
     fromEvent(this.device, "movement")
-      .subscribe(() => this.state = true);
+      .subscribe(() => {
+        this.state = true;
+        clearTimeout(this.idleTimer);
+        this.idleTimer = setTimeout(() => this.state = false, this.autoIdleTimeout);
+      });
   }
 
   serviceHandler(service) {

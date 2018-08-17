@@ -15,6 +15,7 @@ const mutations = {
     state.entities = state.entities.map(entity => {
       if (entity.entity_id === entity_id) {
         entity.state = newState;
+        entity.state_update_time = new Date();
       }
       return entity;
     })

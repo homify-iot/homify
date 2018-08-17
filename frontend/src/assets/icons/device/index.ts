@@ -1,5 +1,6 @@
 import './air-conditioner'
 import './lightbulb'
+import './motion'
 import './speaker'
 import './television'
 import './window'

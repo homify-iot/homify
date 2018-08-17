@@ -1,7 +1,7 @@
 <template>
   <el-card :body-style="{ padding: '0' }" class="card">
     <div class="device-content" :class="{'off': !isOn}">
-      <div class="icon" :class="color" @click="toggleDevice(entity)">
+      <div class="icon" :class="[colorClass,clickClass]" @click="isSwitchable && toggleDevice(entity)">
         <img v-if="entity.image" :src="entity.image" style="width: 100%">
         <svgicon 
           v-else
@@ -11,11 +11,19 @@
       </div>
       <div class="details">
         <div class="title">{{ entity.name }}</div>
-        <div class="status">{{ isOn ? 'on': 'off' }}</div>
+        <div class="state-info">
+          <div class="status">{{ isOn ? 'on': 'off' }}</div>
+          <timeago :datetime="entity.state_update_time" :auto-update="60" />
+        </div>
       </div>
       <div class="status-bar">
         <svgicon 
-          :icon="entity.available?'wifi':'offline'" />
+          class="available-icon"
+          :icon="entity.available ?'wifi':'offline'" />
+        <el-switch 
+          v-if="isSwitchable" 
+          :active-value="!isOn" 
+          @click.native="isSwitchable && toggleDevice(entity)"/>
       </div>
     </div>
   </el-card>
@@ -36,8 +44,16 @@ export default class DeviceSwitch extends Vue {
     return this.entity.state;
   }
 
-  get color() {
-    return this.entity.type === "switch" ? "warning" : "primary";
+  get isSwitchable() {
+    return this.entity.type === "switch";
+  }
+
+  get colorClass() {
+    return this.isSwitchable ? "warning" : "primary";
+  }
+
+  get clickClass() {
+    return this.isSwitchable ? "clickable" : "";
   }
 }
 </script>
@@ -78,7 +94,7 @@ export default class DeviceSwitch extends Vue {
       @include btn-hero-warning-gradient();
       @include btn-hero-warning-bevel-glow-shadow();
     }
-    &:hover {
+    &.clickable:hover {
       cursor: pointer;
       &.primary {
         background-image: btn-hero-primary-light-gradient();
@@ -127,15 +143,26 @@ export default class DeviceSwitch extends Vue {
       font-weight: $font-weight-bold;
       color: $card-fg-heading;
     }
-    .status {
-      font-size: 1rem;
-      font-weight: $font-weight-light;
-      text-transform: uppercase;
+    .state-info {
+      display: flex;
+      justify-content: space-between;
       color: $card-fg;
+      .status {
+        font-size: 1rem;
+        font-weight: $font-weight-light;
+        text-transform: uppercase;
+        padding-right: 1rem;
+      }
     }
   }
   .status-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 0.5rem;
+    .available-icon {
+      align-self: flex-end;
+    }
   }
 }
 </style>
