@@ -29,7 +29,7 @@ const actions = {
   },
   toggleDevice: ({ }, entity) => {
     const service = entity.state ? "turnOff" : "turnOn";
-    callService(entity, service).subscribe();
+    callService(entity.entityId, service).subscribe();
   },
 };
 

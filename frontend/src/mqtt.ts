@@ -17,8 +17,8 @@ mqttClient.observe('entity/entities_changed')
     store.commit('entities/setEntities', entities);
   });
 
-export const callService = (entity, service) => {
-  const topic = `service/${entity.entityId}`;
+export const callService = (entityId: string, service: string) => {
+  const topic = `service/${entityId}`;
   return mqttClient.publish(topic, JSON.stringify(service));
 };
 

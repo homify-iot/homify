@@ -1,8 +1,8 @@
-import app from "./config/express";
-import config from "./config/config";
-import MqttClient from "./services/mqtt.service";
-import { bootstrap } from "./core"
 import { createDebug } from "services/debug.service";
+import config from "./config/config";
+import app from "./config/express";
+import { bootstrap } from "./core";
+import MqttClient from "./services/mqtt.service";
 
 export const mqttService = new MqttClient();
 

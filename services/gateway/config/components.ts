@@ -19,7 +19,7 @@ export default {
       ],
       actions: [
         {
-          entityId: "miio:158d00025255eb",
+          entityId: "miio:158d00025255eb:0",
           service: "turnOn",
         },
       ],
