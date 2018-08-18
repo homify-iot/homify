@@ -6,8 +6,9 @@ const log = createDebug("Platform:switch:xiaomi_aqara");
 
 export const setup_platform = (device) => {
   log('Connected ', device.miioModel);
-  if (device.miioModel === "lumi.ctrl_neutral2") {
-    console.log(device.child('0'));
+  if (device.miioModel === "lumi.ctrl_neutral1") {
+    homify.add_component(new XiaomiWallSwitch(device.child('0'), "Wall Switch"));
+  } else if (device.miioModel === "lumi.ctrl_neutral2") {
     homify.add_component(new XiaomiWallSwitch(device.child('0'), "Wall Switch Left"));
     homify.add_component(new XiaomiWallSwitch(device.child('1'), "Wall Switch Right"));
   }
