@@ -2,6 +2,7 @@
   "name": "vue-demo",
   "version": "0.1.0",
   "private": true,
+  "license": "GPL-3.0",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build-config/webpack.dev.conf.js",
     "start": "npm run dev",

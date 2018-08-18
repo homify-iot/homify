@@ -6,7 +6,7 @@
         :sm="12" 
         class="device-item"
         v-for="entity in entities"
-        :key="entity.entity_id">
+        :key="entity.entityId">
         <device-switch v-if="entity" :entity="entity" />
       </el-col>
     </el-row>

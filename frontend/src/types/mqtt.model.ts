@@ -1,15 +1,14 @@
+import { IClientOptions, IClientPublishOptions, IPacket, MqttClient } from 'mqtt';
 import { Stream } from 'stream';
-import { MqttClient, IClientOptions, IClientPublishOptions, IPacket } from 'mqtt';
 
 export enum MqttConnectionState {
   CLOSED,
   CONNECTING,
-  CONNECTED
+  CONNECTED,
 }
 
 export interface IMqttServiceOptions extends IClientOptions {
-  /** wether a new connection should be created
-   *  on creating an instance of the service */
+  /** wether a new connection should be created on creating an instance of the service */
   connectOnCreate?: boolean;
   /** the hostname of the mqtt broker */
   hostname?: string;

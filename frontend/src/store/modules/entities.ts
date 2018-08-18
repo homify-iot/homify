@@ -1,5 +1,5 @@
-import { Http } from "@/services/http.service";
 import { callService } from "@/mqtt";
+import { Http } from "@/services/http.service";
 const SET_ENTITIES = "setEntities";
 const SET_STATE = "setState";
 
@@ -11,25 +11,26 @@ const mutations = {
   [SET_ENTITIES]: (state, entities) => {
     state.entities = entities;
   },
-  [SET_STATE]: (state, { entity_id, newState }) => {
+  [SET_STATE]: (state, { entityId, newState }) => {
     state.entities = state.entities.map(entity => {
-      if (entity.entity_id === entity_id) {
+      if (entity.entityId === entityId) {
         entity.state = newState;
-        entity.state_update_time = new Date();
+        entity.stateLastUpdate = new Date();
       }
       return entity;
-    })
-  }
+    });
+  },
 };
+
 const actions = {
   fetchEntities: async ({ commit }) => {
     const { data: entities } = await Http.get("entities");
-    commit(SET_ENTITIES, entities)
+    commit(SET_ENTITIES, entities);
   },
   toggleDevice: ({ }, entity) => {
     const service = entity.state ? "turnOff" : "turnOn";
-    callService(entity, service).subscribe()
-  }
+    callService(entity, service).subscribe();
+  },
 };
 
 export const entities = {
@@ -37,5 +38,5 @@ export const entities = {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

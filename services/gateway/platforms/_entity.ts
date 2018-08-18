@@ -2,29 +2,29 @@ import { broadcastStateChange, serviceRegister } from "@/core/bus";
 import { IMqttMessage } from "@/types/mqtt.model";
 import { createDebug } from "services/debug.service";
 
-const log = createDebug("Entity")
+const log = createDebug("Entity");
 
 export interface EntityObject {
-  entity_id: string,
-  name: string,
-  state: boolean,
-  icon: string,
-  image: string,
-  type: string,
-  available: boolean,
-  state_update_time: Date
-}
-export default abstract class Entity {
-  abstract entity_id: string;
-  abstract name: string;
-  state_attrs: any[];
+  entityId: string;
+  name: string;
+  state: boolean;
   icon: string;
   image: string;
   type: string;
-  abstract available: boolean = false;
-  _state: boolean;
-  state_update_time: Date;
-  type_attrs: {}
+  available: boolean;
+  stateLastUpdate: Date;
+}
+export default abstract class Entity {
+  public abstract entityId: string;
+  public abstract name: string;
+  public stateAttrs: any[];
+  public icon: string;
+  public image: string;
+  public type: string;
+  public abstract available: boolean = false;
+  public _state: boolean;
+  public stateLastUpdate: Date;
+  public typeAttrs: {};
 
   get state() {
     return this._state;
@@ -32,33 +32,33 @@ export default abstract class Entity {
 
   set state(newState) {
     if (newState !== this._state) {
-      broadcastStateChange(this, newState).subscribe();
+      broadcastStateChange(this.entityId, newState).subscribe();
     }
-    this.state_update_time = new Date();
+    this.stateLastUpdate = new Date();
     this._state = newState;
   }
 
-  register = () => {
-    serviceRegister(this.entity_id)
+  public register = () => {
+    serviceRegister(this.entityId)
       .subscribe((packet: IMqttMessage) => {
         const { topic, payload } = packet;
         const service = JSON.parse(payload.toString());
         log(topic, service);
         this.serviceHandler(service);
-      })
+      });
   }
 
-  toObject(): EntityObject {
+  public toObject(): EntityObject {
     return {
-      entity_id: this.entity_id,
+      entityId: this.entityId,
       name: this.name,
       state: this.state,
       icon: this.icon,
       image: this.image,
       type: this.type,
       available: this.available,
-      state_update_time: this.state_update_time
-    }
+      stateLastUpdate: this.stateLastUpdate,
+    };
   }
 
   public abstract serviceHandler(service);

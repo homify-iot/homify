@@ -1,6 +1,6 @@
-import Joi from "joi";
 import dotenv from "dotenv";
-import components from "./components"
+import Joi from "joi";
+import components from "./components";
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ if (error) {
 const config = {
   env: envVars.NODE_ENV,
   port: envVars.SERVER_PORT,
-  homify_config: components
+  homify_config: components,
 };
 
 export default config;

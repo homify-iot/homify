@@ -1,7 +1,7 @@
-import { Subject } from "rxjs"
-import { default as Entity, EntityObject } from "platforms/_entity";
-import { debounceTime, distinctUntilChanged, switchMap, map } from "rxjs/operators";
 import { broadcastEntitiesChange } from "core/bus";
+import { default as Entity, EntityObject } from "platforms/_entity";
+import { Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged, map, switchMap } from "rxjs/operators";
 
 export default class Homify {
   public config = {};
@@ -14,21 +14,21 @@ export default class Homify {
         target[property] = entity;
         this.onUpdate$.next(target);
         return true;
-      }
-    })
+      },
+    });
     this.onUpdate$.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      map(components => components.map(c => c.toObject())),
-      switchMap(broadcastEntitiesChange)
-    ).subscribe()
+      map((components) => components.map((c) => c.toObject())),
+      switchMap(broadcastEntitiesChange),
+    ).subscribe();
   }
 
   get entities(): EntityObject[] {
-    return this.components.map(c => c.toObject());
+    return this.components.map((c) => c.toObject());
   }
 
-  add_component(device) {
+  public add_component(device) {
     device.register();
     this.components.push(device);
   }

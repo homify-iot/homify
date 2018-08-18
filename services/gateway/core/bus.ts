@@ -1,20 +1,24 @@
-import { mqttService } from "@/index"
-import Entity from "platforms/_entity";
+import { mqttService } from "@/index";
 import { createDebug } from "services/debug.service";
-const log = createDebug("Event bus")
+const log = createDebug("Event bus");
 
-export const broadcastStateChange = (entity: Entity, newState: boolean) => {
-  const topic = `entity/${entity.entity_id}/state_changed`;
+
+export const broadcastStateChange = (entityId: string, newState: boolean) => {
+  const topic = `entity/${entityId}/state_changed`;
   log(topic, newState);
-  return mqttService.publish(topic, JSON.stringify(newState))
-}
+  return mqttService.publish(topic, JSON.stringify(newState));
+};
 
 export const broadcastEntitiesChange = (entities: any[]) => {
   const topic = `entity/entities_changed`;
-  log(topic, entities);
-  return mqttService.publish(topic, JSON.stringify(entities))
-}
+  log(topic);
+  return mqttService.publish(topic, JSON.stringify(entities));
+};
 
-export const serviceRegister = (entity_id: string) => {
-  return mqttService.observe(`service/${entity_id}`)
-}
+export const serviceRegister = (entityId: string) => {
+  return mqttService.observe(`service/${entityId}`);
+};
+
+export const getStateListener = (entityId: string) => {
+  return mqttService.observe(`entity/${entityId}/state_changed`);
+};

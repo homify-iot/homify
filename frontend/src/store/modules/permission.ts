@@ -1,19 +1,20 @@
 import { menuRoutes } from "@/router";
 
 const SET_ROUTES = "setRoutes";
+
 const state = {
-  routes: []
+  routes: [],
 };
 const getters = {};
 const mutations = {
   [SET_ROUTES]: (state, payload) => {
     state.routes = payload;
-  }
+  },
 };
 const actions = {
   fetchRoutes: async ({ commit }) => {
     commit(SET_ROUTES, menuRoutes);
-  }
+  },
 };
 
 export const permission = {
@@ -21,5 +22,5 @@ export const permission = {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

@@ -35,6 +35,10 @@
   "extends": [
     "eslint:recommended"
   ],
+  "parser": "typescript-eslint-parser",
+  "plugins": [
+    "typescript"
+  ],
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"

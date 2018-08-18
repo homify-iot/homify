@@ -1,28 +1,39 @@
+import { createDebug } from "services/debug.service";
 import Homify from "./homify";
 
+const log = createDebug("core");
 
 export const bootstrap = (config) => {
   const homify = new Homify();
   homify.config = config;
 
-  config.discovery && discovery(config.discovery);
+  discovery(config.discovery || []);
+  loadAutomation(config.automation || []);
   return homify;
-}
+};
 
 const discovery = (components) => {
-  Object.keys(components).forEach(component => {
-    const moduleName = `@/components/${component}`;
+  components.forEach((component) => {
+    const moduleName = `@/components/${component.name}`;
     const module = require(moduleName);
-    module.setup(components[component]);
+    module.setup(component);
   });
-}
+};
 
-export const load_platform = (type, domain, config) => {
+const loadAutomation = (jobs) => {
+  jobs.forEach((job) => {
+    const moduleName = `@/components/automation`;
+    const module = new (require(moduleName).default)(job);
+    module.start();
+  });
+};
+
+export const loadPlatform = (type, domain, config) => {
   try {
     const moduleName = `@/platforms/${type}/${domain}`;
     const module = require(moduleName);
-    module.setup_platform(config);
+    module.setupPlatform(config);
   } catch (e) {
-    console.log(e);
+    log(e);
   }
-}
+};
