@@ -34,14 +34,14 @@ export default class Homify {
   public addComponent(device) {
     device.register();
     const index = R.findIndex(R.propEq("entityId", device.entityId))(this.config.entities);
-    if (index !== -1) {
-      this.components.push(device);
-    } else {
-      log("Found new device!");
+    if (index === -1) {
+      log("Found new device! ", device);
     }
+    this.components.push(device);
   }
 
   public getEntityInfo(entityId: string) {
     return R.find(R.propEq("entityId", entityId))(this.config.entities);
   }
+
 }

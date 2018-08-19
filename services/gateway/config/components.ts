@@ -26,26 +26,29 @@ export default {
     },
   ],
   entities: [
-    { entityId: "miio:62821767", name: "PowerStrip", type: "switch", platform: "xiaomi" },
+    { entityId: "miio:62821767", name: "PowerStrip", type: "switch", platform: "xiaomi", group: "Study Room" },
     {
-      entityId: "miio:158d000249481b:0", name: "Living Room Light Left", icon: "device/lightbulb",
-      type: "switch", platform: "xiaomi",
+      entityId: "miio:158d000249481b:0", name: "Wall Switch Left", icon: "device/lightbulb",
+      type: "switch", platform: "xiaomi", group: "Living Room"
     },
     {
-      entityId: "miio:158d000249481b:1", name: "Living Room Light Right", icon: "device/lightbulb",
-      type: "switch", platform: "xiaomi",
+      entityId: "miio:158d000249481b:1", name: "Wall Switch Right", icon: "device/lightbulb",
+      type: "switch", platform: "xiaomi", group: "Living Room"
     },
     {
-      entityId: "miio:158d00025255eb:0", name: "Study Room Light", icon: "device/lightbulb", type:
-        "switch", platform: "xiaomi",
+      entityId: "miio:158d00025255eb:0", name: "Wall Switch Light", icon: "device/lightbulb", type:
+        "switch", platform: "xiaomi", group: "Study Room"
     },
     {
-      entityId: "miio:158d0002494831:0", name: "Master Room Light Left", icon: "device/lightbulb",
-      type: "switch", platform: "xiaomi",
+      entityId: "miio:158d0002494831:0", name: "Wall Switch Left", icon: "device/lightbulb",
+      type: "switch", platform: "xiaomi", group: "Master Room"
     },
     {
-      entityId: "miio:158d0002494831:1", name: "Master Room Light Right", icon: "device/lightbulb",
-      type: "switch", platform: "xiaomi",
+      entityId: "miio:158d0002494831:1", name: "Wall Switch Right", icon: "device/lightbulb",
+      type: "switch", platform: "xiaomi", group: "Master Room"
     },
-    { entityId: "miio:158d0001dc2f99", name: "Study Room Motion sensor", icon: "device/motion", platform: "xiaomi" }],
+    {
+      entityId: "miio:158d0001dc2f99", name: "Motion sensor", icon: "device/motion", platform: "xiaomi",
+      group: "Study Room"
+    }]
 };

@@ -33,7 +33,8 @@
       "allow-leading-underscore"
     ],
     "interface-name": false,
-    "no-empty-interface": false
+    "no-empty-interface": false,
+    "trailing-comma": false
   },
   "jsRules": {
     "max-line-length": {

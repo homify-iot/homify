@@ -13,6 +13,7 @@ export interface EntityObject {
   icon: string;
   image: string;
   type: string;
+  group: string;
   available: boolean;
   stateLastUpdate: Date;
 }
@@ -52,6 +53,8 @@ export default abstract class Entity {
 
   public toObject(): EntityObject {
     const name = R.pathOr(this.defaultName, ["name"], homify.getEntityInfo(this.entityId));
+    const group = R.pathOr("", ["group"], homify.getEntityInfo(this.entityId));
+
     return {
       entityId: this.entityId,
       name,
@@ -59,6 +62,7 @@ export default abstract class Entity {
       icon: this.icon,
       image: this.image,
       type: this.type,
+      group,
       available: this.available,
       stateLastUpdate: this.stateLastUpdate,
     };

@@ -1,24 +1,39 @@
 import { callService } from "@/mqtt";
 import { Http } from "@/services/http.service";
+
 const SET_ENTITIES = "setEntities";
 const SET_STATE = "setState";
 
 const state = {
-  entities: [],
+  list: [],
+  grouped: {}
 };
 const getters = {};
 const mutations = {
   [SET_ENTITIES]: (state, entities) => {
-    state.entities = entities;
+    state.list = entities;
+    const grouped = entities.reduce((prev, next) => {
+      if (next.group) {
+        prev[next.group] = prev[next.group] || [];
+        prev[next.group].push(next);
+      } else {
+        prev[next.type] = prev[next.type] || []
+        prev[next.type].push(next);
+      }
+      return prev;
+    }, {})
+    state.grouped = grouped;
   },
   [SET_STATE]: (state, { entityId, newState }) => {
-    state.entities = state.entities.map(entity => {
-      if (entity.entityId === entityId) {
-        entity.state = newState;
-        entity.stateLastUpdate = new Date();
-      }
-      return entity;
-    });
+    Object.keys(state.grouped).forEach(group => {
+      state.grouped[group] = state.grouped[group].map(entity => {
+        if (entity.entityId === entityId) {
+          entity.state = newState;
+          entity.stateLastUpdate = new Date();
+        }
+        return entity;
+      });
+    })
   },
 };
 

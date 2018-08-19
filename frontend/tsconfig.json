@@ -4,6 +4,8 @@
     "moduleResolution": "node",
     "target": "es5",
     "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,

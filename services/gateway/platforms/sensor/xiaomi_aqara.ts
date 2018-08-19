@@ -1,7 +1,7 @@
 import { homify } from "@/index";
 import { fromEvent } from "rxjs";
 import { createDebug } from "services/debug.service";
-import Entity from "../_entity";
+import { Sensor } from "./_sensor";
 
 const log = createDebug("Platform:sensor:xiaomi_aqara");
 
@@ -13,7 +13,7 @@ export const setupPlatform = (device) => {
   }
 };
 
-class XiaomiMotionSensor extends Entity {
+class XiaomiMotionSensor extends Sensor {
   public entityId: string;
   public icon: string = "device/motion";
   public defaultName: string = "Motion sensor";
