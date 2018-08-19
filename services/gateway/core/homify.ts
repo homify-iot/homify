@@ -28,7 +28,7 @@ export default class Homify {
     return this.components.map((c) => c.toObject());
   }
 
-  public add_component(device) {
+  public addComponent(device) {
     device.register();
     this.components.push(device);
   }
