@@ -1,14 +1,17 @@
 import { broadcastEntitiesChange } from "core/bus";
 import { default as Entity, EntityObject } from "platforms/_entity";
+import * as R from "ramda";
 import { Subject } from "rxjs";
 import { debounceTime, distinctUntilChanged, map, switchMap } from "rxjs/operators";
+import { createDebug } from "services/debug.service";
+
+const log = createDebug("Core");
 
 export default class Homify {
-  public config = {};
   public components: Entity[];
   private onUpdate$: Subject<Entity[]> = new Subject();
 
-  constructor() {
+  constructor(private config) {
     this.components = new Proxy([], {
       set: (target, property, entity) => {
         target[property] = entity;
@@ -30,6 +33,15 @@ export default class Homify {
 
   public addComponent(device) {
     device.register();
-    this.components.push(device);
+    const index = R.findIndex(R.propEq("entityId", device.entityId))(this.config.entities);
+    if (index !== -1) {
+      this.components.push(device);
+    } else {
+      log("Found new device!");
+    }
+  }
+
+  public getEntityInfo(entityId: string) {
+    return R.find(R.propEq("entityId", entityId))(this.config.entities);
   }
 }

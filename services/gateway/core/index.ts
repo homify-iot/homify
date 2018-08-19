@@ -4,8 +4,7 @@ import Homify from "./homify";
 const log = createDebug("core");
 
 export const bootstrap = (config) => {
-  const homify = new Homify();
-  homify.config = config;
+  const homify = new Homify(config);
 
   discovery(config.discovery || []);
   loadAutomation(config.automation || []);

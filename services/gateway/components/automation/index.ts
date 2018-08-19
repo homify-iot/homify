@@ -4,7 +4,7 @@ import { map, filter } from "rxjs/operators";
 import * as R from "ramda";
 import { createDebug } from "services/debug.service";
 
-const log = createDebug("automation");
+const log = createDebug("Automation");
 export default class Automation {
   constructor(private job) { }
 

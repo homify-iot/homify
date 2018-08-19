@@ -12,19 +12,23 @@ export const setup = (config) => {
 
   devices.on("available", (device) => {
     const metadata = device.device.metadata;
-    const info = {
-      address: device.address,
-    };
     if (metadata.types.has("miio:gateway")) {
       const DOMAIN = "xiaomi_aqara";
-      ["switch", "sensor"].forEach((type) => {
-        loadPlatform(type, DOMAIN, info);
-      });
+      if (device.device.matches("cap:children")) {
+        const children = device.device.children();
+        for (const child of children) {
+          if (child.matches("type:wall-switch")) {
+            loadPlatform("switch", DOMAIN, child);
+          } else if (child.matches("type:sensor")) {
+            loadPlatform("sensor", DOMAIN, child);
+          }
+        }
+      }
     } else {
-      if (metadata.types.has("miio:power-strip")) {
+      if (metadata.capabilities.has("switchable-mode")) {
         const type = "switch";
         const DOMAIN = "xiaomi_miio";
-        loadPlatform(type, DOMAIN, info);
+        loadPlatform(type, DOMAIN, device.device);
       }
     }
   });

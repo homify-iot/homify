@@ -1,5 +1,7 @@
 import { broadcastStateChange, serviceRegister } from "@/core/bus";
+import { homify } from "@/index";
 import { IMqttMessage } from "@/types/mqtt.model";
+import * as R from "ramda";
 import { createDebug } from "services/debug.service";
 
 const log = createDebug("Entity");
@@ -16,7 +18,7 @@ export interface EntityObject {
 }
 export default abstract class Entity {
   public abstract entityId: string;
-  public abstract name: string;
+  public abstract defaultName: string;
   public stateAttrs: any[];
   public icon: string;
   public image: string;
@@ -49,9 +51,10 @@ export default abstract class Entity {
   }
 
   public toObject(): EntityObject {
+    const name = R.pathOr(this.defaultName, ["name"], homify.getEntityInfo(this.entityId));
     return {
       entityId: this.entityId,
-      name: this.name,
+      name,
       state: this.state,
       icon: this.icon,
       image: this.image,
