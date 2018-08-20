@@ -47,14 +47,15 @@ export default class Home extends Vue {
 .home-layout {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   .column {
     flex: 25%;
     padding: 0 4px;
+    max-width: 500px;
   }
   .group-card {
     flex: 1;
     margin-bottom: 1rem;
-    min-width: 400px;
     .el-card__header {
       border-bottom: none;
     }
@@ -67,6 +68,11 @@ export default class Home extends Vue {
     .device-item {
       padding: 0 10px;
     }
+  }
+}
+@media only screen and (min-width: 450px) {
+  .group-card {
+    min-width: 400px;
   }
 }
 </style>
