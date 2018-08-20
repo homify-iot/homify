@@ -1,18 +1,17 @@
 <template>
-  <el-card :body-style="{ padding: '0' }" class="card">
+  <el-card :body-style="{ padding: '0' }" class="card" shadow="hover">
     <div class="device-content" :class="{'off': !isOn}">
       <div class="icon" :class="[colorClass,clickClass]" @click="isSwitchable && toggleDevice(entity)">
         <img v-if="entity.image" :src="entity.image" style="width: 100%">
         <svgicon 
           v-else
           :icon="entity.icon" 
-          width="50" 
-          height="50"/>
+          width="26" 
+          height="26"/>
       </div>
       <div class="details">
         <div class="title">{{ entity.name }}</div>
         <div class="state-info">
-          <div class="status">{{ isOn ? 'on': 'off' }}</div>
           <timeago v-if="entity.stateLastUpdate" :datetime="entity.stateLastUpdate" :auto-update="60" />
         </div>
       </div>
@@ -67,13 +66,10 @@ export default class DeviceSwitch extends Vue {
 .device-content {
   display: flex;
   .icon {
-    height: 100%;
-    margin: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 5.75rem;
-    height: 4.75rem;
+    width: 3rem;
     font-size: 3.75rem;
     border-radius: 0.375rem;
     transition: width 0.4s ease;
@@ -132,14 +128,15 @@ export default class DeviceSwitch extends Vue {
     }
   }
   .details {
-    padding: 0 0.5rem;
+    padding: 0 1rem;
     display: flex;
     flex: 1;
     flex-direction: column;
     justify-content: center;
+    min-height: 3rem;
     .title {
       font-family: $font-secondary;
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: $font-weight-bold;
       color: $card-fg-heading;
     }
@@ -156,13 +153,8 @@ export default class DeviceSwitch extends Vue {
     }
   }
   .status-bar {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     padding: 0.5rem;
-    .available-icon {
-      align-self: flex-end;
-    }
+    align-self: center;
   }
 }
 </style>

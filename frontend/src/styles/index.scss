@@ -15,7 +15,6 @@ body {
 }
 .app-wrapper {
   @include clearfix;
-  background-color: $color-bg;
   position: relative;
   height: 100%;
   width: 100%;
@@ -133,7 +132,6 @@ code {
   }
 }
 
-//main-container全局样式
 .app-container {
   padding: 20px;
 }

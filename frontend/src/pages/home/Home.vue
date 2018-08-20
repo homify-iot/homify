@@ -1,21 +1,28 @@
 <template>
   <div class="home-layout">
-    <el-card class="group-card" v-for="group in groups" :key="group">
-      <div slot="header">
-        <span class="card-title">{{ group }}</span>
-        <el-button style="float: right; padding: 3px 0" type="text">...</el-button>
-      </div>
-      <el-row class="device-list">
-        <el-col 
-          :lg="6" 
-          :sm="12" 
-          class="device-item"
-          v-for="entity in grouped[group]"
-          :key="entity.entityId">
-          <device-switch v-if="entity" :entity="entity" />
-        </el-col>
-      </el-row>
-    </el-card>
+    <div 
+      class="column" 
+      v-for="column in 4" 
+      :key="column" 
+      v-if="columnGroup[column - 1]">
+      <el-card 
+        class="group-card" 
+        :body-style="{ padding: '0' }" 
+        v-for="group in columnGroup[column - 1]" 
+        :key="group">
+        <div slot="header" class="header">
+          <span class="card-title">{{ group }}</span>
+        </div>
+        <div class="device-list" >
+          <div 
+            class="device-item"
+            v-for="entity in grouped[group]"
+            :key="entity.entityId">
+            <device-switch v-if="entity" :entity="entity" />
+          </div>
+        </div>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -32,16 +39,25 @@ import DeviceSwitch from "@/components/DeviceSwitch/index.vue";
 export default class Home extends Vue {
   @Entities.State grouped;
 
-  get groups() {
-    return Object.keys(this.grouped);
-  }
+  @Entities.State columnGroup;
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .home-layout {
+  display: flex;
+  flex-wrap: wrap;
+  .column {
+    flex: 25%;
+    padding: 0 4px;
+  }
   .group-card {
+    flex: 1;
     margin-bottom: 1rem;
+    min-width: 400px;
+    .el-card__header {
+      border-bottom: none;
+    }
     .card-title {
       text-transform: capitalize;
     }

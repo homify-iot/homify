@@ -1,12 +1,14 @@
 import { callService } from "@/mqtt";
 import { Http } from "@/services/http.service";
+import { transpose, splitEvery } from "ramda";
 
 const SET_ENTITIES = "setEntities";
 const SET_STATE = "setState";
 
 const state = {
   list: [],
-  grouped: {}
+  grouped: {},
+  columnGroup: []
 };
 const getters = {};
 const mutations = {
@@ -23,6 +25,8 @@ const mutations = {
       return prev;
     }, {})
     state.grouped = grouped;
+    const groups = Object.keys(grouped);
+    state.columnGroup = transpose(splitEvery(4, groups));
   },
   [SET_STATE]: (state, { entityId, newState }) => {
     Object.keys(state.grouped).forEach(group => {
