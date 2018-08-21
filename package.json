@@ -1,0 +1,27 @@
+{
+  "name": "homify",
+  "version": "0.0.1",
+  "description": "Homify is a home automation platform which allows you to control and track all internet devices at home.",
+  "main": "index.js",
+  "scripts": {
+    "docker": "docker-compose up",
+    "web": "cd frontend && npm run start",
+    "gateway": "cd services/gateway && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/homify-iot/homify.git"
+  },
+  "keywords": [
+    "Home",
+    "automation",
+    "Homify",
+    "IoT"
+  ],
+  "author": "Andrew Yang",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/homify-iot/homify/issues"
+  },
+  "homepage": "https://github.com/homify-iot/homify#readme"
+}
