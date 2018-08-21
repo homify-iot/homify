@@ -1,25 +1,30 @@
+import { Devices } from "config/db";
+import Homify from "core/homify";
 import { createDebug } from "services/debug.service";
-import Homify from "./homify";
 
 const log = createDebug("core");
 
 export const bootstrap = (config) => {
   const homify = new Homify(config);
-
-  discovery(config.discovery || []);
+  discoveryComponents();
   loadAutomation(config.automation || []);
   return homify;
 };
 
-const discovery = (components) => {
-  components.forEach((component) => {
-    const moduleName = `@/components/${component.name}`;
-    const module = require(moduleName);
-    module.setup(component);
-  });
+const discoveryComponents = () => {
+  Devices.find({})
+    .exec()
+    .then((components) => {
+      console.log(components);
+      // components.forEach((component) => {
+      //   const moduleName = `@/components/${component.name}`;
+      //   const module = require(moduleName);
+      //   module.setup(component);
+      // });
+    });
 };
 
-const loadAutomation = (jobs) => {
+export const loadAutomation = (jobs) => {
   jobs.forEach((job) => {
     const moduleName = `@/components/automation`;
     const module = new (require(moduleName).default)(job);

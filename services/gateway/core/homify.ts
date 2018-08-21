@@ -9,6 +9,7 @@ const log = createDebug("Core");
 
 export default class Homify {
   public components: Entity[];
+  public existingEntities: EntityObject[];
   private onUpdate$: Subject<Entity[]> = new Subject();
 
   constructor(private config) {
@@ -44,4 +45,13 @@ export default class Homify {
     return R.find(R.propEq("entityId", entityId))(this.config.entities);
   }
 
+  public loadPlatform(type, domain, config) {
+    try {
+      const moduleName = `@/platforms/${type}/${domain}`;
+      const module = require(moduleName);
+      module.setupPlatform(config);
+    } catch (e) {
+      log(e);
+    }
+  }
 }
