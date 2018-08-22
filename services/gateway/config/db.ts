@@ -13,43 +13,22 @@ const FloorSchema = new Schema({
 });
 export const Floor = mongoose.model("floors", FloorSchema);
 
-const DiscoverySchema = new Schema({
+const EntitySchema = new Schema({
   _id: ObjectId,
+  entityId: String,
   name: String,
-  gateways: [],
-  cacheTime: Number
-});
-export const Discoveries = mongoose.model("discoveries", DiscoverySchema);
-
-const TypeSchema = new Schema({
-  _id: ObjectId,
+  type: String,
   platform: String,
-  type_name: String
+  group: String
 });
-export const Types = mongoose.model("types", TypeSchema);
+export const Entities = mongoose.model("entities", EntitySchema);
 
-const DeviceSchema = new Schema({
+const AutomationSchema = new Schema({
   _id: ObjectId,
-  name: String,
-  type: { type: ObjectId, ref: "types" },
-  online: Boolean,
-  state: {},
-  config: {},
-  attribute: {},
-  platform: { type: ObjectId, ref: "devices" }
+  triggers: {},
+  actions: {}
 });
-export const Devices = mongoose.model("devices", DeviceSchema);
-
-const RoomsSchema = new Schema({
-  _id: ObjectId,
-  name: String,
-  attributes: {
-    image: String,
-    icon: String
-  },
-  devices: [{ type: ObjectId, ref: "devices" }]
-});
-export const Rooms = mongoose.model("rooms", RoomsSchema);
+export const Automations = mongoose.model("automations", AutomationSchema);
 
 const FloorplanSchema = new Schema({
   _id: ObjectId,

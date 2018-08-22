@@ -1,5 +1,5 @@
 
-import { homify } from "@/index";
+import homify from "core/homify";
 import { createDebug } from "services/debug.service";
 import { XiaomiGenericSwitch } from "./_switch";
 

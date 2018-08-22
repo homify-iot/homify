@@ -1,4 +1,4 @@
-import { homify } from "@/index";
+import homify from "core/homify";
 import { fromEvent } from "rxjs";
 import { createDebug } from "services/debug.service";
 import { Sensor } from "./_sensor";
@@ -27,6 +27,7 @@ class XiaomiMotionSensor extends Sensor {
   }
 
   public async listenChanges() {
+    this.state = false;
     fromEvent(this.device, "movement")
       .subscribe(() => {
         this.state = true;

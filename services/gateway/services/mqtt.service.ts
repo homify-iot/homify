@@ -19,6 +19,10 @@ import {
   IPublishOptions,
   MqttConnectionState,
 } from "../types/mqtt.model";
+import { createDebug } from "./debug.service";
+
+const log = createDebug("Mqtt");
+
 export default class MqttClientService {
 
   public get clientId() {
@@ -229,6 +233,7 @@ export default class MqttClientService {
   }
 
   private _handleOnConnect = (_e: IOnConnectEvent) => {
+    log("Mqtt connected ", this.clientId);
     Object.keys(this.observables).forEach((filterString: string) => {
       this.client.subscribe(filterString);
     });
@@ -243,7 +248,7 @@ export default class MqttClientService {
   }
 
   private _handleOnError = (e: IOnErrorEvent) => {
-    console.error(e);
+    log(e);
   }
 
   private _handleOnMessage = (_topic: string, _msg, packet: IMqttMessage) => {

@@ -1,4 +1,4 @@
-import { loadPlatform } from "core";
+import Loader from "core/Loader";
 import miio from "miio";
 import { createDebug } from "services/debug.service";
 const log = createDebug("Loading component");
@@ -18,9 +18,9 @@ export const setup = (config) => {
         const children = device.device.children();
         for (const child of children) {
           if (child.matches("type:wall-switch")) {
-            loadPlatform("switch", DOMAIN, child);
+            Loader.loadPlatform("switch", DOMAIN, child);
           } else if (child.matches("type:sensor")) {
-            loadPlatform("sensor", DOMAIN, child);
+            Loader.loadPlatform("sensor", DOMAIN, child);
           }
         }
       }
@@ -28,7 +28,7 @@ export const setup = (config) => {
       if (metadata.capabilities.has("switchable-mode")) {
         const type = "switch";
         const DOMAIN = "xiaomi_miio";
-        loadPlatform(type, DOMAIN, device.device);
+        Loader.loadPlatform(type, DOMAIN, device.device);
       }
     }
   });

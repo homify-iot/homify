@@ -1,6 +1,6 @@
-import { broadcastStateChange, serviceRegister } from "@/core/bus";
-import { homify } from "@/index";
 import { IMqttMessage } from "@/types/mqtt.model";
+import EventBus from "core/EventBus";
+import homify from "core/homify";
 import * as R from "ramda";
 import { createDebug } from "services/debug.service";
 
@@ -35,14 +35,14 @@ export default abstract class Entity {
 
   set state(newState) {
     if (newState !== this._state) {
-      broadcastStateChange(this.entityId, newState).subscribe();
+      EventBus.broadcastStateChange(this.entityId, newState).subscribe();
     }
     this.stateLastUpdate = new Date();
     this._state = newState;
   }
 
   public register = () => {
-    serviceRegister(this.entityId)
+    EventBus.serviceRegister(this.entityId)
       .subscribe((packet: IMqttMessage) => {
         const { topic, payload } = packet;
         const service = JSON.parse(payload.toString());
@@ -52,8 +52,8 @@ export default abstract class Entity {
   }
 
   public toObject(): EntityObject {
-    const name = R.pathOr(this.defaultName, ["name"], homify.getEntityInfo(this.entityId));
-    const group = R.pathOr("", ["group"], homify.getEntityInfo(this.entityId));
+    const name = R.pathOr(this.defaultName, ["name"], homify.getEntityById(this.entityId));
+    const group = R.pathOr("", ["group"], homify.getEntityById(this.entityId));
 
     return {
       entityId: this.entityId,
