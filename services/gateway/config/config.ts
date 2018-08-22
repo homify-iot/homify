@@ -1,6 +1,6 @@
+import configuration from "core/configuration";
 import dotenv from "dotenv";
 import Joi from "joi";
-import components from "./components";
 
 dotenv.config();
 
@@ -9,6 +9,9 @@ const envVarsSchema = Joi.object({
     .allow(["development", "production", "test", "provision"])
     .default("development"),
   SERVER_PORT: Joi.number().default(3000),
+  DB: Joi.string().default("localhost"),
+  DB_NAME: Joi.string().default("homify"),
+  DB_PORT: Joi.number().default(27017)
 })
   .unknown()
   .required();
@@ -21,7 +24,10 @@ if (error) {
 const config = {
   env: envVars.NODE_ENV,
   port: envVars.SERVER_PORT,
-  homify_config: components,
+  db: envVars.DB,
+  db_name: envVars.DB_NAME,
+  db_port: envVars.DB_PORT,
+  homify_config: configuration,
 };
 
 export default config;
