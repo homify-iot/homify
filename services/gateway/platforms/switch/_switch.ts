@@ -4,7 +4,9 @@ import { createDebug } from "services/debug.service";
 import Entity from "../_entity";
 
 const log = createDebug("Platform:Switch");
-
+const turnOn = Symbol.for("turnOn");
+const turnOff = Symbol.for("turnOff");
+const toggle = Symbol.for("toggle");
 export abstract class SwitchDevice extends Entity {
   get type() {
     return "switch";
@@ -15,11 +17,11 @@ export abstract class SwitchDevice extends Entity {
 
   public abstract getCurrentState();
 
-  public abstract turnOn();
+  public abstract [turnOn]();
 
-  public abstract turnOff();
+  public abstract [turnOff]();
 
-  public abstract toggle();
+  public abstract [toggle]();
 
   public abstract listenChanges();
 
@@ -37,19 +39,19 @@ export abstract class XiaomiGenericSwitch extends SwitchDevice {
     this.state = result;
   }
 
-  public async turnOn() {
+  public async [turnOn]() {
     from(this.device.setPower(true))
       .pipe(delay(10))
       .subscribe(() => this.state = true);
   }
 
-  public async turnOff() {
+  public async [turnOff]() {
     from(this.device.setPower(false))
       .pipe(delay(10))
       .subscribe(() => this.state = false);
   }
 
-  public async toggle() {
+  public async [toggle]() {
     await this.device.setPower(!this.state);
     this.state = !this.state;
   }
@@ -62,7 +64,7 @@ export abstract class XiaomiGenericSwitch extends SwitchDevice {
 
   public serviceHandler(service) {
     try {
-      this[service]();
+      this[Symbol.for(service)]();
     } catch (e) {
       log(`Method ${service} not implemented.`);
     }
