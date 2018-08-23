@@ -25,11 +25,12 @@ class Homify {
 
   public async addComponent(device: Entity) {
     device.register();
-    const existEntity = await Entities.findOne({ entityId: device.entityId });
+    let existEntity = await Entities.findOne({ entityId: device.entityId });
     if (!existEntity) {
-      await Entities.create(device.toObject());
+      existEntity = await Entities.create(device.toObject());
       await EventBus.broadcastNewDeviceFound(device.toObject());
     }
+    device.name = existEntity.name;
     await EventBus.broadcastComponentLoaded(device.entityId);
     this.onlinePool[device.entityId] = true;
   }

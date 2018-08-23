@@ -32,6 +32,14 @@ const AutomationSchema = new Schema({
 });
 export const Automations = mongoose.model("automations", AutomationSchema);
 
+const LogSchema = new Schema({
+  category: String,
+  entityId: String,
+  entityName: String,
+  details: String
+});
+export const Logs = mongoose.model("logs", LogSchema);
+
 const FloorplanSchema = new Schema({
   _id: ObjectId,
   tag: String,

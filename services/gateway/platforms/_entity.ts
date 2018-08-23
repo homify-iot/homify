@@ -16,6 +16,7 @@ export interface EntityObject {
 export default abstract class Entity {
   public abstract entityId: string;
   public abstract defaultName: string;
+  public name: string;
   public icon: string;
   public image: string;
   public abstract type: string;
@@ -32,7 +33,7 @@ export default abstract class Entity {
         last_update: new Date()
       };
       homify.statePool[this.entityId] = stateInfo;
-      EventBus.broadcastStateChange(this.entityId, stateInfo).subscribe();
+      EventBus.broadcastStateChange(this, stateInfo).subscribe();
     }
     this._state = newState;
   }

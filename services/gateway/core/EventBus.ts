@@ -1,14 +1,16 @@
 import homify from "core/homify";
-import { EntityObject } from "platforms/_entity";
+import Logger from "core/Logger";
+import { default as Entity, EntityObject } from "platforms/_entity";
 import { createDebug } from "services/debug.service";
 import { StateInfo } from "types/homify";
 
 const log = createDebug("EventBus");
 
 export default class EventBus {
-  public static broadcastStateChange = (entityId: string, stateInfo: StateInfo) => {
-    const topic = `entity/${entityId}/state_changed`;
+  public static broadcastStateChange = (entity: Entity, stateInfo: StateInfo) => {
+    const topic = `entity/${entity.entityId}/state_changed`;
     log(topic, stateInfo);
+    Logger.logToDB("state_changed", entity, JSON.stringify(stateInfo));
     return homify.mqttService.publish(topic, JSON.stringify(stateInfo));
   }
 

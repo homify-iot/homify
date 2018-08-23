@@ -17,7 +17,7 @@ export default class Automation {
       EventBus.getStateListener(trigger.entityId)
         .pipe(
           map((packet: IMqttMessage) => JSON.parse(packet.payload.toString())),
-          filter((state) => state === trigger.to)
+          filter((stateInfo) => stateInfo.state === trigger.to)
         )
         .subscribe(() => R.map(this.triggerAction, this.job.actions));
     }
