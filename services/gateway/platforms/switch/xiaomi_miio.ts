@@ -17,7 +17,6 @@ class PowerStrip extends XiaomiGenericSwitch {
   public entityId: string;
   public defaultName: string = "PowerStrip";
   public image = "https://fb1-cw.lnwfile.com/_/cw/_raw/nl/tn/x8.jpg";
-  public available: boolean = true;
   constructor(device) {
     super(device);
     this.entityId = device.id;

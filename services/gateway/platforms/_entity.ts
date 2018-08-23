@@ -1,8 +1,7 @@
-import { IMqttMessage } from "@/types/mqtt.model";
 import EventBus from "core/EventBus";
 import homify from "core/homify";
-import * as R from "ramda";
 import { createDebug } from "services/debug.service";
+import { IMqttMessage } from "types/mqtt";
 
 const log = createDebug("Entity");
 
@@ -13,21 +12,14 @@ export interface EntityObject {
   icon: string;
   image: string;
   type: string;
-  group: string;
-  available: boolean;
-  stateLastUpdate: Date;
 }
 export default abstract class Entity {
   public abstract entityId: string;
   public abstract defaultName: string;
-  public stateAttrs: any[];
   public icon: string;
   public image: string;
-  public type: string;
-  public abstract available: boolean = false;
+  public abstract type: string;
   public _state: boolean;
-  public stateLastUpdate: Date;
-  public typeAttrs: {};
 
   get state() {
     return this._state;
@@ -35,9 +27,13 @@ export default abstract class Entity {
 
   set state(newState) {
     if (newState !== this._state) {
-      EventBus.broadcastStateChange(this.entityId, newState).subscribe();
+      const stateInfo = {
+        state: newState,
+        last_update: new Date()
+      };
+      homify.statePool[this.entityId] = stateInfo;
+      EventBus.broadcastStateChange(this.entityId, stateInfo).subscribe();
     }
-    this.stateLastUpdate = new Date();
     this._state = newState;
   }
 
@@ -52,19 +48,13 @@ export default abstract class Entity {
   }
 
   public toObject(): EntityObject {
-    const name = R.pathOr(this.defaultName, ["name"], homify.getEntityById(this.entityId));
-    const group = R.pathOr("", ["group"], homify.getEntityById(this.entityId));
-
     return {
       entityId: this.entityId,
-      name,
+      name: this.defaultName,
       state: this.state,
       icon: this.icon,
       image: this.image,
       type: this.type,
-      group,
-      available: this.available,
-      stateLastUpdate: this.stateLastUpdate,
     };
   }
 

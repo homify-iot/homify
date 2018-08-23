@@ -3,12 +3,16 @@ import { Http } from "@/services/http.service";
 import { transpose, splitEvery } from "ramda";
 
 const SET_ENTITIES = "setEntities";
+const SET_STATES = "setStates";
+const SET_ONLINE = "setOnline";
 const SET_STATE = "setState";
 
 const state = {
   list: [],
   grouped: {},
-  columnGroup: []
+  columnGroup: [],
+  statePool: {},
+  onlinePool: {}
 };
 const getters = {};
 const mutations = {
@@ -28,26 +32,32 @@ const mutations = {
     const groups = Object.keys(grouped);
     state.columnGroup = transpose(splitEvery(4, groups));
   },
-  [SET_STATE]: (state, { entityId, newState }) => {
-    Object.keys(state.grouped).forEach(group => {
-      state.grouped[group] = state.grouped[group].map(entity => {
-        if (entity.entityId === entityId) {
-          entity.state = newState;
-          entity.stateLastUpdate = new Date();
-        }
-        return entity;
-      });
-    })
+  [SET_STATES]: (state, pool) => {
+    state.statePool = pool
   },
+  [SET_ONLINE]: (state, pool) => {
+    state.onlinePool = pool
+  },
+  [SET_STATE]: (state, { entityId, newState }) => {
+    state.statePool[entityId] = newState
+  }
 };
 
 const actions = {
   fetchEntities: async ({ commit }) => {
-    const { data: entities } = await Http.get("entities");
-    commit(SET_ENTITIES, entities);
+    try {
+      const { data: entities } = await Http.get("entities");
+      const { data: statePool } = await Http.get("entities/states");
+      const { data: onlinePool } = await Http.get("entities/online");
+      commit(SET_ENTITIES, entities);
+      commit(SET_STATES, statePool);
+      commit(SET_ONLINE, onlinePool);
+    } catch (e) {
+      console.log(e);
+    }
   },
-  toggleDevice: ({ }, entity) => {
-    const service = entity.state ? "turnOff" : "turnOn";
+  toggleDevice: ({ state }, entity) => {
+    const service = state.statePool[entity.entityId]["state"] ? "turnOff" : "turnOn";
     callService(entity.entityId, service).subscribe();
   },
 };

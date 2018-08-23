@@ -12,13 +12,13 @@
       <div class="details">
         <div class="title">{{ entity.name }}</div>
         <div class="state-info">
-          <timeago v-if="entity.stateLastUpdate" :datetime="entity.stateLastUpdate" :auto-update="60" />
+          <timeago v-if="stateInfo.last_update" :datetime="stateInfo.last_update" :auto-update="60" />
         </div>
       </div>
       <div class="status-bar">
         <svgicon 
           class="available-icon"
-          :icon="entity.available ?'wifi':'offline'" />
+          :icon="online ?'wifi':'offline'" />
         <el-switch 
           v-if="isSwitchable" 
           :active-value="!isOn" 
@@ -37,10 +37,15 @@ export default class DeviceSwitch extends Vue {
   @Prop({ default: () => ({}) })
   entity;
 
+  @Prop({ default: () => ({}) })
+  stateInfo;
+
+  @Prop() online;
+
   @Entities.Action toggleDevice;
 
   get isOn() {
-    return this.entity.state;
+    return this.stateInfo.state;
   }
 
   get isSwitchable() {

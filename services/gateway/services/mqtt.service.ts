@@ -18,7 +18,8 @@ import {
   IOnErrorEvent,
   IPublishOptions,
   MqttConnectionState,
-} from "../types/mqtt.model";
+} from "types/mqtt.d";
+
 import { createDebug } from "./debug.service";
 
 const log = createDebug("Mqtt");

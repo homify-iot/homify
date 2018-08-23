@@ -18,7 +18,11 @@
             class="device-item"
             v-for="entity in grouped[group]"
             :key="entity.entityId">
-            <device-switch v-if="entity" :entity="entity" />
+            <device-switch 
+              v-if="entity" 
+              :entity="entity" 
+              :state-info="statePool[entity.entityId]"
+              :online="onlinePool[entity.entityId]"/>
           </div>
         </div>
       </el-card>
@@ -40,6 +44,10 @@ export default class Home extends Vue {
   @Entities.State grouped;
 
   @Entities.State columnGroup;
+
+  @Entities.State statePool;
+
+  @Entities.State onlinePool;
 }
 </script>
 

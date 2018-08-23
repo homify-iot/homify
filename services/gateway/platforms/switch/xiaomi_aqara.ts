@@ -18,7 +18,6 @@ export const setupPlatform = (device) => {
 class XiaomiWallSwitch extends XiaomiGenericSwitch {
   public entityId: string;
   public icon = "device/lightbulb";
-  public available: boolean = true;
 
   constructor(device, public defaultName: string) {
     super(device);

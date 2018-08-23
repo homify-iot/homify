@@ -17,6 +17,8 @@ const EntitySchema = new Schema({
   _id: ObjectId,
   entityId: String,
   name: String,
+  icon: String,
+  image: String,
   type: String,
   platform: String,
   group: String

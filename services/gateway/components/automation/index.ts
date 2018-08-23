@@ -2,7 +2,7 @@ import EventBus from "core/EventBus";
 import * as R from "ramda";
 import { filter, map } from "rxjs/operators";
 import { createDebug } from "services/debug.service";
-import { IMqttMessage } from "types/mqtt.model";
+import { IMqttMessage } from "types/mqtt";
 
 const log = createDebug("Automation");
 export default class Automation {

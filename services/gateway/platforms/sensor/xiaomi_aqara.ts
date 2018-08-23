@@ -27,7 +27,6 @@ class XiaomiMotionSensor extends Sensor {
   }
 
   public async listenChanges() {
-    this.state = false;
     fromEvent(this.device, "movement")
       .subscribe(() => {
         this.state = true;

@@ -18,7 +18,7 @@ import {
   IOnErrorEvent,
   IPublishOptions,
   MqttConnectionState,
-} from "../types/mqtt.model";
+} from "@/types/mqtt.model";
 export default class MqttClientService {
 
   public get clientId() {
