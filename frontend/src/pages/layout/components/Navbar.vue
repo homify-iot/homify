@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import Hamburger from "@/components/Hamburger/index.vue";
+import Hamburger from "@/components/Hamburger/Hamburger.vue";
 import { Settings } from "@/store/vuex-decorators";
 import Tabs from "@/pages/layout/components/Tabs.vue";
 @Component({

@@ -22,22 +22,26 @@
               v-if="entity" 
               :entity="entity" 
               :state-info="statePool[entity.entityId]"
-              :online="onlinePool[entity.entityId]"/>
+              :online="onlinePool[entity.entityId]"
+              @show-info="$refs.infomodal.open(entity)"/>
           </div>
         </div>
       </el-card>
     </div>
+    <info-modal ref="infomodal" :state-pool="statePool" :online-pool="onlinePool"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { Entities } from "@/store/vuex-decorators";
-import DeviceSwitch from "@/components/DeviceSwitch/index.vue";
+import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
+import InfoModal from "@/components/Modal/InfoModal.vue";
 
 @Component({
   components: {
-    DeviceSwitch
+    DeviceSwitch,
+    InfoModal
   }
 })
 export default class Home extends Vue {
@@ -76,6 +80,12 @@ export default class Home extends Vue {
     .device-item {
       padding: 0 10px;
     }
+  }
+  .popup-body {
+    position: relative;
+    box-sizing: border-box;
+    text-align: center;
+    background-color: white;
   }
 }
 @media only screen and (min-width: 450px) {

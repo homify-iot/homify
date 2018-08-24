@@ -34,7 +34,7 @@ import Sidebar from "@/pages/layout/components/Sidebar/Sidebar.vue";
 import Navbar from "@/pages/layout/components/Navbar.vue";
 import Tabs from "@/pages/layout/components/Tabs.vue";
 import AppMain from "@/pages/layout/components/AppMain.vue";
-import DeviceSwitch from "@/components/DeviceSwitch/index.vue";
+import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
 
 import { Devices } from "@/store/vuex-decorators";
 @Component({

@@ -9,7 +9,7 @@
           width="26" 
           height="26"/>
       </div>
-      <div class="details">
+      <div class="details" @click="showInfo">
         <div class="title">{{ entity.name }}</div>
         <div class="state-info">
           <timeago v-if="stateInfo.last_update" :datetime="stateInfo.last_update" :auto-update="60" />
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import { Entities } from "@/store/vuex-decorators";
 
 @Component
@@ -41,6 +41,9 @@ export default class DeviceSwitch extends Vue {
   stateInfo;
 
   @Prop() online;
+
+  @Emit("show-info")
+  showInfo() {}
 
   @Entities.Action toggleDevice;
 
@@ -139,6 +142,7 @@ export default class DeviceSwitch extends Vue {
     flex-direction: column;
     justify-content: center;
     min-height: 3rem;
+    cursor: pointer;
     .title {
       font-family: $font-secondary;
       font-size: 1rem;

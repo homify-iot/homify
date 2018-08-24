@@ -14,6 +14,9 @@ Vue.config.productionTip = false;
 Vue.use(Element, {
   size: "medium" // set element-ui default size
 });
+import mandMobile from 'mand-mobile';
+import 'mand-mobile/lib/mand-mobile.css';
+Vue.use(mandMobile);
 import VueTimeago from 'vue-timeago';
 Vue.use(VueTimeago);
 
