@@ -1,4 +1,4 @@
-import EventBus from "core/EventBus";
+import * as EventBus from "core/EventBus";
 import * as R from "ramda";
 import { filter, map } from "rxjs/operators";
 import { createDebug } from "services/debug.service";

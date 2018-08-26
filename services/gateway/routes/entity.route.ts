@@ -1,5 +1,5 @@
 import * as express from "express";
-import { getAllEntities, getOnlinePool, getStatePool } from "../controllers/entity.controller";
+import { getAllEntities, getLogs, getOnlinePool, getStatePool } from "../controllers/entity.controller";
 
 const router = express.Router();
 
@@ -13,4 +13,8 @@ router
 router
   .route("/online")
   .get(getOnlinePool);
+
+router
+  .route("/logs/:entityId")
+  .get(getLogs);
 export default router;

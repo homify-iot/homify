@@ -1,4 +1,4 @@
-import EventBus from "core/EventBus";
+import * as EventBus from "core/EventBus";
 import homify from "core/homify";
 import { createDebug } from "services/debug.service";
 import { IMqttMessage } from "types/mqtt";

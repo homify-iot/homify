@@ -5,6 +5,7 @@ import { transpose, splitEvery } from "ramda";
 const SET_ENTITIES = "setEntities";
 const SET_STATES = "setStates";
 const SET_ONLINE = "setOnline";
+const SET_LOGS = "setLogs";
 const SET_STATE = "setState";
 
 const state = {
@@ -12,7 +13,8 @@ const state = {
   grouped: {},
   columnGroup: [],
   statePool: {},
-  onlinePool: {}
+  onlinePool: {},
+  logs: {}
 };
 const getters = {};
 const mutations = {
@@ -33,13 +35,16 @@ const mutations = {
     state.columnGroup = transpose(splitEvery(4, groups));
   },
   [SET_STATES]: (state, pool) => {
-    state.statePool = pool
+    state.statePool = pool;
   },
   [SET_ONLINE]: (state, pool) => {
-    state.onlinePool = pool
+    state.onlinePool = pool;
+  },
+  [SET_LOGS]: (state, { entityId, logs }) => {
+    state.logs[entityId] = logs;
   },
   [SET_STATE]: (state, { entityId, newState }) => {
-    state.statePool[entityId] = newState
+    state.statePool[entityId] = newState;
   }
 };
 
@@ -52,6 +57,14 @@ const actions = {
       commit(SET_ENTITIES, entities);
       commit(SET_STATES, statePool);
       commit(SET_ONLINE, onlinePool);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  fetchLogs: async ({ commit }, entityId: string) => {
+    try {
+      const { data: logs } = await Http.get(`entities/logs/${entityId}`);
+      commit(SET_LOGS, { entityId, logs });
     } catch (e) {
       console.log(e);
     }

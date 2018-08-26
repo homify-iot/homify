@@ -1,7 +1,7 @@
 import config from "config/config";
 import { Automations, Entities } from "config/db";
-import EventBus from "core/EventBus";
-import Loader from "core/Loader";
+import * as EventBus from "core/EventBus";
+import * as Loader from "core/Loader";
 import Entity from "platforms/_entity";
 import MqttClient from "services/mqtt.service";
 import { OnlinePool, StatePool } from "types/homify";

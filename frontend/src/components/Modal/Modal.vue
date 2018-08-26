@@ -78,7 +78,7 @@ export default class Modal extends Vue {
     }
     .modal-body {
       flex: 1;
-      margin: 20px 0;
+      padding: 20px;
       overflow-y: auto;
     }
   }

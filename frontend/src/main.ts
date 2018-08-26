@@ -19,7 +19,6 @@ import 'mand-mobile/lib/mand-mobile.css';
 Vue.use(mandMobile);
 import VueTimeago from 'vue-timeago';
 Vue.use(VueTimeago);
-
 new Vue({
   router,
   store,

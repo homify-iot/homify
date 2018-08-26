@@ -1,4 +1,4 @@
-import { Entities } from "config/db";
+import { Entities, Logs } from "config/db";
 import homify from "core/homify";
 
 export const getAllEntities = (_req, res) => {
@@ -14,4 +14,11 @@ export const getStatePool = (_req, res) => {
 
 export const getOnlinePool = (_req, res) => {
   res.json(homify.onlinePool);
+};
+
+export const getLogs = (req, res) => {
+  Logs.find({ entityId: req.params.entityId })
+    .then((logs) => {
+      res.json(logs);
+    });
 };
