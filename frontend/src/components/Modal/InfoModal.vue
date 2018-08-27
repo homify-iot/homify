@@ -2,7 +2,7 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
 import Modal from "@/components/Modal/Modal.vue";
-import LogChart from "@/components/LogChart/LogChart.js";
+import LogChart from "@/components/LogChart/LogChart.vue";
 import moment from "moment";
 @Component({
   components: {
