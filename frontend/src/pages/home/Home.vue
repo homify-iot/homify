@@ -28,7 +28,10 @@
         </div>
       </el-card>
     </div>
-    <info-modal ref="infomodal" :state-pool="statePool" :online-pool="onlinePool"/>
+    <info-modal 
+      ref="infomodal" 
+      :state-pool="statePool" 
+      :online-pool="onlinePool"/>
   </div>
 </template>
 
@@ -53,11 +56,8 @@ export default class Home extends Vue {
 
   @Entities.State onlinePool;
 
-  @Entities.Action fetchLogs;
-
   openInfoModal(entity) {
     (this.$refs.infomodal as any).open(entity);
-    this.fetchLogs(entity.entityId);
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { barchart } from "./chart";
 import * as d3 from "d3";
 
@@ -9,20 +9,23 @@ import * as d3 from "d3";
   }
 })
 export default class LogChart extends Vue {
-  dataset = [
-    {
-      interval_s: 0,
-      data: [
-        ["2016-01-01 12:00:00", 0],
-        ["2016-01-01 14:22:51", 1],
-        ["2016-01-01 19:20:05", 1],
-        ["2016-01-01 20:30:00", 0]
-      ]
-    }
-  ];
+  @Prop() logs;
+
+  get dataset() {
+    const data = this.logs.map(set => {
+      const state = JSON.parse(set.details);
+      return [new Date(state.last_update), state.state ? 1 : 0];
+    });
+    return [
+      {
+        interval_s: 0,
+        data: [...data]
+      }
+    ];
+  }
 
   mounted() {
-    var chart3 = barchart().width(800);
+    var chart3 = barchart().width(500);
     d3
       .select("#chart")
       .datum(this.dataset)

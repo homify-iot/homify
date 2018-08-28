@@ -50,7 +50,7 @@ export function barchart () {
   // range of dates that will be shown
   // if from-date (1st element) or to-date (2nd element) is zero,
   // it will be determined according to your data (default: automatically)
-  var displayDateRange = [ 0, 0 ];
+  var displayDateRange = [ 0, new Date() ];
 
   // global div for tooltip
   var div = d3.select('body').append('div')
@@ -116,45 +116,9 @@ export function barchart () {
       // parse data text strings to JavaScript date stamps
       var parseDate = d3.timeParse('%Y-%m-%d');
       var parseDateTime = d3.timeParse('%Y-%m-%d %H:%M:%S');
-      var parseDateRegEx = new RegExp(/^\d{4}-\d{2}-\d{2}$/);
-      var parseDateTimeRegEx = new RegExp(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/);
-      if (isDateOnlyFormat === null) {
-        isDateOnlyFormat = true;
-      }
-      dataset.forEach(function (d) {
-        d.data.forEach(function (d1) {
-          if (!(d1[ 0 ] instanceof Date)) {
-            if (parseDateRegEx.test(d1[ 0 ])) {
-              // d1[0] is date without time data
-              d1[ 0 ] = parseDate(d1[ 0 ]);
-            } else if (parseDateTimeRegEx.test(d1[ 0 ])) {
-              // d1[0] is date with time data
-              d1[ 0 ] = parseDateTime(d1[ 0 ]);
-              isDateOnlyFormat = false;
-            } else {
-              throw new Error('Date/time format not recognized. Pick between \'YYYY-MM-DD\' or ' +
-                '\'YYYY-MM-DD HH:MM:SS\'.');
-            }
-
-            if (!definedBlocks) {
-              d1[ 2 ] = d3.timeSecond.offset(d1[ 0 ], d.interval_s);
-            } else {
-              if (parseDateRegEx.test(d1[ 2 ])) {
-                // d1[2] is date without time data
-                d1[ 2 ] = parseDate(d1[ 2 ]);
-              } else if (parseDateTimeRegEx.test(d1[ 2 ])) {
-                // d1[2] is date with time data
-                d1[ 2 ] = parseDateTime(d1[ 2 ]);
-              } else {
-                throw new Error('Date/time format not recognized. Pick between \'YYYY-MM-DD\' or ' +
-                  '\'YYYY-MM-DD HH:MM:SS\'.');
-              }
-            }
-          }
-        });
-      });
 
       // cluster data by dates to form time blocks
+
       dataset.forEach(function (series, seriesI) {
         var tmpData = [];
         var dataLength = series.data.length;
@@ -199,7 +163,6 @@ export function barchart () {
         if (series.disp_data.length > 0) {
           if (startDate === 0) {
             startDate = series.disp_data[ 0 ][ 0 ];
-            endDate = series.disp_data[ series.disp_data.length - 1 ][ 2 ];
           } else {
             if (displayDateRange[ 0 ] === 0 && series.disp_data[ 0 ][ 0 ] < startDate) {
               startDate = series.disp_data[ 0 ][ 0 ];
@@ -216,7 +179,6 @@ export function barchart () {
         .domain([ startDate, endDate ])
         .range([ 0, width ])
         .clamp(1);
-
       // define axes
       var xAxis = d3.axisTop(xScale);
 
@@ -264,23 +226,22 @@ export function barchart () {
         });
 
       // HTML labels
-      labels.append('foreignObject')
-        .attr('x', paddingLeft)
-        .attr('y', lineSpacing)
-        .attr('transform', function (d, i) {
-          return 'translate(0,' + ((lineSpacing + dataHeight) * i) + ')';
-        })
-        .attr('width', -1 * paddingLeft)
-        .attr('height', dataHeight)
-        .attr('class', 'ytitle')
-        .html(function (d) {
-          if (d.measure_html != null) {
-            return d.measure_html;
-          }
-        });
+      // labels.append('foreignObject')
+      //   .attr('x', paddingLeft)
+      //   .attr('y', lineSpacing)
+      //   .attr('transform', function (d, i) {
+      //     return 'translate(0,' + ((lineSpacing + dataHeight) * i) + ')';
+      //   })
+      //   .attr('width', -1 * paddingLeft)
+      //   .attr('height', dataHeight)
+      //   .attr('class', 'ytitle')
+      //   .html(function (d) {
+      //     if (d.measure_html != null) {
+      //       return d.measure_html;
+      //     }
+      //   });
 
       // create vertical grid
-      console.log(svg.select('#g_axis').selectAll('line.vert_grid').data(xScale.ticks()));
       if (noOfDatasets) {
         svg.select('#g_axis').selectAll('line.vert_grid').data(xScale.ticks())
           .enter()

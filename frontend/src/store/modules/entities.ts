@@ -14,7 +14,7 @@ const state = {
   columnGroup: [],
   statePool: {},
   onlinePool: {},
-  logs: {}
+  logs: []
 };
 const getters = {};
 const mutations = {
@@ -40,8 +40,8 @@ const mutations = {
   [SET_ONLINE]: (state, pool) => {
     state.onlinePool = pool;
   },
-  [SET_LOGS]: (state, { entityId, logs }) => {
-    state.logs[entityId] = logs;
+  [SET_LOGS]: (state, logs) => {
+    state.logs = logs;
   },
   [SET_STATE]: (state, { entityId, newState }) => {
     state.statePool[entityId] = newState;
@@ -64,7 +64,7 @@ const actions = {
   fetchLogs: async ({ commit }, entityId: string) => {
     try {
       const { data: logs } = await Http.get(`entities/logs/${entityId}`);
-      commit(SET_LOGS, { entityId, logs });
+      commit(SET_LOGS, logs);
     } catch (e) {
       console.log(e);
     }
