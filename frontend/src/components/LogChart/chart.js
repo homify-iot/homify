@@ -4,31 +4,31 @@ export function barchart () {
   // define chart layout
   var margin = {
     // top margin includes title and legend
-    top: 70,
+    top: 30,
 
     // right margin should provide space for last horz. axis title
-    right: 40,
+    right: 0,
 
     bottom: 20,
 
     // left margin should provide space for y axis titles
-    left: 100,
+    left: 0,
   };
-
+  var tickGap = 200;
   // height of horizontal data bars
-  var dataHeight = 18;
+  var dataHeight = 24;
 
   // spacing between horizontal data bars
-  var lineSpacing = 14;
+  var lineSpacing = 7;
 
   // vertical space for heading
-  var paddingTopHeading = -50;
+  var paddingTopHeading = 10;
 
   // vertical overhang of vertical grid lines on bottom
   var paddingBottom = 10;
 
   // space for y axis titles
-  var paddingLeft = -100;
+  var paddingLeft = 10;
 
   var width = 940 - margin.left - margin.right;
 
@@ -50,7 +50,7 @@ export function barchart () {
   // range of dates that will be shown
   // if from-date (1st element) or to-date (2nd element) is zero,
   // it will be determined according to your data (default: automatically)
-  var displayDateRange = [ 0, new Date() ];
+  var displayDateRange = [ moment().startOf('day'), moment() ];
 
   // global div for tooltip
   var div = d3.select('body').append('div')
@@ -174,20 +174,27 @@ export function barchart () {
         }
       });
 
-      // define scales
-      var xScale = d3.scaleTime()
-        .domain([ startDate, endDate ])
-        .range([ 0, width ])
-        .clamp(1);
-      // define axes
-      var xAxis = d3.axisTop(xScale);
 
       // create SVG element
       var svg = d3.select(this).append('svg')
+        .style("padding", "0 20px")
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
-        .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        .attr("viewBox", "0 0 " + width + " " + height)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+
+      var container = d3.select(svg.node().parentNode),
+        aspect = (width + margin.left + margin.right) / (height + margin.top + margin.bottom);
+      d3.select(window).on("resize", resize);
+      function resize () {
+        var targetWidth = parseInt(container.style("width"));
+        width = targetWidth;
+        var tickNumber = Math.floor(width / tickGap);
+        svg.select('#g_axis').call(xAxis.ticks(tickNumber));
+        height = Math.round(targetWidth / aspect);
+        svg.attr("width", width)
+          .attr("height", height)
+      }
 
       // create basic element groups
       // svg.append('g').attr('id', 'g_title');
@@ -240,6 +247,15 @@ export function barchart () {
       //       return d.measure_html;
       //     }
       //   });
+
+      // define scales
+      var xScale = d3.scaleTime()
+        .domain([ startDate, endDate ])
+        .range([ 0, width ])
+        .clamp(1);
+      // define axes
+      var tickNumber = Math.floor(width / tickGap);
+      var xAxis = d3.axisTop(xScale).ticks(tickNumber);
 
       // create vertical grid
       if (noOfDatasets) {

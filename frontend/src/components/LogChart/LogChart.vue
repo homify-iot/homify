@@ -9,33 +9,21 @@ import * as d3 from "d3";
   }
 })
 export default class LogChart extends Vue {
-  @Prop() logs;
-
-  get dataset() {
-    const data = this.logs.map(set => {
-      const state = JSON.parse(set.details);
-      return [new Date(state.last_update), state.state ? 1 : 0];
-    });
-    return [
-      {
-        interval_s: 0,
-        data: [...data]
-      }
-    ];
-  }
+  @Prop() dataset;
 
   mounted() {
-    var chart3 = barchart().width(500);
+    const width = (this.$refs.chart as any).clientWidth;
+    const chart = barchart().width(width);
     d3
       .select("#chart")
       .datum(this.dataset)
-      .call(chart3);
+      .call(chart);
   }
 }
 </script>
 
 <template>
-  <div id="chart"/>
+  <div id="chart" ref="chart"/>
 </template>
 
 <style lang="scss">
@@ -91,7 +79,6 @@ div.tooltip {
 
 .ytitle {
   /* y axis labels */
-  dominant-baseline: middle;
   font-family: "Muli", "Helvetica", Arial, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   font-size: 12px;
@@ -148,7 +135,6 @@ div.tooltip {
 }
 
 .legend {
-  dominant-baseline: middle;
   font-size: 12px;
   font-family: "Muli", "Helvetica", Arial, sans-serif;
   -moz-osx-font-smoothing: grayscale;

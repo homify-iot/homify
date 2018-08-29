@@ -19,7 +19,9 @@ export default class InfoModal extends Vue {
 
   @Entities.Action fetchLogs;
 
-  @Entities.State logs;
+  @Entities.State logs: {};
+
+  @Entities.State loadingLogs: boolean;
 
   entity: { name: string; entityId: string } = { name: "", entityId: "" };
 
@@ -27,6 +29,22 @@ export default class InfoModal extends Vue {
     this.entity = entity;
     this.fetchLogs(entity.entityId);
     (this.$refs.modal as any).show();
+  }
+
+  get dataset() {
+    const id = this.entity.entityId,
+      log = this.logs[id];
+    if (!log) return;
+    const data = log.map(set => {
+      const state = JSON.parse(set.details);
+      return [new Date(state.last_update), state.state ? 1 : 0];
+    });
+    return [
+      {
+        interval_s: 0,
+        data: [...data]
+      }
+    ];
   }
 }
 </script>
@@ -39,7 +57,7 @@ export default class InfoModal extends Vue {
       :entity="entity"
       :state-info="statePool[entity.entityId]"
       :online="onlinePool[entity.entityId]"/>
-    <log-chart v-if="logs.length" :logs="logs"/>
+    <log-chart v-if="!loadingLogs" :dataset="dataset"/>
   </modal>
 </template>
 

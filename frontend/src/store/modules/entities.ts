@@ -7,6 +7,7 @@ const SET_STATES = "setStates";
 const SET_ONLINE = "setOnline";
 const SET_LOGS = "setLogs";
 const SET_STATE = "setState";
+const SET_LOADING = "setLoading";
 
 const state = {
   list: [],
@@ -14,7 +15,8 @@ const state = {
   columnGroup: [],
   statePool: {},
   onlinePool: {},
-  logs: []
+  logs: {},
+  loadingLogs: true
 };
 const getters = {};
 const mutations = {
@@ -40,11 +42,15 @@ const mutations = {
   [SET_ONLINE]: (state, pool) => {
     state.onlinePool = pool;
   },
-  [SET_LOGS]: (state, logs) => {
-    state.logs = logs;
+  [SET_LOGS]: (state, { entityId, logs }) => {
+    state.logs[entityId] = logs;
+    state.loadingLogs = false;
   },
   [SET_STATE]: (state, { entityId, newState }) => {
     state.statePool[entityId] = newState;
+  },
+  [SET_LOADING]: (state, loading) => {
+    state.loadingLogs = loading
   }
 };
 
@@ -63,8 +69,10 @@ const actions = {
   },
   fetchLogs: async ({ commit }, entityId: string) => {
     try {
+      commit(SET_LOADING, true);
       const { data: logs } = await Http.get(`entities/logs/${entityId}`);
-      commit(SET_LOGS, logs);
+      commit(SET_LOGS, { entityId, logs });
+      commit(SET_LOADING, false);
     } catch (e) {
       console.log(e);
     }
