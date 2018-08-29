@@ -1,5 +1,5 @@
 import * as Loader from "core/Loader";
-import miio from "miio";
+import miio from "lib/miio";
 import { createDebug } from "services/debug.service";
 const log = createDebug("Loading component");
 

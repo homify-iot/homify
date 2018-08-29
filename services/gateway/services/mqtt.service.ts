@@ -18,7 +18,7 @@ import {
   IOnErrorEvent,
   IPublishOptions,
   MqttConnectionState,
-} from "types/mqtt.d";
+} from "types/mqtt";
 
 import { createDebug } from "./debug.service";
 
