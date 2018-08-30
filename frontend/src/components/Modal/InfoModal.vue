@@ -1,13 +1,15 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
-import Modal from "@/components/Modal/Modal.vue";
+import ModalMobile from "@/components/Modal/Modal.mobile.vue";
+import ModalDesktop from "@/components/Modal/Modal.desktop.vue";
 import LogChart from "@/components/LogChart/LogChart.vue";
-import { Entities } from "@/store/vuex-decorators";
+import { Entities, Settings } from "@/store/vuex-decorators";
 
 @Component({
   components: {
-    Modal,
+    ModalMobile,
+    ModalDesktop,
     DeviceSwitch,
     LogChart
   }
@@ -22,6 +24,8 @@ export default class InfoModal extends Vue {
   @Entities.State logs: {};
 
   @Entities.State loadingLogs: boolean;
+
+  @Settings.Getter isMobile;
 
   entity: { name: string; entityId: string } = { name: "", entityId: "" };
 
@@ -50,7 +54,7 @@ export default class InfoModal extends Vue {
 </script>
 
 <template>
-  <modal ref="modal">
+  <component ref="modal" :is="isMobile ? 'modal-mobile' : 'modal-desktop'">
     <div slot="header">{{ entity.name }}</div>
     <svgicon slot="right-icon" icon='settings'/>
     <device-switch 
@@ -58,7 +62,7 @@ export default class InfoModal extends Vue {
       :state-info="statePool[entity.entityId]"
       :online="onlinePool[entity.entityId]"/>
     <log-chart v-if="!loadingLogs" :dataset="dataset"/>
-  </modal>
+  </component>
 </template>
 
 <style lang="scss">

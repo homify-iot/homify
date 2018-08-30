@@ -6,7 +6,11 @@ const state = {
   device: "desktop",
   language: "en"
 };
-const getters = {};
+const getters = {
+  isMobile: (state) => {
+    return state.device === "mobile"
+  }
+};
 const mutations = {
   TOGGLE_SIDEBAR: state => {
     state.sidebar.opened = !state.sidebar.opened;

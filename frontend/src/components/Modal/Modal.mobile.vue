@@ -2,7 +2,7 @@
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 
 @Component
-export default class Modal extends Vue {
+export default class ModalMobile extends Vue {
   @Prop() headerClass: string;
 
   @Prop() bodyClass: string;

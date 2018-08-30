@@ -30,11 +30,11 @@ import { Permission, Settings, Entities } from "@/store/vuex-decorators";
   }
 })
 export default class Layout extends Vue {
-  @Permission.State("routes") routes;
+  @Permission.State routes;
 
-  @Settings.State("sidebar") sidebar;
+  @Settings.State sidebar;
 
-  @Settings.State("device") device;
+  @Settings.State device;
 
   @Settings.Action toggleDevice;
 
