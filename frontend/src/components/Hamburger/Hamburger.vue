@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: 'Hamburger',
+  name: "Hamburger",
   props: {
     isActive: {
       type: Boolean,
@@ -39,7 +39,7 @@ export default {
       default: null
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -49,7 +49,7 @@ export default {
   width: 20px;
   height: 20px;
   transform: rotate(90deg);
-  transition: .38s;
+  transition: 0.38s;
   transform-origin: 50% 50%;
 }
 

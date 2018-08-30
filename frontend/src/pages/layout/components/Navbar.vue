@@ -1,7 +1,6 @@
 <template>
   <div>
     <hamburger class="hamburger-container" :toggle-click="toggleSideBar" :is-active="sidebar.opened"/>
-
     <tabs class="tabs"/>
 
     <div class="right-menu">
