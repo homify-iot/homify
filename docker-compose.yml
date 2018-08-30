@@ -1,5 +1,25 @@
 version: "3"
 services:
+  web:
+    build: ./frontend
+    volumes:
+        - ./frontend:/frontend:rw
+        - /frontend/node_modules/
+    ports:
+      - "8080:8080"
+  gateway:
+    restart: always
+    build: ./services/gateway
+    volumes:
+      - ./services/gateway:/backend
+    network_mode: "host"
+    extra_hosts: 
+      - "hostname:127.0.0.1"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      - mqtt
   mongo:
     image: mongo
     volumes:

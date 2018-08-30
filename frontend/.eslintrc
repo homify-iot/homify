@@ -6,9 +6,15 @@
     "expect": true,
     "sinon": true
   },
-  "plugins": ["vue"],
+  "plugins": [
+    "vue"
+  ],
   "rules": {
-    "no-restricted-globals": ["error", "event", "fdescribe"],
+    "no-restricted-globals": [
+      "error",
+      "event",
+      "fdescribe"
+    ],
     "vue/max-attributes-per-line": [
       2,
       {
@@ -21,14 +27,19 @@
     ],
     "vue/require-default-prop": "off",
     "vue/require-prop-types": "off",
-    "lines-between-class-members": ["error", "always"],
+    "lines-between-class-members": [
+      "error",
+      "always"
+    ],
     "no-multiple-empty-lines": "error"
   },
-  "extends": ["@vue/typescript", "plugin:vue/strongly-recommended"],
+  "extends": [
+    "@vue/typescript",
+    "plugin:vue/strongly-recommended"
+  ],
   "parserOptions": {
     "sourceType": "module",
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
       "jsx": true
     }
   }
