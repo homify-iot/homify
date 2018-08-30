@@ -5,53 +5,39 @@ export function barchart () {
   var margin = {
     // top margin includes title and legend
     top: 30,
-
     // right margin should provide space for last horz. axis title
     right: 0,
-
     bottom: 20,
-
     // left margin should provide space for y axis titles
     left: 0,
   };
-  var tickGap = 200;
+  var tickGap = 100;
   // height of horizontal data bars
   var dataHeight = 24;
-
   // spacing between horizontal data bars
   var lineSpacing = 7;
-
   // vertical space for heading
   var paddingTopHeading = 10;
-
   // vertical overhang of vertical grid lines on bottom
   var paddingBottom = 10;
-
   // space for y axis titles
-  var paddingLeft = 10;
-
+  var paddingLeft = -10;
   var width = 940 - margin.left - margin.right;
-
   // title of chart is drawn or not (default: yes)
   var drawTitle = 1;
-
   // year ticks to be emphasized or not (default: yes)
   var emphasizeYearTicks = 1;
-
   // define chart pagination
   // max. no. of datasets that is displayed, 0: all (default: all)
   var maxDisplayDatasets = 0;
-
   // dataset that is displayed first in the current
   // display, chart will show datasets "curDisplayFirstDataset" to
   // "curDisplayFirstDataset+maxDisplayDatasets"
   var curDisplayFirstDataset = 0;
-
   // range of dates that will be shown
   // if from-date (1st element) or to-date (2nd element) is zero,
   // it will be determined according to your data (default: automatically)
   var displayDateRange = [ moment().startOf('day'), moment() ];
-
   // global div for tooltip
   var div = d3.select('body').append('div')
     .attr('class', 'tooltip')
@@ -118,40 +104,25 @@ export function barchart () {
       var parseDateTime = d3.timeParse('%Y-%m-%d %H:%M:%S');
 
       // cluster data by dates to form time blocks
-
       dataset.forEach(function (series, seriesI) {
         var tmpData = [];
         var dataLength = series.data.length;
-        series.data.forEach(function (d, i) {
-          if (i !== 0 && i < dataLength) {
-            if (d[ 1 ] === tmpData[ tmpData.length - 1 ][ 1 ]) {
-              // the value has not changed since the last date
-              if (definedBlocks) {
-                if (tmpData[ tmpData.length - 1 ][ 2 ].getTime() === d[ 0 ].getTime()) {
-                  // end of old and start of new block are the same
-                  tmpData[ tmpData.length - 1 ][ 2 ] = d[ 2 ];
-                  tmpData[ tmpData.length - 1 ][ 3 ] = 1;
-                } else {
-                  tmpData.push(d);
-                }
-              } else {
-                tmpData[ tmpData.length - 1 ][ 2 ] = d[ 2 ];
-                tmpData[ tmpData.length - 1 ][ 3 ] = 1;
-              }
-            } else {
-              // the value has changed since the last date
-              d[ 3 ] = 0;
-              if (!definedBlocks) {
-                // extend last block until new block starts
-                tmpData[ tmpData.length - 1 ][ 2 ] = d[ 0 ];
-              }
-              tmpData.push(d);
-            }
-          } else if (i === 0) {
-            d[ 3 ] = 0;
-            tmpData.push(d);
+        var last = series.data.reduce((prev, next) => {
+          if (next[ 1 ] === prev[ 2 ]) return prev;
+          else {
+            if (!prev[ 0 ]) {
+              prev[ 0 ] = next[ 0 ];
+              prev[ 2 ] = next[ 1 ];
+              return prev;
+            } else if (!prev[ 1 ] && prev.length === 3) {
+              prev[ 1 ] = next[ 0 ];
+              tmpData.push(prev)
+              return [ next[ 0 ], undefined, next[ 1 ] ];
+            };
           }
-        });
+        }, []);
+        last[ 1 ] = new Date();
+        tmpData.push(last);
         dataset[ seriesI ].disp_data = tmpData;
       });
 
@@ -173,7 +144,6 @@ export function barchart () {
           }
         }
       });
-
 
       // create SVG element
       var svg = d3.select(this).append('svg')
@@ -233,20 +203,20 @@ export function barchart () {
         });
 
       // HTML labels
-      // labels.append('foreignObject')
-      //   .attr('x', paddingLeft)
-      //   .attr('y', lineSpacing)
-      //   .attr('transform', function (d, i) {
-      //     return 'translate(0,' + ((lineSpacing + dataHeight) * i) + ')';
-      //   })
-      //   .attr('width', -1 * paddingLeft)
-      //   .attr('height', dataHeight)
-      //   .attr('class', 'ytitle')
-      //   .html(function (d) {
-      //     if (d.measure_html != null) {
-      //       return d.measure_html;
-      //     }
-      //   });
+      labels.append('foreignObject')
+        .attr('x', paddingLeft)
+        .attr('y', lineSpacing)
+        .attr('transform', function (d, i) {
+          return 'translate(0,' + ((lineSpacing + dataHeight) * i) + ')';
+        })
+        .attr('width', -1 * paddingLeft)
+        .attr('height', dataHeight)
+        .attr('class', 'ytitle')
+        .html(function (d) {
+          if (d.measure_html != null) {
+            return d.measure_html;
+          }
+        });
 
       // define scales
       var xScale = d3.scaleTime()
@@ -316,7 +286,7 @@ export function barchart () {
         })
         .attr('y', lineSpacing)
         .attr('width', function (d) {
-          return (xScale(d[ 2 ]) - xScale(d[ 0 ]));
+          return (xScale(d[ 1 ]) - xScale(d[ 0 ]));
         })
         .attr('height', dataHeight)
         .attr('class', function (d) {
@@ -327,11 +297,11 @@ export function barchart () {
               }
             )[ 0 ];
             if (series && series.categories) {
-              d3.select(this).attr('fill', series.categories[ d[ 1 ] ].color);
+              d3.select(this).attr('fill', series.categories[ d[ 2 ] ].color);
               return '';
             }
           } else {
-            if (d[ 1 ] === 1) {
+            if (d[ 2 ] === 1) {
               // data available
               return 'rect_has_data';
             } else {
@@ -351,29 +321,29 @@ export function barchart () {
               // custom categories: display category name
               output = '&nbsp;' + d[ 1 ] + '&nbsp;';
             } else {
-              if (d[ 1 ] === 1) {
+              if (d[ 2 ] === 1) {
                 // checkmark icon
-                output = '<i class="fa fa-fw fa-check tooltip_has_data"></i>';
+                output = '<i class="el-icon-check tooltip_has_data"></i>';
               } else {
                 // cross icon
-                output = '<i class="fa fa-fw fa-times tooltip_has_no_data"></i>';
+                output = '<i class="el-icon-close tooltip_has_no_data"></i>';
               }
             }
             if (isDateOnlyFormat) {
-              if (d[ 2 ] > d3.timeSecond.offset(d[ 0 ], 86400)) {
+              if (d[ 1 ] > d3.timeSecond.offset(d[ 0 ], 86400)) {
                 return output + moment(parseDate(d[ 0 ])).format('l')
-                  + ' - ' + moment(parseDate(d[ 2 ])).format('l');
+                  + ' - ' + moment(parseDate(d[ 1 ])).format('l');
               }
               return output + moment(parseDate(d[ 0 ])).format('l');
             } else {
-              if (d[ 2 ] > d3.timeSecond.offset(d[ 0 ], 86400)) {
+              if (d[ 1 ] > d3.timeSecond.offset(d[ 0 ], 86400)) {
                 return output + moment(d[ 0 ]).format('l') + ' '
                   + moment((d[ 0 ])).format('LTS') + ' - '
-                  + moment((d[ 2 ])).format('l') + ' '
-                  + moment((d[ 2 ])).format('LTS');
+                  + moment((d[ 1 ])).format('l') + ' '
+                  + moment((d[ 1 ])).format('LTS');
               }
               return output + moment(d[ 0 ]).format('LTS') + ' - '
-                + moment(d[ 2 ]).format('LTS');
+                + moment(d[ 1 ]).format('LTS');
             }
           })
             .style('left', function () {
