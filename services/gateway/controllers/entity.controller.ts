@@ -1,5 +1,5 @@
 import { Entities, Logs } from "config/db";
-import homify from "core/homify";
+import homify from "core/Homify";
 
 export const getAllEntities = (_req, res) => {
   Entities.find()

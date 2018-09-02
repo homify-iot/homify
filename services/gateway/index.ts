@@ -1,5 +1,5 @@
 import mongoose from "config/db";
-import homify from "core/homify";
+import homify from "core/Homify";
 import { createDebug } from "services/debug.service";
 import config from "./config/config";
 import app from "./config/express";

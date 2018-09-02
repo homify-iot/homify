@@ -14,7 +14,6 @@ const FloorSchema = new Schema({
 export const Floor = mongoose.model("floors", FloorSchema);
 
 const EntitySchema = new Schema({
-  _id: ObjectId,
   entityId: String,
   name: String,
   icon: String,

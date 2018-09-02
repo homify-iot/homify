@@ -3,8 +3,11 @@ import { Automations, Entities } from "config/db";
 import * as EventBus from "core/EventBus";
 import * as Loader from "core/Loader";
 import Entity from "platforms/_entity";
+import { createDebug } from "services/debug.service";
 import MqttClient from "services/mqtt.service";
 import { OnlinePool, StatePool } from "types/homify";
+
+const log = createDebug("Core");
 
 class Homify {
   public config;
@@ -27,8 +30,13 @@ class Homify {
     device.register();
     let existEntity = await Entities.findOne({ entityId: device.entityId });
     if (!existEntity) {
-      existEntity = await Entities.create(device.toObject());
-      await EventBus.broadcastNewDeviceFound(device.toObject());
+      try {
+        existEntity = await Entities.create(device.toObject());
+        await EventBus.broadcastNewDeviceFound(device.toObject());
+      } catch (e) {
+        log(e);
+      }
+
     }
     device.name = existEntity.name;
     await EventBus.broadcastComponentLoaded(device.entityId);

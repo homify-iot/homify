@@ -1,6 +1,6 @@
 const state = {
   sidebar: {
-    opened: false,
+    opened: true,
     withoutAnimation: false
   },
   device: "desktop",
