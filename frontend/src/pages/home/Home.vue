@@ -66,7 +66,6 @@ export default class Home extends Vue {
 .home-layout {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   .column {
     flex: 25%;
     padding: 0 4px;
