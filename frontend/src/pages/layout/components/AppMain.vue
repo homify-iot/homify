@@ -20,8 +20,7 @@ export default class AppMain extends Vue {
 
 <style lang="scss" scoped>
 .app-main {
-  display: flex;
-  justify-content: center;
+  padding: 0 3%;
 }
 </style>
 
