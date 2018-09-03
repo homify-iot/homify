@@ -99,6 +99,12 @@ export default class Home extends Vue {
     min-width: 400px;
   }
 }
+
+@media only screen and (max-width: 768px) {
+  .home-layout {
+    justify-content: center;
+  }
+}
 </style>
 
 
