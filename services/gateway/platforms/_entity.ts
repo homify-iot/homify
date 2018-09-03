@@ -1,18 +1,12 @@
 import * as EventBus from "core/EventBus";
 import homify from "core/Homify";
 import { createDebug } from "services/debug.service";
+import { EntityObject, State } from "types/homify";
 import { IMqttMessage } from "types/mqtt";
 
 const log = createDebug("Entity");
 
-export interface EntityObject {
-  entityId: string;
-  name: string;
-  state: boolean;
-  icon: string;
-  image: string;
-  type: string;
-}
+
 export default abstract class Entity {
   public abstract entityId: string;
   public abstract defaultName: string;
@@ -20,13 +14,13 @@ export default abstract class Entity {
   public icon: string;
   public image: string;
   public abstract type: string;
-  public _state: boolean;
-
-  get state() {
+  public _state: State;
+  public abstract listenChanges();
+  get state(): State {
     return this._state;
   }
 
-  set state(newState) {
+  set state(newState: State) {
     if (newState !== this._state) {
       const stateInfo = {
         state: newState,
@@ -52,12 +46,17 @@ export default abstract class Entity {
     return {
       entityId: this.entityId,
       name: this.defaultName,
-      state: this.state,
       icon: this.icon,
       image: this.image,
       type: this.type,
     };
   }
 
-  public abstract serviceHandler(service);
+  public serviceHandler(service) {
+    try {
+      this[Symbol.for(service)]();
+    } catch (e) {
+      log(`Method ${service} not implemented.`);
+    }
+  }
 }

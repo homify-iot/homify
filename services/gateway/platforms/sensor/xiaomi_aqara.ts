@@ -1,7 +1,9 @@
 import homify from "core/Homify";
-import { fromEvent } from "rxjs";
+import { fromEvent, Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { createDebug } from "services/debug.service";
-import { Sensor } from "./_sensor";
+import { State } from "types/homify";
+import { BinarySensor, Sensor } from "./_sensor";
 
 const log = createDebug("Platform:sensor:xiaomi_aqara");
 
@@ -11,12 +13,12 @@ export const setupPlatform = (device) => {
     const component = new XiaomiMotionSensor(device);
     homify.addComponent(component);
   } else if (device.miioModel === "lumi.weather") {
-    const component = new XiaomiSensor(device, "temperature");
-    homify.addComponent(component);
+    homify.addComponent(new XiaomiSensor(device, "temperature"));
+    homify.addComponent(new XiaomiSensor(device, "humidity"));
   }
 };
 
-class XiaomiMotionSensor extends Sensor {
+class XiaomiMotionSensor extends BinarySensor {
   public entityId: string;
   public icon: string = "device/motion";
   public defaultName: string = "Motion sensor";
@@ -37,27 +39,38 @@ class XiaomiMotionSensor extends Sensor {
         this.idleTimer = setTimeout(() => this.state = false, this.autoIdleTimeout);
       });
   }
-
 }
 
 class XiaomiSensor extends Sensor {
   public entityId: string;
-  public icon: string = "device/motion";
+  public icon: string;
+  public unit: string;
   public defaultName: string;
   public available: boolean = true;
   constructor(private device, public category: string) {
     super();
-    this.entityId = device.id;
+    this.entityId = device.id + category;
+    this.icon = `device/${category}`;
     this.defaultName = category;
     this.listenChanges();
-    const temperature = await device.temperature();
-    console.log("Temperature:", temperature.celsius);
   }
 
   public async listenChanges() {
-    fromEvent(this.device, "temperatureChanged")
-      .subscribe((temp) => {
-        console.log(temp);
-      });
+    let state$: Observable<State>;
+    if (this.category === "temperature") {
+      state$ = fromEvent(this.device, "temperatureChanged")
+        .pipe(
+          map(([{ value, unit }]) => ({ value, unit: unit === "C" ? "&#8451;" : unit }))
+        );
+
+    } else if (this.category === "humidity") {
+      state$ = fromEvent(this.device, "relativeHumidityChanged")
+        .pipe(
+          map(([value]) => ({ value, unit: "%" }))
+        );
+    }
+    state$.subscribe((state: State) => {
+      this.state = state;
+    });
   }
 }

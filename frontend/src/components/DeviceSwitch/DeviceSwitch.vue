@@ -1,7 +1,7 @@
 <template>
   <el-card :body-style="{ padding: '0' }" class="card" shadow="hover">
     <div class="device-content" :class="{'off': !isOn}">
-      <div class="icon" :class="[colorClass,clickClass]" @click="isSwitchable && toggleDevice(entity)">
+      <div class="icon" :class="[colorClass(entity.type)]" @click="showInfo">
         <img v-if="entity.image" :src="entity.image" style="width: 100%">
         <svgicon 
           v-else
@@ -10,19 +10,25 @@
           height="26"/>
       </div>
       <div class="details" @click="showInfo">
-        <div class="title">{{ entity.name }}</div>
+        <div class="title">
+          {{ entity.name }}
+          <svgicon 
+            class="available-icon"
+            :icon="online ?'wifi':'offline'" />
+        </div>
+        
         <div class="state-info">
           <timeago v-if="stateInfo.last_update" :datetime="stateInfo.last_update" :auto-update="60" />
         </div>
       </div>
       <div class="status-bar">
-        <svgicon 
-          class="available-icon"
-          :icon="online ?'wifi':'offline'" />
         <el-switch 
           v-if="isSwitchable" 
           :active-value="!isOn" 
           @click.native="isSwitchable && toggleDevice(entity)"/>
+        <div v-else>
+          <strong>{{ stateInfo.state.value }}</strong> <span v-html="stateInfo.state.unit"/>
+        </div>
       </div>
     </div>
   </el-card>
@@ -31,13 +37,14 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import { Entities } from "@/store/vuex-decorators";
+import { cond, always, equals, T } from "ramda";
 
 @Component
 export default class DeviceSwitch extends Vue {
   @Prop({ default: () => ({}) })
   entity;
 
-  @Prop({ default: () => ({}) })
+  @Prop({ default: () => ({ state: "" }) })
   stateInfo;
 
   @Prop() online;
@@ -56,11 +63,12 @@ export default class DeviceSwitch extends Vue {
   }
 
   get colorClass() {
-    return this.isSwitchable ? "warning" : "primary";
-  }
-
-  get clickClass() {
-    return this.isSwitchable ? "clickable" : "";
+    return cond([
+      [equals("switch"), always("warning")],
+      [equals("sensor"), always("success")],
+      [equals("binarySensor"), always("primary")],
+      [T, always("info")]
+    ]);
   }
 }
 </script>
@@ -98,21 +106,6 @@ export default class DeviceSwitch extends Vue {
       @include btn-hero-warning-gradient();
       @include btn-hero-warning-bevel-glow-shadow();
     }
-    &.clickable:hover {
-      cursor: pointer;
-      &.primary {
-        background-image: btn-hero-primary-light-gradient();
-      }
-      &.success {
-        background-image: btn-hero-success-light-gradient();
-      }
-      &.info {
-        background-image: btn-hero-info-light-gradient();
-      }
-      &.warning {
-        background-image: btn-hero-warning-light-gradient();
-      }
-    }
   }
 
   &.off {
@@ -148,6 +141,7 @@ export default class DeviceSwitch extends Vue {
       font-size: 1rem;
       font-weight: $font-weight-bold;
       color: $card-fg-heading;
+      text-transform: capitalize;
     }
     .state-info {
       display: flex;

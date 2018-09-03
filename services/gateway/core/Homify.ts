@@ -36,7 +36,6 @@ class Homify {
       } catch (e) {
         log(e);
       }
-
     }
     device.name = existEntity.name;
     await EventBus.broadcastComponentLoaded(device.entityId);

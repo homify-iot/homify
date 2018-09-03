@@ -1,9 +1,7 @@
 import { from, fromEvent } from "rxjs";
 import { delay, filter, map } from "rxjs/operators";
-import { createDebug } from "services/debug.service";
 import Entity from "../_entity";
 
-const log = createDebug("Platform:Switch");
 const turnOn = Symbol.for("turnOn");
 const turnOff = Symbol.for("turnOff");
 const toggle = Symbol.for("toggle");
@@ -22,8 +20,6 @@ export abstract class SwitchDevice extends Entity {
   public abstract [turnOff]();
 
   public abstract [toggle]();
-
-  public abstract listenChanges();
 
 }
 
@@ -60,13 +56,5 @@ export abstract class XiaomiGenericSwitch extends SwitchDevice {
     fromEvent(this.device, "powerChanged")
       .pipe(map(([state]) => state), filter((state) => state !== undefined))
       .subscribe((state) => this.state = state);
-  }
-
-  public serviceHandler(service) {
-    try {
-      this[Symbol.for(service)]();
-    } catch (e) {
-      log(`Method ${service} not implemented.`);
-    }
   }
 }
