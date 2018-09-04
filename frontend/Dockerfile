@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:8
 
 WORKDIR /frontend
 COPY package*.json ./

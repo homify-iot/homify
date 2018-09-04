@@ -67,7 +67,7 @@ export default class Home extends Vue {
   display: flex;
   flex-wrap: wrap;
   .column {
-    flex: 25%;
+    flex: 1;
     padding: 0 4px;
     max-width: 500px;
   }
@@ -102,7 +102,7 @@ export default class Home extends Vue {
 
 @media only screen and (max-width: 768px) {
   .home-layout {
-    justify-content: center;
+    display: block;
   }
 }
 </style>
