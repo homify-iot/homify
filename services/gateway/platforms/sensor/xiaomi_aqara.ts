@@ -1,5 +1,5 @@
 import homify from "core/Homify";
-import { fromEvent, Observable } from "rxjs";
+import { fromEvent, interval, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { createDebug } from "services/debug.service";
 import { State } from "types/homify";
@@ -47,15 +47,19 @@ class XiaomiSensor extends Sensor {
   public unit: string;
   public defaultName: string;
   public available: boolean = true;
+  public pollDuration: number = 30 * 1000;
   constructor(private device, public category: string) {
     super();
     this.entityId = device.id + category;
     this.icon = `device/${category}`;
     this.defaultName = category;
     this.listenChanges();
+
   }
 
   public async listenChanges() {
+    interval(this.pollDuration)
+      .subscribe(() => this.device.loadProperties([this.category]));
     let state$: Observable<State>;
     if (this.category === "temperature") {
       state$ = fromEvent(this.device, "temperatureChanged")
@@ -69,8 +73,6 @@ class XiaomiSensor extends Sensor {
           map(([value]) => ({ value, unit: "%" }))
         );
     }
-    state$.subscribe((state: State) => {
-      this.state = state;
-    });
+    state$.subscribe((state: State) => this.state = state);
   }
 }

@@ -12,15 +12,15 @@ class SubDeviceManagement {
 		this.parent = parent;
 	}
 
-	get token() {
+	get token () {
 		return null;
 	}
 
-	get model() {
+	get model () {
 		return this._device.miioModel;
 	}
 
-	info() {
+	info () {
 		const device = this._device;
 		return Promise.resolve({
 			id: device.id,
@@ -30,7 +30,7 @@ class SubDeviceManagement {
 }
 
 module.exports = Thing.type(Parent => class SubDevice extends Parent {
-	static get types() {
+	static get types () {
 		return [ 'miio', 'miio:subdevice' ];
 	}
 
@@ -55,29 +55,29 @@ module.exports = Thing.type(Parent => class SubDevice extends Parent {
 		this.management = new SubDeviceManagement(this, parent);
 	}
 
-	hasCapability(name) {
+	hasCapability (name) {
 		return this.capabilities.indexOf(name) >= 0;
 	}
 
-	initCallback() {
+	initCallback () {
 		return super.initCallback()
 			.then(() => this._parent.devApi.on('properties:' + this.internalId, this._report))
 			.then(() => this.loadProperties());
 	}
 
-	destroyCallback() {
+	destroyCallback () {
 		return super.destroyCallback()
 			.then(() => this._parent.devApi.removeListener('properties:' + this.internalId, this._report));
 	}
 
-	_report(data) {
+	_report (data) {
 		this._propertiesToMonitor.forEach(key => {
-			const def = this._propertyDefinitions[key];
+			const def = this._propertyDefinitions[ key ];
 			let name = key;
-			let value = data[key];
-			if(typeof value === 'undefined') return;
+			let value = data[ key ];
+			if (typeof value === 'undefined') return;
 
-			if(def) {
+			if (def) {
 				name = def.name || name;
 				value = def.mapper(value);
 			}
@@ -85,64 +85,63 @@ module.exports = Thing.type(Parent => class SubDevice extends Parent {
 			this.setProperty(name, value);
 		});
 
-		if(this._currentRead) {
+		if (this._currentRead) {
 			this._currentRead.resolve();
 			this._currentRead = null;
 		}
 	}
 
-	get properties() {
+	get properties () {
 		return Object.assign({}, this._properties);
 	}
 
-	property(key) {
-		return this._properties[key];
+	property (key) {
+		return this._properties[ key ];
 	}
 
 	/**
 	 * Define a property and how the value should be mapped. All defined
 	 * properties are monitored if #monitor() is called.
 	 */
-	defineProperty(name, def) {
-		if(! def || typeof def.poll === 'undefined' || def.poll) {
+	defineProperty (name, def) {
+		if (!def || typeof def.poll === 'undefined' || def.poll) {
 			this._propertiesToMonitor.push(name);
 		}
 
-		if(typeof def === 'function') {
+		if (typeof def === 'function') {
 			def = {
 				mapper: def
 			};
-		} else if(typeof def === 'undefined') {
+		} else if (typeof def === 'undefined') {
 			def = {
 				mapper: IDENTITY_MAPPER
 			};
 		}
 
-		if(! def.mapper) {
+		if (!def.mapper) {
 			def.mapper = IDENTITY_MAPPER;
 		}
 
-		this._propertyDefinitions[name] = def;
+		this._propertyDefinitions[ name ] = def;
 	}
 
-	setProperty(key, value) {
-		const oldValue = this._properties[key];
-
-		if(! isDeepEqual(oldValue, value)) {
-			this._properties[key] = value;
+	setProperty (key, value) {
+		const oldValue = this._properties[ key ];
+		if (!isDeepEqual(oldValue, value)) {
+			this._properties[ key ] = value;
 			this.debug('Property', key, 'changed from', oldValue, 'to', value);
 
 			this.propertyUpdated(key, value, oldValue);
 		}
 	}
 
-	propertyUpdated(key, value, oldValue) {
+	propertyUpdated (key, value, oldValue) {
 	}
 
-	getProperties(props=[]) {
+	getProperties (props = []) {
 		const result = {};
 		props.forEach(key => {
-			result[key] = this._properties[key];
+			result[ key ] = this._properties[ key ];
 		});
 		return result;
 	}
@@ -150,10 +149,10 @@ module.exports = Thing.type(Parent => class SubDevice extends Parent {
 	/**
 	 * Stub for loadProperties to match full device.
 	 */
-	loadProperties(props) {
-		if(this._propertiesToMonitor.length === 0) Promise.resolve();
+	loadProperties (props) {
+		if (this._propertiesToMonitor.length === 0) Promise.resolve();
 
-		if(this._currentRead) {
+		if (this._currentRead) {
 			return this._currentRead.promise;
 		}
 
@@ -174,12 +173,12 @@ module.exports = Thing.type(Parent => class SubDevice extends Parent {
 			 */
 			setTimeout(() => {
 				this.debug('Read via DEV timed out, using fallback API');
-				this._parent.call('get_device_prop_exp', [ [ 'lumi.' + this.internalId, ...this._propertiesToMonitor ]])
+				this._parent.call('get_device_prop_exp', [ [ 'lumi.' + this.internalId, ...this._propertiesToMonitor ] ])
 					.then(result => {
-						for(let i=0; i<result[0].length; i++) {
-							let name = this._propertiesToMonitor[i];
-							const def = this._propertyDefinitions[name];
-							let value = result[0][i];
+						for (let i = 0; i < result[ 0 ].length; i++) {
+							let name = this._propertiesToMonitor[ i ];
+							const def = this._propertyDefinitions[ name ];
+							let value = result[ 0 ][ i ];
 
 							name = def.name || name;
 							value = def.mapper(value);
@@ -202,8 +201,8 @@ module.exports = Thing.type(Parent => class SubDevice extends Parent {
 	/**
 	 * Call a method for this sub device.
 	 */
-	call(method, args, options) {
-		if(! options) {
+	call (method, args, options) {
+		if (!options) {
 			options = {};
 		}
 
@@ -211,8 +210,8 @@ module.exports = Thing.type(Parent => class SubDevice extends Parent {
 		return this._parent.call(method, args, options);
 	}
 
-	[util.inspect.custom](depth, options) {
-		if(depth === 0) {
+	[ util.inspect.custom ] (depth, options) {
+		if (depth === 0) {
 			return options.stylize('MiioDevice', 'special')
 				+ '[' + this.miioModel + ']';
 		}

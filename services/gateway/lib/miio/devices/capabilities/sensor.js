@@ -11,13 +11,12 @@ const {
 	PowerConsumed
 } = require('abstract-things/sensors');
 
-function bind(Type, updateName, property) {
+function bind (Type, updateName, property) {
 	return Thing.mixin(Parent => class extends Parent.with(Type) {
-		propertyUpdated(key, value) {
-			if(key === property) {
-				this[updateName](value);
+		propertyUpdated (key, value) {
+			if (key === property) {
+				this[ updateName ](value);
 			}
-
 			super.propertyUpdated(key, value);
 		}
 	});
@@ -34,14 +33,14 @@ module.exports.PowerConsumed = bind(PowerConsumed, 'updatePowerConsumed', 'poweC
 /**
  * Setup sensor support for a device.
  */
-function mixin(device, options) {
-	if(device.capabilities.indexOf('sensor') < 0) {
+function mixin (device, options) {
+	if (device.capabilities.indexOf('sensor') < 0) {
 		device.capabilities.push('sensor');
 	}
 
 	device.capabilities.push(options.name);
 	Object.defineProperty(device, options.name, {
-		get: function() {
+		get: function () {
 			return this.property(options.name);
 		}
 	});
