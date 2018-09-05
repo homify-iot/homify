@@ -3,7 +3,8 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
 import ModalMobile from "@/components/Modal/Modal.mobile.vue";
 import ModalDesktop from "@/components/Modal/Modal.desktop.vue";
-import LogChart from "@/components/LogChart/LogChart.vue";
+import BarChartLog from "@/components/LogChart/BarChartLog.vue";
+import LineChartLog from "@/components/LogChart/LineChartLog.vue";
 import { Entities, Settings } from "@/store/vuex-decorators";
 
 @Component({
@@ -11,7 +12,8 @@ import { Entities, Settings } from "@/store/vuex-decorators";
     ModalMobile,
     ModalDesktop,
     DeviceSwitch,
-    LogChart
+    BarChartLog,
+    LineChartLog
   }
 })
 export default class InfoModal extends Vue {
@@ -27,28 +29,16 @@ export default class InfoModal extends Vue {
 
   @Settings.Getter isMobile;
 
-  entity: { name: string; entityId: string } = { name: "", entityId: "" };
+  entity: { name: string; entityId: string; type: string } = {
+    name: "",
+    entityId: "",
+    type: ""
+  };
 
   open(entity) {
     this.entity = entity;
     this.fetchLogs(entity.entityId);
     (this.$refs.modal as any).show();
-  }
-
-  get dataset() {
-    const id = this.entity.entityId,
-      log = this.logs[id];
-    if (!log) return;
-    const data = log.map(set => {
-      const state = JSON.parse(set.details);
-      return [new Date(state.last_update), state.state ? 1 : 0];
-    });
-    return [
-      {
-        interval_s: 0,
-        data: [...data]
-      }
-    ];
   }
 }
 </script>
@@ -61,7 +51,11 @@ export default class InfoModal extends Vue {
       :entity="entity"
       :state-info="statePool[entity.entityId]"
       :online="onlinePool[entity.entityId]"/>
-    <log-chart v-if="!loadingLogs" :dataset="dataset"/>
+    <component 
+      v-if="!loadingLogs" 
+      :is="entity.type === 'switch' || entity.type === 'binarySensor' ? 'bar-chart-log': 'line-chart-log'" 
+      :log="logs[entity.entityId]"
+      :type="entity.type"/>
   </component>
 </template>
 

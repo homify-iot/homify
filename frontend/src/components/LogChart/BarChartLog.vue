@@ -1,15 +1,25 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { barchart } from "./chart";
+import { barchart } from "./bar";
 import * as d3 from "d3";
 
-@Component({
-  components: {
-    LogChart
+@Component
+export default class BarChart extends Vue {
+  @Prop({ default: () => ({}) })
+  log;
+
+  get dataset() {
+    const data = this.log.map(set => {
+      const state = JSON.parse(set.details);
+      return [new Date(state.last_update), state.state ? 1 : 0];
+    });
+    return [
+      {
+        interval_s: 0,
+        data: [...data]
+      }
+    ];
   }
-})
-export default class LogChart extends Vue {
-  @Prop() dataset;
 
   mounted() {
     const width = (this.$refs.chart as any).clientWidth;
