@@ -94,11 +94,6 @@ export default class Home extends Vue {
     background-color: white;
   }
 }
-@media only screen and (min-width: 450px) {
-  .group-card {
-    min-width: 400px;
-  }
-}
 
 @media only screen and (max-width: 768px) {
   .home-layout {
