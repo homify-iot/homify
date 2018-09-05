@@ -1,7 +1,7 @@
 <template>
   <el-card :body-style="{ padding: '0' }" class="card" shadow="hover">
     <div class="device-content" :class="{'off': !isOn}">
-      <div class="icon" :class="[colorClass(entity.type)]" @click="showInfo">
+      <div class="icon" :class="[!entity.image && colorClass(entity.type)]" @click="showInfo">
         <img v-if="entity.image" :src="entity.image" style="width: 100%">
         <svgicon 
           v-else
