@@ -1,3 +1,4 @@
+/* tslint:disable */
 import './404'
 import './bug'
 import './calendar'

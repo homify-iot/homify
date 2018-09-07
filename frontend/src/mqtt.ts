@@ -1,20 +1,20 @@
-import MqttClient from '@/services/mqtt.service';
-import store from '@/store';
-import { IMqttMessage } from '@/types/mqtt.model';
+import MqttClient from "@/services/mqtt.service";
+import store from "@/store";
+import { IMqttMessage } from "@/types/mqtt.model";
 
 export const mqttClient = new MqttClient();
-mqttClient.observe('entity/+/state_changed')
+mqttClient.observe("entity/+/state_changed")
   .subscribe((packet: IMqttMessage) => {
     const { topic, payload } = packet;
-    const [, entityId] = topic.split('/');
+    const [, entityId] = topic.split("/");
     const newState = JSON.parse(payload.toString());
-    store.commit('entities/setState', { entityId, newState });
+    store.commit("entities/setState", { entityId, newState });
   });
 
-mqttClient.observe('entity/entities_changed')
+mqttClient.observe("entity/entities_changed")
   .subscribe((packet: IMqttMessage) => {
     const entities = JSON.parse(packet.payload.toString());
-    store.commit('entities/setEntities', entities);
+    store.commit("entities/setEntities", entities);
   });
 
 export const callService = (entityId: string, service: string) => {

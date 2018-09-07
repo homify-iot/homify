@@ -2,6 +2,7 @@ version: "3"
 services:
   web:
     build: ./frontend
+    command: npm run serve
     volumes:
         - ./frontend:/frontend:rw
         - /frontend/node_modules/

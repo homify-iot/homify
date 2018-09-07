@@ -1,8 +1,8 @@
 import homify from "core/homify";
 import Logger from "core/Logger";
-import { default as Entity, EntityObject } from "platforms/_entity";
+import { default as Entity } from "platforms/_entity";
 import { createDebug } from "services/debug.service";
-import { StateInfo } from "types/homify";
+import { EntityObject, StateInfo } from "types/homify";
 
 const log = createDebug("EventBus");
 

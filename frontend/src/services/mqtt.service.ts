@@ -107,7 +107,7 @@ export default class MqttClientService {
       throw new Error("mqtt client not connected");
     }
     const source = Observable.create((obs: Observer<void>) => {
-      this.client.publish(topic, message, options, (err: Error) => {
+      this.client!.publish(topic, message, options, (err: Error) => {
         if (err) {
           obs.error(err);
         } else {

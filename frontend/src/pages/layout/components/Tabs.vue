@@ -4,7 +4,8 @@
     type="card"
     closable 
     @tab-click="clickTab"
-    @tab-remove="removeTab">
+    @tab-remove="removeTab"
+  >
     <el-tab-pane
       v-for="item in visitedTabs"
       :key="item.path"

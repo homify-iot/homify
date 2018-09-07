@@ -1,5 +1,5 @@
-import { IClientOptions, IClientPublishOptions, IPacket, MqttClient } from 'mqtt';
-import { Stream } from 'stream';
+import { IClientOptions, IClientPublishOptions, IPacket, MqttClient } from "mqtt";
+import { Stream } from "stream";
 
 export enum MqttConnectionState {
   CLOSED,
@@ -16,7 +16,7 @@ export interface IMqttServiceOptions extends IClientOptions {
   port?: number;
   /** the path parameters to connect to e.g. `/mqtt` */
   path?: string;
-  protocol?: 'wss' | 'ws';
+  protocol?: "wss" | "ws";
 }
 
 export interface IMqttMessage extends IPacket {

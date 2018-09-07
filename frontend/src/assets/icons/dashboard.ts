@@ -1,5 +1,8 @@
+
 /* eslint-disable */
-import * as icon from 'vue-svgicon'
+/* tslint:disable */
+// @ts-ignore
+import icon from 'vue-svgicon'
 icon.register({
   'dashboard': {
     width: 24,

@@ -3,12 +3,12 @@ import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 
 @Component
 export default class ModalDesktop extends Vue {
+  visible: boolean = false;
+
   @Prop() title: string;
 
   @Emit("visible-change")
   visibleChange() {}
-
-  visible: boolean = false;
 
   show() {
     this.visible = true;
@@ -28,9 +28,10 @@ export default class ModalDesktop extends Vue {
   <el-dialog
     :title="title"
     :visible.sync="visible"
-    width="30%">
+    width="30%"
+  >
     <template slot="title">
-      <slot name="header"/>
+      <slot name="header" />
     </template>
 
     <div class="modal-body">
@@ -38,7 +39,7 @@ export default class ModalDesktop extends Vue {
     </div>
 
     <div class="modal-footer">
-      <slot name="footer"/>
+      <slot name="footer" />
     </div>
   </el-dialog>
 </template>

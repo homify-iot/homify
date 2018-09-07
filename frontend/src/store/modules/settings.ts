@@ -1,14 +1,14 @@
 const state = {
   sidebar: {
     opened: true,
-    withoutAnimation: false
+    withoutAnimation: false,
   },
   device: "desktop",
-  language: "en"
+  language: "en",
 };
 const getters = {
-  isMobile: (state) => {
-    return state.device === "mobile"
+  isMobile: state => {
+    return state.device === "mobile";
   }
 };
 const mutations = {
@@ -25,7 +25,7 @@ const mutations = {
   },
   SET_LANGUAGE: (state, language) => {
     state.language = language;
-  }
+  },
 };
 const actions = {
   toggleSideBar({ commit }) {
@@ -39,7 +39,7 @@ const actions = {
   },
   setLanguage({ commit }, language) {
     commit("SET_LANGUAGE", language);
-  }
+  },
 };
 
 export const settings = {
@@ -47,5 +47,5 @@ export const settings = {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

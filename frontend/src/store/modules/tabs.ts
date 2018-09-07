@@ -23,15 +23,15 @@ const mutations = {
     }
   },
   DEL_TAB: (state, path) => {
-    state.visitedTabs = state.visitedTabs.filter(
-      tab => tab && tab.path !== path
+    state.visitedTabs = state.visitedTabs.filter(tab => tab && tab.path !== path
+
     );
     state.cachedTabs = state.cachedTabs.filter(tab => tab && tab.path !== path);
   }
 };
 const actions = {
   addTabs({ commit, state }, view) {
-    if (!view.name || state.visitedTabs.some(v => v.path === view.path)) return;
+    if (!view.name || state.visitedTabs.some(v => v.path === view.path)) { return; }
     commit("ADD_TABS", view);
   },
   delTab({ commit }, path) {

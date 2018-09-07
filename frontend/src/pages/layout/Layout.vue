@@ -3,12 +3,13 @@
     class="app-wrapper" 
     :class="{hideSidebar: !sidebar.opened,
              withoutAnimation: sidebar.withoutAnimation,
-             mobile: device === 'mobile'}">
-    <navbar class="navbar fixed"/>
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="closeSideBar({ withoutAnimation: true })"/>
-    <sidebar class="sidebar-container" :routes="routes" :sidebar="sidebar"/>
+             mobile: device === 'mobile'}"
+  >
+    <navbar class="navbar fixed" />
+    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="closeSideBar({ withoutAnimation: true })" />
+    <sidebar class="sidebar-container" :routes="routes" :sidebar="sidebar" />
     <div class="main-container">
-      <app-main/>
+      <app-main />
     </div>
   </div>
 </template>
@@ -30,6 +31,10 @@ import { Permission, Settings, Entities } from "@/store/vuex-decorators";
   }
 })
 export default class Layout extends Vue {
+  WIDTH = 1024;
+
+  RATIO = 3;
+
   @Permission.State routes;
 
   @Settings.State sidebar;
@@ -48,10 +53,6 @@ export default class Layout extends Vue {
       this.closeSideBar({ withoutAnimation: false });
     }
   }
-
-  WIDTH = 1024;
-
-  RATIO = 3;
 
   created() {
     this.fetchEntities();

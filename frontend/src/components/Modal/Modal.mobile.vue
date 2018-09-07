@@ -3,14 +3,14 @@ import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 
 @Component
 export default class ModalMobile extends Vue {
+  visible: boolean = false;
+
   @Prop() headerClass: string;
 
   @Prop() bodyClass: string;
 
   @Emit("visible-change")
   visibleChange() {}
-
-  visible: boolean = false;
 
   show() {
     this.visible = true;
@@ -32,10 +32,10 @@ export default class ModalMobile extends Vue {
       <div class="modal-container">
         <div :class="['modal-header', headerClass]">
           <slot name="left-icon">
-            <svgicon icon='left' @click="hide"/>
+            <svgicon icon='left' @click="hide" />
           </slot>
-          <slot name="header"/>
-          <slot name="right-icon"/>
+          <slot name="header" />
+          <slot name="right-icon" />
         </div>
 
         <div :class="['modal-body', bodyClass]">
@@ -43,7 +43,7 @@ export default class ModalMobile extends Vue {
         </div>
 
         <div class="modal-footer">
-          <slot name="footer"/>
+          <slot name="footer" />
         </div>
       </div>
     </div>

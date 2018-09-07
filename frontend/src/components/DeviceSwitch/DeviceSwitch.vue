@@ -7,14 +7,16 @@
           v-else
           :icon="entity.icon" 
           width="26" 
-          height="26"/>
+          height="26"
+        />
       </div>
       <div class="details" @click="showInfo">
         <div class="title">
           {{ entity.name }}
           <svgicon 
             class="available-icon"
-            :icon="online ?'wifi':'offline'" />
+            :icon="online ?'wifi':'offline'"
+          />
         </div>
         
         <div class="state-info">
@@ -25,9 +27,10 @@
         <el-switch 
           v-if="isSwitchable" 
           :active-value="!isOn" 
-          @click.native="isSwitchable && toggleDevice(entity)"/>
+          @click.native="isSwitchable && toggleDevice(entity)"
+        />
         <div v-else>
-          <strong>{{ stateInfo.state.value }}</strong> <span v-html="stateInfo.state.unit"/>
+          <strong>{{ stateInfo.state.value }}</strong> <span v-html="stateInfo.state.unit" />
         </div>
       </div>
     </div>
@@ -41,6 +44,8 @@ import { cond, always, equals, T } from "ramda";
 
 @Component
 export default class DeviceSwitch extends Vue {
+  @Entities.Action toggleDevice;
+
   @Prop({ default: () => ({}) })
   entity;
 
@@ -51,8 +56,6 @@ export default class DeviceSwitch extends Vue {
 
   @Emit("show-info")
   showInfo() {}
-
-  @Entities.Action toggleDevice;
 
   get isOn() {
     return this.stateInfo.state;

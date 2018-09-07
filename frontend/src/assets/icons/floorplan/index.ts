@@ -1,1 +1,2 @@
+/* tslint:disable */
 import './floor'

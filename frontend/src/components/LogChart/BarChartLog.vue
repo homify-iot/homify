@@ -33,7 +33,7 @@ export default class BarChart extends Vue {
 </script>
 
 <template>
-  <div id="chart" ref="chart"/>
+  <div id="chart" ref="chart" />
 </template>
 
 <style lang="scss">

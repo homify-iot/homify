@@ -27,11 +27,11 @@ const mutations = {
         prev[next.group] = prev[next.group] || [];
         prev[next.group].push(next);
       } else {
-        prev[next.type] = prev[next.type] || []
+        prev[next.type] = prev[next.type] || [];
         prev[next.type].push(next);
       }
       return prev;
-    }, {})
+    }, {});
     state.grouped = grouped;
     const groups = Object.keys(grouped);
     state.columnGroup = transpose(splitEvery(4, groups));
@@ -50,7 +50,7 @@ const mutations = {
     state.statePool[entityId] = newState;
   },
   [SET_LOADING]: (state, loading) => {
-    state.loadingLogs = loading
+    state.loadingLogs = loading;
   }
 };
 
@@ -78,7 +78,7 @@ const actions = {
     }
   },
   toggleDevice: ({ state }, entity) => {
-    const service = state.statePool[entity.entityId]["state"] ? "turnOff" : "turnOn";
+    const service = state.statePool[entity.entityId].state ? "turnOff" : "turnOn";
     callService(entity.entityId, service).subscribe();
   },
 };

@@ -1,3 +1,4 @@
+/* tslint:disable */
 import './air-conditioner'
 import './humidity'
 import './lightbulb'
