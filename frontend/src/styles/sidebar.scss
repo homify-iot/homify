@@ -115,7 +115,7 @@
       }
     }
   }
-  .withoutAnimation {
+  &.withoutAnimation {
     .main-container,
     .sidebar-container {
       transition: none;
