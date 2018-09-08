@@ -52,7 +52,7 @@
       margin-right: 16px;
     }
   }
-  .hideSidebar {
+  &.hideSidebar {
     .sidebar-container {
       width: 80px !important;
     }
@@ -100,7 +100,7 @@
   }
   
   //适配移动端
-  .mobile {
+  &.mobile {
     .main-container {
       margin-left: 0px;
     }
@@ -121,5 +121,4 @@
       transition: none;
     }
   }
-  
 }
