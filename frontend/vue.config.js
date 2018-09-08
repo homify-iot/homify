@@ -10,11 +10,6 @@ module.exports = {
     }
   },
   configureWebpack: {
-    resolve: {
-      alias: {
-        'chart.js': 'chart.js/dist/Chart.js'
-      }
-    },
     plugins: [
       new BundleAnalyzerPlugin()
     ]
