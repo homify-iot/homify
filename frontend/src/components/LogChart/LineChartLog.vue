@@ -1,7 +1,8 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import LineChart from "./line";
-import moment from "moment";
+import startOfToday from "date-fns/start_of_today";
+import isAfter from "date-fns/is_after";
 
 @Component({
   components: {
@@ -31,20 +32,20 @@ export default class LineChartLog extends Vue {
   };
 
   get dataset() {
-    const startDay = moment().startOf("day");
+    const startDay = startOfToday();
     const labels = [];
     const data = [];
     this.log.forEach(set => {
       const state = JSON.parse(set.details);
-      if (moment(state.last_update).isAfter(startDay)) {
-        labels.push(moment(state.last_update));
+      if (isAfter(new Date(state.last_update), startDay)) {
+        labels.push(new Date(state.last_update));
         data.push(state.state.value);
       }
     });
     labels.unshift(startDay);
     data.unshift(data[0]);
 
-    labels.push(moment());
+    labels.push(new Date());
     data.push(data.slice(-1)[0]);
     return {
       labels,

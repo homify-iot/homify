@@ -1,13 +1,13 @@
 <template>
   <div>
-    <hamburger class="hamburger-container" :toggle-click="toggleSideBar" :is-active="sidebar.opened"/>
-    <tabs class="tabs"/>
+    <hamburger class="hamburger-container" :toggle-click="toggleSideBar" :is-active="sidebar.opened" />
+    <tabs class="tabs" />
 
     <div class="right-menu">
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
           <img class="user-avatar" src="https://avatars2.githubusercontent.com/u/15620651?s=460&v=4">
-          <i class="el-icon-caret-bottom"/>
+          <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">

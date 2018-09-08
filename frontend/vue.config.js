@@ -1,3 +1,5 @@
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 module.exports = {
   devServer: {
     proxy: {
@@ -6,5 +8,15 @@ module.exports = {
         changeOrigin: true
       }
     }
+  },
+  configureWebpack: {
+    resolve: {
+      alias: {
+        'chart.js': 'chart.js/dist/Chart.js'
+      }
+    },
+    plugins: [
+      new BundleAnalyzerPlugin()
+    ]
   }
 }

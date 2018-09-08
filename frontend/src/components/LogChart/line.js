@@ -1,4 +1,4 @@
-import { Line } from 'vue-chartjs';
+import { Line } from 'vue-chartjs/es';
 
 export default {
   extends: Line,

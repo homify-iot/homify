@@ -1,5 +1,7 @@
 import * as d3 from "d3";
-import moment from "moment";
+import startOfToday from "date-fns/start_of_today";
+import format from 'date-fns/format'
+
 export function barchart () {
   // define chart layout
   var margin = {
@@ -37,7 +39,7 @@ export function barchart () {
   // range of dates that will be shown
   // if from-date (1st element) or to-date (2nd element) is zero,
   // it will be determined according to your data (default: automatically)
-  var displayDateRange = [ moment().startOf('day'), moment() ];
+  var displayDateRange = [ startOfToday(), new Date() ];
   // global div for tooltip
   var div = d3.select('body').append('div')
     .attr('class', 'tooltip')
@@ -329,22 +331,8 @@ export function barchart () {
                 output = '<i class="el-icon-close tooltip_has_no_data"></i>';
               }
             }
-            if (isDateOnlyFormat) {
-              if (d[ 1 ] > d3.timeSecond.offset(d[ 0 ], 86400)) {
-                return output + moment(parseDate(d[ 0 ])).format('l')
-                  + ' - ' + moment(parseDate(d[ 1 ])).format('l');
-              }
-              return output + moment(parseDate(d[ 0 ])).format('l');
-            } else {
-              if (d[ 1 ] > d3.timeSecond.offset(d[ 0 ], 86400)) {
-                return output + moment(d[ 0 ]).format('l') + ' '
-                  + moment((d[ 0 ])).format('LTS') + ' - '
-                  + moment((d[ 1 ])).format('l') + ' '
-                  + moment((d[ 1 ])).format('LTS');
-              }
-              return output + moment(d[ 0 ]).format('LTS') + ' - '
-                + moment(d[ 1 ]).format('LTS');
-            }
+            return output + format(new Date(d[ 0 ]), "HH:mm:ss") + ' - '
+              + format(new Date(d[ 1 ]), "HH:mm:ss");
           })
             .style('left', function () {
               return window.pageXOffset + matrix.e + 'px';
@@ -405,26 +393,6 @@ export function barchart () {
           .attr('class', 'heading');
       }
 
-      // create subtitle
-      var subtitleText = '';
-      if (noOfDatasets) {
-        if (isDateOnlyFormat) {
-          subtitleText = 'from ' + moment(parseDate(startDate)).format('MMMM Y') + ' to '
-            + moment(parseDate(endDate)).format('MMMM Y');
-        } else {
-          subtitleText = 'from ' + moment(parseDateTime(startDate)).format('l') + ' '
-            + moment(parseDateTime(startDate)).format('LTS') + ' to '
-            + moment(parseDateTime(endDate)).format('l') + ' '
-            + moment(parseDateTime(endDate)).format('LTS');
-        }
-      }
-
-      svg.select('#g_title')
-        .append('text')
-        .attr('x', paddingLeft)
-        .attr('y', paddingTopHeading + 17)
-        .text(subtitleText)
-        .attr('class', 'subheading');
 
       // create legend
       if (!customCategories) {

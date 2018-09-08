@@ -40,7 +40,10 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import { Entities } from "@/store/vuex-decorators";
-import { cond, always, equals, T } from "ramda";
+import cond from "ramda/es/cond";
+import always from "ramda/es/always";
+import equals from "ramda/es/equals";
+import T from "ramda/es/T";
 
 @Component
 export default class DeviceSwitch extends Vue {

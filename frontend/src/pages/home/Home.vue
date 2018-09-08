@@ -2,28 +2,31 @@
   <div class="home-layout">
     <div 
       class="column" 
-      v-for="column in 4" 
-      :key="column" 
-      v-if="columnGroup[column - 1]">
+      v-for="(column, index) in columnGroup" 
+      :key="index" 
+    >
       <el-card 
         class="group-card" 
         :body-style="{ padding: '0' }" 
-        v-for="group in columnGroup[column - 1]" 
-        :key="group">
+        v-for="group in column" 
+        :key="group"
+      >
         <div slot="header" class="header">
           <span class="card-title">{{ group }}</span>
         </div>
-        <div class="device-list" >
+        <div class="device-list">
           <div 
             class="device-item"
             v-for="entity in grouped[group]"
-            :key="entity.entityId">
+            :key="entity.entityId"
+          >
             <device-switch 
               v-if="entity" 
               :entity="entity" 
               :state-info="statePool[entity.entityId]"
               :online="onlinePool[entity.entityId]"
-              @show-info="openInfoModal(entity)"/>
+              @show-info="openInfoModal(entity)"
+            />
           </div>
         </div>
       </el-card>
@@ -31,7 +34,8 @@
     <info-modal 
       ref="infomodal" 
       :state-pool="statePool" 
-      :online-pool="onlinePool"/>
+      :online-pool="onlinePool"
+    />
   </div>
 </template>
 

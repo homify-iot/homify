@@ -1,6 +1,7 @@
 import { callService } from "@/mqtt";
 import { Http } from "@/services/http.service";
-import { transpose, splitEvery } from "ramda";
+import transpose from "ramda/es/transpose";
+import splitEvery from "ramda/es/splitEvery";
 
 const SET_ENTITIES = "setEntities";
 const SET_STATES = "setStates";

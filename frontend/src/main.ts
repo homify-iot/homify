@@ -2,20 +2,18 @@ import Vue from "vue";
 import App from "@/App.vue";
 import router from "@/router";
 import store from "@/store";
-import Element from "element-ui";
-import "@/styles/theme-chalk/index.scss";
 import "@/styles/index.scss";
 import svgicon from "vue-svgicon";
 Vue.use(svgicon);
 
 import "./assets/icons";
 import "@/mqtt";
-Vue.config.productionTip = false;
-Vue.use(Element, {
-  size: "medium", // set element-ui default size
-});
+import "./plugins/element.js";
+
 import VueTimeago from "vue-timeago";
 Vue.use(VueTimeago);
+
+Vue.config.productionTip = false;
 
 new Vue({
   router,
