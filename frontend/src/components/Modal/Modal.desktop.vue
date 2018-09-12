@@ -1,25 +1,18 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class ModalDesktop extends Vue {
-  visible: boolean = false;
+  @Prop() visible: boolean;
 
   @Prop() title: string;
 
-  @Emit("visible-change")
-  visibleChange() {}
-
-  show() {
-    this.visible = true;
-    document.body.classList.add("modal-open");
-    this.$emit("visible-change", this.visible);
+  get v() {
+    return this.visible;
   }
 
-  hide() {
-    this.visible = false;
-    document.body.classList.remove("modal-open");
-    this.$emit("visible-change", this.visible);
+  set v(val) {
+    this.$emit("visible-change", val);
   }
 }
 </script>
@@ -27,7 +20,7 @@ export default class ModalDesktop extends Vue {
 <template>
   <el-dialog
     :title="title"
-    :visible.sync="visible"
+    :visible.sync="v"
     width="30%"
   >
     <template slot="title">

@@ -1,45 +1,6 @@
-<template>
-  <el-card :body-style="{ padding: '0' }" class="card" shadow="hover">
-    <div class="device-content" :class="{'off': !isOn}">
-      <div class="icon" :class="[!entity.image && colorClass(entity.type)]" @click="showInfo">
-        <img v-if="entity.image" :src="entity.image" style="width: 100%">
-        <svgicon 
-          v-else
-          :icon="entity.icon" 
-          width="26" 
-          height="26"
-        />
-      </div>
-      <div class="details" @click="showInfo">
-        <div class="title">
-          {{ entity.name }}
-          <svgicon 
-            class="available-icon"
-            :icon="online ?'wifi':'offline'"
-          />
-        </div>
-        
-        <div class="state-info">
-          <timeago v-if="stateInfo.last_update" :datetime="stateInfo.last_update" :auto-update="60" />
-        </div>
-      </div>
-      <div class="status-bar">
-        <el-switch 
-          v-if="isSwitchable" 
-          :active-value="!isOn" 
-          @click.native="isSwitchable && toggleDevice(entity)"
-        />
-        <div v-else>
-          <strong>{{ stateInfo.state.value }}</strong> <span v-html="stateInfo.state.unit" />
-        </div>
-      </div>
-    </div>
-  </el-card>
-</template>
-
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
-import { Entities } from "@/store/vuex-decorators";
+import { Entities, Modal } from "@/store/vuex-decorators";
 import cond from "ramda/es/cond";
 import always from "ramda/es/always";
 import equals from "ramda/es/equals";
@@ -48,6 +9,8 @@ import T from "ramda/es/T";
 @Component
 export default class DeviceSwitch extends Vue {
   @Entities.Action toggleDevice;
+
+  @Modal.Mutation toggleModal;
 
   @Prop({ default: () => ({}) })
   entity;
@@ -78,6 +41,44 @@ export default class DeviceSwitch extends Vue {
   }
 }
 </script>
+
+<template>
+  <el-card :body-style="{ padding: '0' }" class="card" shadow="hover">
+    <div class="device-content" :class="{'off': !isOn}">
+      <div class="icon" :class="[!entity.image && colorClass(entity.type)]" @click="toggleModal({name:'info', visible: true, props:entity})">
+        <img v-if="entity.image" :src="entity.image" style="width: 100%">
+        <svgicon 
+          v-else
+          :icon="entity.icon" 
+          width="26" 
+          height="26"
+        />
+      </div>
+      <div class="details" @click="toggleModal({name:'info', visible: true, props:entity})">
+        <div class="title">
+          {{ entity.name }}
+          <svgicon 
+            class="available-icon"
+            :icon="online ?'wifi':'offline'"
+          />
+        </div>
+        <div class="state-info">
+          <timeago v-if="stateInfo.last_update" :datetime="stateInfo.last_update" :auto-update="60" />
+        </div>
+      </div>
+      <div class="status-bar">
+        <el-switch 
+          v-if="isSwitchable" 
+          :active-value="!isOn" 
+          @click.native="isSwitchable && toggleDevice(entity)"
+        />
+        <div v-else>
+          <strong>{{ stateInfo.state.value }}</strong> <span v-html="stateInfo.state.unit" />
+        </div>
+      </div>
+    </div>
+  </el-card>
+</template>
 
 <style lang="scss" scoped>
 @import "@/styles/themes/default.scss";

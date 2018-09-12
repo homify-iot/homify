@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
 import ModalMobile from "@/components/Modal/Modal.mobile.vue";
 import ModalDesktop from "@/components/Modal/Modal.desktop.vue";
 import BarChartLog from "@/components/LogChart/BarChartLog.vue";
 import LineChartLog from "@/components/LogChart/LineChartLog.vue";
-import { Entities, Settings } from "@/store/vuex-decorators";
+import { Entities, Settings, Modal } from "@/store/vuex-decorators";
 
 @Component({
   components: {
@@ -29,35 +29,40 @@ export default class InfoModal extends Vue {
 
   @Settings.Getter isMobile;
 
-  entity: { name: string; entityId: string; type: string } = {
-    name: "",
-    entityId: "",
-    type: ""
-  };
+  @Modal.State info;
 
-  open(entity) {
-    this.entity = entity;
-    this.fetchLogs(entity.entityId);
-    (this.$refs.modal as any).show();
+  @Modal.State entity;
+
+  @Modal.Mutation toggleModal;
+
+  @Watch("info.visible")
+  onModalChange() {
+    if (this.info.visible) {
+      this.fetchLogs(this.entity.entityId);
+    }
   }
 }
 </script>
 
 <template>
-  <component ref="modal" :is="isMobile ? 'modal-mobile' : 'modal-desktop'">
+  <component 
+    :is="isMobile ? 'modal-mobile' : 'modal-desktop'" 
+    :visible="info.visible" 
+    @visible-change="(visible) => toggleModal({name:'info',visible})"
+  >
+    <svgicon slot="left-icon" icon='left' @click="toggleModal({name:'info'})" />
     <div slot="header">{{ entity.name }}</div>
-    <svgicon slot="right-icon" icon='settings'/>
+    <svgicon slot="right-icon" icon='settings' @click="toggleModal({name:'settings'})" />
     <device-switch 
       :entity="entity"
       :state-info="statePool[entity.entityId]"
-      :online="onlinePool[entity.entityId]"/>
+      :online="onlinePool[entity.entityId]"
+    />
     <component 
       v-if="!loadingLogs" 
       :is="entity.type === 'switch' || entity.type === 'binarySensor' ? 'bar-chart-log': 'line-chart-log'" 
       :log="logs[entity.entityId]"
-      :type="entity.type"/>
+      :type="entity.type"
+    />
   </component>
 </template>
-
-<style lang="scss">
-</style>

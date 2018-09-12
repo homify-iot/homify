@@ -1,28 +1,13 @@
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class ModalMobile extends Vue {
-  visible: boolean = false;
+  @Prop() visible: boolean;
 
   @Prop() headerClass: string;
 
   @Prop() bodyClass: string;
-
-  @Emit("visible-change")
-  visibleChange() {}
-
-  show() {
-    this.visible = true;
-    document.body.classList.add("modal-open");
-    this.$emit("visible-change", this.visible);
-  }
-
-  hide() {
-    this.visible = false;
-    document.body.classList.remove("modal-open");
-    this.$emit("visible-change", this.visible);
-  }
 }
 </script>
 
@@ -31,9 +16,7 @@ export default class ModalMobile extends Vue {
     <div v-if="visible" class="modal">
       <div class="modal-container">
         <div :class="['modal-header', headerClass]">
-          <slot name="left-icon">
-            <svgicon icon='left' @click="hide" />
-          </slot>
+          <slot name="left-icon" />
           <slot name="header" />
           <slot name="right-icon" />
         </div>

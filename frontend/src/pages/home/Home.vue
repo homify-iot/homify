@@ -25,17 +25,16 @@
               :entity="entity" 
               :state-info="statePool[entity.entityId]"
               :online="onlinePool[entity.entityId]"
-              @show-info="openInfoModal(entity)"
             />
           </div>
         </div>
       </el-card>
     </div>
     <info-modal 
-      ref="infomodal" 
       :state-pool="statePool" 
       :online-pool="onlinePool"
     />
+    <settings-modal />
   </div>
 </template>
 
@@ -44,11 +43,13 @@ import { Vue, Component } from "vue-property-decorator";
 import { Entities } from "@/store/vuex-decorators";
 import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
 import InfoModal from "@/components/Modal/InfoModal.vue";
+import SettingsModal from "@/components/Modal/SettingsModal.vue";
 
 @Component({
   components: {
     DeviceSwitch,
-    InfoModal
+    InfoModal,
+    SettingsModal
   }
 })
 export default class Home extends Vue {
@@ -59,10 +60,6 @@ export default class Home extends Vue {
   @Entities.State statePool;
 
   @Entities.State onlinePool;
-
-  openInfoModal(entity) {
-    (this.$refs.infomodal as any).open(entity);
-  }
 }
 </script>
 
