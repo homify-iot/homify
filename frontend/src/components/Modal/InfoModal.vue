@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
 import ModalMobile from "@/components/Modal/Modal.mobile.vue";
 import ModalDesktop from "@/components/Modal/Modal.desktop.vue";
@@ -31,15 +31,12 @@ export default class InfoModal extends Vue {
 
   @Modal.State info;
 
-  @Modal.State entity;
+  @Modal.Getter entity;
 
   @Modal.Mutation toggleModal;
 
-  @Watch("info.visible")
-  onModalChange() {
-    if (this.info.visible) {
-      this.fetchLogs(this.entity.entityId);
-    }
+  created() {
+    this.fetchLogs(this.entity.entityId);
   }
 }
 </script>

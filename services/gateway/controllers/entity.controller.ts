@@ -22,3 +22,10 @@ export const getLogs = (req, res) => {
       res.json(logs);
     });
 };
+
+export const postEntity = (req, res) => {
+  Entities.findByIdAndUpdate(req.body._id, req.body, { new: true })
+    .then((entities) => {
+      res.json(entities);
+    });
+};

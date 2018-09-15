@@ -1,5 +1,5 @@
 import * as express from "express";
-import { getAllEntities, getLogs, getOnlinePool, getStatePool } from "../controllers/entity.controller";
+import { getAllEntities, getLogs, getOnlinePool, getStatePool, postEntity } from "../controllers/entity.controller";
 
 const router = express.Router();
 
@@ -17,4 +17,8 @@ router
 router
   .route("/logs/:entityId")
   .get(getLogs);
+
+router
+  .route("/:id")
+  .post(postEntity);
 export default router;

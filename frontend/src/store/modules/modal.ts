@@ -1,9 +1,5 @@
 const state = {
-  entity: {
-    name: "",
-    entityId: "",
-    type: ""
-  },
+  entityId: undefined,
   info: {
     visible: false,
   },
@@ -12,13 +8,16 @@ const state = {
   }
 };
 const getters = {
+  entity: (state, _getters, rootState) => {
+    return rootState.entities.list.find(e => e.entityId === state.entityId) || {};
+  }
 };
 const mutations = {
-  toggleModal: (state, { name, visible, props }) => {
+  toggleModal: (state, { name, visible, entityId }) => {
     state[name] = {
       visible: visible === undefined ? !state[name].visible : visible,
     };
-    if (props) { state.entity = props; }
+    if (entityId !== undefined) { state.entityId = entityId; }
   }
 };
 const actions = {

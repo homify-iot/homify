@@ -4,6 +4,7 @@ import transpose from "ramda/es/transpose";
 import splitEvery from "ramda/es/splitEvery";
 
 const SET_ENTITIES = "setEntities";
+const SET_ENTITY = "setEntity";
 const SET_STATES = "setStates";
 const SET_ONLINE = "setOnline";
 const SET_LOGS = "setLogs";
@@ -12,18 +13,14 @@ const SET_LOADING = "setLoading";
 
 const state = {
   list: [],
-  grouped: {},
-  columnGroup: [],
   statePool: {},
   onlinePool: {},
   logs: {},
   loadingLogs: true
 };
-const getters = {};
-const mutations = {
-  [SET_ENTITIES]: (state, entities) => {
-    state.list = entities;
-    const grouped = entities.reduce((prev, next) => {
+const getters = {
+  grouped: state => {
+    return state.list.reduce((prev, next) => {
       if (next.group) {
         prev[next.group] = prev[next.group] || [];
         prev[next.group].push(next);
@@ -33,9 +30,22 @@ const mutations = {
       }
       return prev;
     }, {});
-    state.grouped = grouped;
-    const groups = Object.keys(grouped);
-    state.columnGroup = transpose(splitEvery(4, groups));
+  },
+  columnGroup: (_state, getters) => {
+    return transpose(splitEvery(4, Object.keys(getters.grouped)));
+  }
+};
+const mutations = {
+  [SET_ENTITIES]: (state, entities) => {
+    state.list = entities;
+  },
+  [SET_ENTITY]: (state, entity) => {
+    state.list = state.list.map(e => {
+      if (e._id === entity._id) {
+        return entity;
+      }
+      return e;
+    });
   },
   [SET_STATES]: (state, pool) => {
     state.statePool = pool;
@@ -78,6 +88,17 @@ const actions = {
       console.log(e);
     }
   },
+
+  updateSettings: async ({ commit }, entity) => {
+    try {
+      const { data } = await Http.post(`entities/${entity._id}`, Object.freeze(entity));
+      commit(SET_ENTITY, data);
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
   toggleDevice: ({ state }, entity) => {
     const service = state.statePool[entity.entityId].state ? "turnOff" : "turnOn";
     callService(entity.entityId, service).subscribe();

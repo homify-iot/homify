@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Card, Dialog, Switch, Tabs, TabPane, Dropdown, DropdownMenu, DropdownItem, Menu, MenuItem, Scrollbar } from 'element-ui'
+import { Button, Card, Dialog, Switch, Tabs, TabPane, Dropdown, DropdownMenu, DropdownItem, Menu, MenuItem, Scrollbar, Input } from 'element-ui'
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
 
@@ -17,3 +17,4 @@ Vue.use(DropdownItem);
 Vue.use(Menu);
 Vue.use(MenuItem);
 Vue.use(Scrollbar);
+Vue.use(Input);

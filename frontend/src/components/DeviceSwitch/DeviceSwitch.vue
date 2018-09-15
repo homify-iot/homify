@@ -45,7 +45,7 @@ export default class DeviceSwitch extends Vue {
 <template>
   <el-card :body-style="{ padding: '0' }" class="card" shadow="hover">
     <div class="device-content" :class="{'off': !isOn}">
-      <div class="icon" :class="[!entity.image && colorClass(entity.type)]" @click="toggleModal({name:'info', visible: true, props:entity})">
+      <div class="icon" :class="[!entity.image && colorClass(entity.type)]" @click="toggleModal({name:'info', visible: true, entityId:entity.entityId})">
         <img v-if="entity.image" :src="entity.image" style="width: 100%">
         <svgicon 
           v-else
@@ -54,7 +54,7 @@ export default class DeviceSwitch extends Vue {
           height="26"
         />
       </div>
-      <div class="details" @click="toggleModal({name:'info', visible: true, props:entity})">
+      <div class="details" @click="toggleModal({name:'info', visible: true, entityId:entity.entityId})">
         <div class="title">
           {{ entity.name }}
           <svgicon 

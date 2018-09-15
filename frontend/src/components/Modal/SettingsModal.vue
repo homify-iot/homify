@@ -2,7 +2,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import ModalMobile from "@/components/Modal/Modal.mobile.vue";
 import ModalDesktop from "@/components/Modal/Modal.desktop.vue";
-import { Settings, Modal } from "@/store/vuex-decorators";
+import { Settings, Modal, Entities } from "@/store/vuex-decorators";
 
 @Component({
   components: {
@@ -15,14 +15,63 @@ export default class SettingsModal extends Vue {
 
   @Modal.State settings;
 
+  @Modal.Getter entity;
+
   @Modal.Mutation toggleModal;
+
+  @Entities.Action updateSettings;
+
+  updatedEntities = {};
+
+  save() {
+    this.updateSettings({ _id: this.entity._id, ...this.updatedEntities }).then(
+      () => {
+        this.toggleModal({ name: "settings" });
+      }
+    );
+  }
+
+  update(obj) {
+    this.updatedEntities = Object.assign({}, this.updatedEntities, obj);
+  }
+
+  get changed() {
+    return Boolean(Object.keys(this.updatedEntities).length);
+  }
 }
 </script>
 
 <template>
-  <component :is="isMobile ? 'modal-mobile' : 'modal-desktop'" :visible="settings.visible">
+  <component class="settings-modal" :is="isMobile ? 'modal-mobile' : 'modal-desktop'" :visible="settings.visible">
     <div slot="left-icon" icon='left' @click="toggleModal({name:'settings'})">Cancel</div>
     <div slot="header">Settings</div>
-    <div slot="right-icon">Save</div>
+    <div slot="right-icon" @click="save()"><el-button type="text" class="button-save" :disabled="!changed">Save</el-button></div>
+    <div class="input-fields">
+      <el-input placeholder="Please input" :value="entity.group" @input="group => update({group})">
+        <template slot="prepend">Group</template>
+      </el-input>
+      <el-input placeholder="Please input" :value="entity.name" @input="name => update({name})">
+        <template slot="prepend">Name</template>
+      </el-input>
+      <el-input placeholder="Please input" :disabled="true" :value="entity.type">
+        <template slot="prepend">Type</template>
+      </el-input>
+    </div>
   </component>
 </template>
+
+<style lang="scss">
+.settings-modal {
+  .button-save {
+    color: #66bb6a;
+  }
+  .input-fields {
+    .el-input {
+      padding: 5px 0;
+      .el-input-group__prepend {
+        min-width: 80px;
+      }
+    }
+  }
+}
+</style>

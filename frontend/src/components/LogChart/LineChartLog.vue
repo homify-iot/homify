@@ -10,7 +10,7 @@ import isAfter from "date-fns/is_after";
   }
 })
 export default class LineChartLog extends Vue {
-  @Prop({ default: () => ({}) })
+  @Prop({ default: () => [] })
   log;
 
   options = {
