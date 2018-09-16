@@ -21,6 +21,11 @@ module.exports = {
 	// Plug
 	11: require('./plug'),
 
+	// Wireless wall switch
+	12: require('./86sw2'),
+
+	14: require('./86sw1'),
+
 	// Aqara Temperature/Humidity/Pressure sensor
 	19: require('./weather'),
 	// Light switch (live+neutral wire version) with one channel

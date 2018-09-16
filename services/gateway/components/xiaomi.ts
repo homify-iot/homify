@@ -17,7 +17,7 @@ export const setup = (config) => {
       if (device.device.matches("cap:children")) {
         const children = device.device.children();
         for (const child of children) {
-          if (child.matches("type:wall-switch")) {
+          if (child.matches("type:wall-switch") || child.matches("type:wall-controller")) {
             Loader.loadPlatform("switch", DOMAIN, child);
           } else if (child.matches("type:sensor")) {
             Loader.loadPlatform("sensor", DOMAIN, child);
