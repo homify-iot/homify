@@ -2,7 +2,7 @@ import homify from "core/homify";
 import Logger from "core/Logger";
 import { default as Entity } from "platforms/_entity";
 import { createDebug } from "services/debug.service";
-import { EntityObject, StateInfo } from "types/homify";
+import { Automation, EntityObject, StateInfo } from "types/homify";
 
 const log = createDebug("EventBus");
 
@@ -10,6 +10,12 @@ export const broadcastStateChange = (entity: Entity, stateInfo: StateInfo) => {
   const topic = `entity/${entity.entityId}/state_changed`;
   log(topic, stateInfo);
   Logger.logToDB("state_changed", entity, JSON.stringify(stateInfo));
+  return homify.mqttService.publish(topic, JSON.stringify(stateInfo));
+};
+
+export const broadcastAutomationStateChange = (automation: Automation, stateInfo: StateInfo) => {
+  const topic = `automation/${automation._id}/state_changed`;
+  log(topic, stateInfo);
   return homify.mqttService.publish(topic, JSON.stringify(stateInfo));
 };
 
@@ -42,6 +48,10 @@ export const callService = (entityId: string, service: string) => {
 
 export const getStateListener = (entityId: string) => {
   return homify.mqttService.observe(`entity/${entityId}/state_changed`);
+};
+
+export const getAutomationStateListener = (id: string) => {
+  return homify.mqttService.observe(`automation/${id}/state_changed`);
 };
 
 

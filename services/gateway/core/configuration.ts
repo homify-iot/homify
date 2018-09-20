@@ -4,6 +4,6 @@ export default {
       {
         name: "xiaomi",
         cacheTIme: 300,
-      },
+      }
     ],
 };

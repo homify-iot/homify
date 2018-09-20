@@ -26,6 +26,7 @@ export const Entities = mongoose.model("entities", EntitySchema);
 
 const AutomationSchema = new Schema({
   _id: ObjectId,
+  status: Boolean,
   triggers: {},
   actions: {}
 });

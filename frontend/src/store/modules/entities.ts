@@ -93,7 +93,6 @@ const actions = {
     try {
       const { data } = await Http.post(`entities/${entity._id}`, Object.freeze(entity));
       commit(SET_ENTITY, data);
-      console.log(data);
     } catch (e) {
       console.log(e);
     }

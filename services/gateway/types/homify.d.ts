@@ -18,3 +18,10 @@ export interface EntityObject {
   image: string;
   type: string;
 }
+
+export interface Automation {
+  _id: string,
+  status: boolean,
+  triggers: [],
+  actions: []
+}
