@@ -38,7 +38,7 @@ class Homify {
       }
     }
     device.name = existEntity.name;
-    await EventBus.broadcastComponentLoaded(device.entityId);
+    await EventBus.broadcastComponentLoaded(device.name);
     this.onlinePool[device.entityId] = true;
   }
 }

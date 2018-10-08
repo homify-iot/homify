@@ -31,9 +31,9 @@ export const broadcastNewDeviceFound = (entity: EntityObject) => {
   return homify.mqttService.publish(topic, JSON.stringify(entity));
 };
 
-export const broadcastComponentLoaded = (entityId: string) => {
+export const broadcastComponentLoaded = (name: string) => {
   const topic = `entity/component_loaded`;
-  log(entityId + " loaded");
+  log(name + " loaded");
   return homify.mqttService.publish(topic, JSON.stringify(true));
 };
 

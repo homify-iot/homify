@@ -1,5 +1,6 @@
 import * as EventBus from "core/EventBus";
 import * as R from "ramda";
+import { combineLatest } from "rxjs";
 import { filter, map, takeWhile } from "rxjs/operators";
 import { createDebug } from "services/debug.service";
 import { IMqttMessage } from "types/mqtt";
@@ -22,19 +23,21 @@ export default class Automation {
   }
 
   public start() {
-    R.map(this.attachTrigger, this.job.triggers);
+    combineLatest(
+      ...this.job.triggers.map(this.attachTrigger)
+    ).pipe(
+      takeWhile(() => this.status),
+      filter((stateArray) => stateArray.every(Boolean))
+    )
+      .subscribe(() => R.map(this.triggerAction, this.job.actions));
   }
 
   private attachTrigger = (trigger) => {
-    if (trigger.type === "state") {
-      EventBus.getStateListener(trigger.entityId)
-        .pipe(
-          takeWhile(() => this.status),
-          map((packet: IMqttMessage) => JSON.parse(packet.payload.toString())),
-          filter((stateInfo) => stateInfo.state === trigger.to)
-        )
-        .subscribe(() => R.map(this.triggerAction, this.job.actions));
-    }
+    return EventBus.getStateListener(trigger.entityId)
+      .pipe(
+        map((packet: IMqttMessage) => JSON.parse(packet.payload.toString())),
+        map((stateInfo) => stateInfo.state === trigger.to),
+      );
   }
 
   private triggerAction = (action) => {
