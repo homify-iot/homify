@@ -11,11 +11,15 @@ export const discoveryComponents = (discoveryCache) => {
 };
 
 export const loadAutomation = (jobs) => {
-  jobs.forEach((job) => {
-    const moduleName = `@/components/automation`;
-    const module = new (require(moduleName).default)(job);
-    module.start();
-  });
+  try {
+    jobs.forEach((job) => {
+      const moduleName = `@/components/automation`;
+      const module = new (require(moduleName).default)(job);
+      module.start();
+    });
+  } catch (e) {
+    log(e);
+  }
 };
 
 export const loadPlatform = (type, domain, config) => {

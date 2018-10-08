@@ -1,10 +1,17 @@
-import { Entities, Logs } from "config/db";
+import { Automations, Entities, Logs } from "config/db";
 import homify from "core/Homify";
 
 export const getAllEntities = (_req, res) => {
   Entities.find()
     .then((entities) => {
       res.json(entities);
+    });
+};
+
+export const getAllAutomations = (_req, res) => {
+  Automations.find()
+    .then((automations) => {
+      res.json(automations.map((a) => ({ ...a, group: "automation" })));
     });
 };
 

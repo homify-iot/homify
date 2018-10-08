@@ -1,11 +1,19 @@
 import * as express from "express";
-import { getAllEntities, getLogs, getOnlinePool, getStatePool, postEntity } from "../controllers/entity.controller";
+import {
+  getAllAutomations,
+  getAllEntities, getLogs, getOnlinePool, getStatePool, postEntity
+} from "../controllers/entity.controller";
 
 const router = express.Router();
 
 router
   .route("/")
   .get(getAllEntities);
+
+router
+  .route("/automations")
+  .get(getAllAutomations);
+
 router
   .route("/states")
   .get(getStatePool);
