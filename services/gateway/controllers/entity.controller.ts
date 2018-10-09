@@ -11,7 +11,7 @@ export const getAllEntities = (_req, res) => {
 export const getAllAutomations = (_req, res) => {
   Automations.find()
     .then((automations) => {
-      res.json(automations.map((a) => ({ ...a, group: "automation" })));
+      res.json(automations);
     });
 };
 

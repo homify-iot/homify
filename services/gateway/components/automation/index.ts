@@ -1,4 +1,5 @@
 import * as EventBus from "core/EventBus";
+import homify from "core/Homify";
 import * as R from "ramda";
 import { combineLatest } from "rxjs";
 import { filter, map, takeWhile } from "rxjs/operators";
@@ -13,6 +14,7 @@ export default class Automation {
       state: this.job.status,
       last_update: new Date()
     };
+    homify.statePool[this.job._id] = stateInfo;
     EventBus.getAutomationStateListener(this.job._id)
       .pipe(
         map((packet: IMqttMessage) => JSON.parse(packet.payload.toString())),

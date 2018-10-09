@@ -69,9 +69,17 @@ const actions = {
   fetchEntities: async ({ commit }) => {
     try {
       const { data: entities } = await Http.get("entities");
-      const { data: automations } = await Http.get("entities/automations");
+      let { data: automations } = await Http.get("entities/automations");
       const { data: statePool } = await Http.get("entities/states");
       const { data: onlinePool } = await Http.get("entities/online");
+
+      automations = automations.map(a => {
+        return {
+          ...a,
+          entityId: a._id
+        };
+      });
+
       commit(SET_ENTITIES, entities.concat(automations));
       commit(SET_STATES, statePool);
       commit(SET_ONLINE, onlinePool);

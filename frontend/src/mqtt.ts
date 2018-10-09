@@ -1,9 +1,13 @@
 import MqttClient from "@/services/mqtt.service";
 import store from "@/store";
 import { IMqttMessage } from "@/types/mqtt.model";
+import { merge } from "rxjs";
 
 export const mqttClient = new MqttClient();
-mqttClient.observe("entity/+/state_changed")
+merge(
+  mqttClient.observe("entity/+/state_changed"),
+  mqttClient.observe("automation/+/state_changed")
+)
   .subscribe((packet: IMqttMessage) => {
     const { topic, payload } = packet;
     const [, entityId] = topic.split("/");

@@ -28,7 +28,7 @@ export default class DeviceSwitch extends Vue {
   }
 
   get isSwitchable() {
-    return this.entity.type === "switch";
+    return this.entity.type === "switch" || this.entity.type === "automation";
   }
 
   get colorClass() {
