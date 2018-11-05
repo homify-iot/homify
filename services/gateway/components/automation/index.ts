@@ -15,6 +15,7 @@ export default class Automation {
       last_update: new Date()
     };
     homify.statePool[this.job._id] = stateInfo;
+    homify.onlinePool[this.job._id] = true;
     EventBus.getAutomationStateListener(this.job._id)
       .pipe(
         map((packet: IMqttMessage) => JSON.parse(packet.payload.toString())),
