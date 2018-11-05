@@ -24,7 +24,7 @@ export default class SettingsModal extends Vue {
   updatedEntities = {};
 
   save() {
-    this.updateSettings({ _id: this.entity._id, ...this.updatedEntities }).then(
+    this.updateSettings({ _id: this.entity._id, type: this.entity.type, ...this.updatedEntities }).then(
       () => {
         this.toggleModal({ name: "settings" });
       }
@@ -47,7 +47,12 @@ export default class SettingsModal extends Vue {
     <div slot="header">Settings</div>
     <div slot="right-icon" @click="save()"><el-button type="text" class="button-save" :disabled="!changed">Save</el-button></div>
     <div class="input-fields">
-      <el-input placeholder="Please input" :value="entity.group" @input="group => update({group})">
+      <el-input 
+        v-if="entity.type !== 'automation'" 
+        placeholder="Please input" 
+        :value="entity.group" 
+        @input="group => update({group})"
+      >
         <template slot="prepend">Group</template>
       </el-input>
       <el-input placeholder="Please input" :value="entity.name" @input="name => update({name})">

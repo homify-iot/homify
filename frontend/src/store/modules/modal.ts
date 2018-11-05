@@ -1,7 +1,10 @@
 const state = {
   entityId: undefined,
   info: {
-    visible: false,
+    visible: false
+  },
+  automation: {
+    visible: false
   },
   settings: {
     visible: false

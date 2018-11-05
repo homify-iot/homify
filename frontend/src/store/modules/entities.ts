@@ -1,5 +1,7 @@
 import { callService } from "@/mqtt";
 import { Http } from "@/services/http.service";
+import find from "ramda/es/find";
+import propEq from "ramda/es/propEq";
 import transpose from "ramda/es/transpose";
 import splitEvery from "ramda/es/splitEvery";
 
@@ -33,6 +35,11 @@ const getters = {
   },
   columnGroup: (_state, getters) => {
     return transpose(splitEvery(4, Object.keys(getters.grouped)));
+  },
+  entityById: state => {
+    return (id: string) => {
+      return find(propEq("entityId", id))(state.list);
+    };
   }
 };
 const mutations = {
@@ -100,7 +107,8 @@ const actions = {
 
   updateSettings: async ({ commit }, entity) => {
     try {
-      const { data } = await Http.post(`entities/${entity._id}`, Object.freeze(entity));
+      const url = `entities/${entity.type === "automation" ? "automation/" : ""}${entity._id}`;
+      const { data } = await Http.put(url, Object.freeze(entity));
       commit(SET_ENTITY, data);
     } catch (e) {
       console.log(e);

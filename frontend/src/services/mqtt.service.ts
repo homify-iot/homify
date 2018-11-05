@@ -44,7 +44,7 @@ export default class MqttClientService {
   public connect(options?: IMqttServiceOptions, client?: IMqttClient) {
     options = options || {};
     const protocol = options.protocol || "ws";
-    const hostname = options.hostname || "192.168.1.7";
+    const hostname = options.hostname || "192.168.1.2";
     const port = options.port || 9001;
     const path = options.path || "";
     this._url = `${protocol}://${hostname}:${port}/${path}`;

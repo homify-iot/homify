@@ -11,6 +11,7 @@
     "svg": "vsvg -s ./static/svg -t ./src/assets/icons --ext ts --es6"
   },
   "dependencies": {
+    "@types/ramda": "^0.25.41",
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
     "d3": "^5.7.0",

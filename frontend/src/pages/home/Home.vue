@@ -35,6 +35,7 @@
       :state-pool="statePool" 
       :online-pool="onlinePool"
     />
+    <automation-modal v-if="automation.visible" />
     <settings-modal v-if="settings.visible" />
   </div>
 </template>
@@ -44,12 +45,14 @@ import { Vue, Component } from "vue-property-decorator";
 import { Entities, Modal } from "@/store/vuex-decorators";
 import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
 import InfoModal from "@/components/Modal/InfoModal.vue";
+import AutomationModal from "@/components/Modal/AutomationModal.vue";
 import SettingsModal from "@/components/Modal/SettingsModal.vue";
 
 @Component({
   components: {
     DeviceSwitch,
     InfoModal,
+    AutomationModal,
     SettingsModal
   }
 })
@@ -65,6 +68,8 @@ export default class Home extends Vue {
   @Modal.State settings;
 
   @Modal.State info;
+
+  @Modal.State automation;
 }
 </script>
 

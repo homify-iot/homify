@@ -15,6 +15,13 @@ export const getAllAutomations = (_req, res) => {
     });
 };
 
+export const updateAutomation = (req, res) => {
+  Automations.findByIdAndUpdate(req.body._id, req.body, { new: true })
+    .then((automations) => {
+      res.json(automations);
+    });
+};
+
 export const getStatePool = (_req, res) => {
   res.json(homify.statePool);
 };
@@ -30,7 +37,7 @@ export const getLogs = (req, res) => {
     });
 };
 
-export const postEntity = (req, res) => {
+export const updateEntity = (req, res) => {
   Entities.findByIdAndUpdate(req.body._id, req.body, { new: true })
     .then((entities) => {
       res.json(entities);

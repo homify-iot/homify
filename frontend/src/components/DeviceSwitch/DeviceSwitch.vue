@@ -39,13 +39,21 @@ export default class DeviceSwitch extends Vue {
       [T, always("info")]
     ]);
   }
+
+  clickDevice(entity) {
+    this.toggleModal({
+      name: entity.type === "automation" ? entity.type : "info",
+      visible: true,
+      entityId: entity.entityId
+    });
+  }
 }
 </script>
 
 <template>
   <el-card :body-style="{ padding: '0' }" class="card" shadow="hover">
     <div class="device-content" :class="{'off': !isOn}">
-      <div class="icon" :class="[!entity.image && colorClass(entity.type)]" @click="toggleModal({name:'info', visible: true, entityId:entity.entityId})">
+      <div class="icon" :class="[!entity.image && colorClass(entity.type)]" @click="clickDevice(entity)">
         <img v-if="entity.image" :src="entity.image" style="width: 100%">
         <svgicon 
           v-else
@@ -54,7 +62,7 @@ export default class DeviceSwitch extends Vue {
           height="26"
         />
       </div>
-      <div class="details" @click="toggleModal({name:'info', visible: true, entityId:entity.entityId})">
+      <div class="details" @click="clickDevice(entity)">
         <div class="title">
           {{ entity.name }}
           <svgicon 
