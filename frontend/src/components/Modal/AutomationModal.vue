@@ -1,10 +1,10 @@
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import ModalMobile from "@/components/Modal/Modal.mobile.vue";
-import ModalDesktop from "@/components/Modal/Modal.desktop.vue";
-import { Settings, Modal, Entities } from "@/store/vuex-decorators";
+  import {Component, Vue} from "vue-property-decorator";
+  import ModalMobile from "@/components/Modal/Modal.mobile.vue";
+  import ModalDesktop from "@/components/Modal/Modal.desktop.vue";
+  import {Entities, Modal, Settings} from "@/store/vuex-decorators";
 
-@Component({
+  @Component({
   components: {
     ModalMobile,
     ModalDesktop
@@ -44,18 +44,25 @@ export default class AutomationModal extends Vue {
 </script>
 
 <template>
-  <component class="settings-modal" :is="isMobile ? 'modal-mobile' : 'modal-desktop'" :visible="automation.visible">
+  <component class="auto-modal" :is="isMobile ? 'modal-mobile' : 'modal-desktop'" :visible="automation.visible">
     <svgicon slot="left-icon" icon='left' @click="toggleModal({name:'automation'})" />
     <div slot="header">{{ entity.name }}</div>
     <svgicon slot="right-icon" icon='settings' @click="toggleModal({name:'settings'})" />
     <el-card :body-style="{ padding: '0px' }">
-      <div slot="header">
-        <span>If</span>
+      <div slot="header" class="panel-row">
+        <div class="label">If</div>
+        <el-button 
+          type="primary"
+          icon="el-icon-plus"
+          circle
+          @click.native="toggleModal({name:'condition', type:'if'})"
+          size="mini"
+        />
       </div>
       <div class="automation-row" v-for="trigger in entity.triggers" :key="trigger.entityId">
         <div class="device-block">
           <div class="icon">
-            <img v-if=" entityById(trigger.entityId).image" :src=" entityById(trigger.entityId).image" style="width: 100%">
+            <img v-if="entityById(trigger.entityId).image" :src=" entityById(trigger.entityId).image" style="width: 100%">
             <svgicon
               v-else
               :icon="entityById(trigger.entityId).icon"
@@ -71,8 +78,14 @@ export default class AutomationModal extends Vue {
       </div>
     </el-card>
     <el-card :body-style="{ padding: '0px' }" class="action-panel">
-      <div slot="header">
-        <span>Then</span>
+      <div slot="header" class="panel-row">
+        <div class="label">Then</div>
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          circle
+          size="mini"
+        />
       </div>
       <div class="automation-row" v-for="action in entity.actions" :key="action.entityId">
         <div :class="[textClass]">
@@ -95,32 +108,43 @@ export default class AutomationModal extends Vue {
   </component>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "@/styles/themes/default.scss";
-
-  .automation-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .8rem;
-    .device-block {
-      display: flex;
-      align-items: center;
-      .icon {
+  .auto-modal {
+    .el-card__header {
+      padding: 10px;
+      .panel-row {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 3rem;
-        font-size: 3.75rem;
-        border-radius: 0.375rem;
-        transition: width 0.4s ease;
+        justify-content: space-between;
+        .label {
+          align-self: center;
+        }
       }
     }
-    .on {
-      color: $color-success
+    .automation-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .8rem;
+      .device-block {
+        display: flex;
+        align-items: center;
+        .icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 3rem;
+          font-size: 3.75rem;
+          border-radius: 0.375rem;
+          transition: width 0.4s ease;
+        }
+      }
+      .on {
+        color: $color-success
+      }
     }
-  }
-  .action-panel {
-    margin-top: 1rem;
+    .action-panel {
+      margin-top: 1rem;
+    }
   }
 </style>

@@ -16,7 +16,18 @@ export const getAllAutomations = (_req, res) => {
 };
 
 export const updateAutomation = (req, res) => {
-  Automations.findByIdAndUpdate(req.body._id, req.body, { new: true })
+  Automations.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((automations) => {
+      res.json(automations);
+    });
+};
+
+export const addCondition = (req, res) => {
+  const key = req.params.type === "if" ? "triggers" : "actions";
+  Automations.findOneAndUpdate(
+    { _id: req.params.id },
+    { $addToSet: {[key]: req.body}},
+    { new: true })
     .then((automations) => {
       res.json(automations);
     });

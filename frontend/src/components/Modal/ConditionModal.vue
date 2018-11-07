@@ -1,0 +1,97 @@
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
+import ModalMobile from "@/components/Modal/Modal.mobile.vue";
+import ModalDesktop from "@/components/Modal/Modal.desktop.vue";
+import { Settings, Modal, Entities } from "@/store/vuex-decorators";
+import cond from "ramda/es/cond";
+import always from "ramda/es/always";
+import equals from "ramda/es/equals";
+import T from "ramda/es/T";
+
+@Component({
+  components: {
+    ModalMobile,
+    ModalDesktop
+  }
+})
+export default class ConditionModal extends Vue {
+  @Settings.Getter isMobile;
+
+  @Modal.State condition;
+
+  @Modal.Getter entity;
+
+  @Modal.Mutation toggleModal;
+
+  @Entities.State list;
+
+  @Entities.Action addCondition;
+
+  get colorClass() {
+    return cond([
+      [equals("switch"), always("warning")],
+      [equals("sensor"), always("success")],
+      [equals("binarySensor"), always("primary")],
+      [T, always("info")]
+    ]);
+  }
+
+  selectCondition(entity, state) {
+    this.addCondition({
+      id: this.entity.entityId,
+      type: this.condition.type,
+      condition: {
+        entityId: entity.entityId,
+        type: "state",
+        to: state
+      }
+    }).then(() => {
+      this.toggleModal({name:"condition"});
+    });
+  }
+}
+</script>
+
+<template>
+  <component class="condition-model" :is="isMobile ? 'modal-mobile' : 'modal-desktop'" :visible="condition.visible">
+    <svgicon slot="left-icon" icon='left' @click="toggleModal({name:'condition'})" />
+    <div slot="header">Select conditions --- {{ condition.type }}</div>
+    <div slot="right-icon" />
+    <el-collapse>
+      <el-collapse-item v-for="entity in list" v-if="entity.type !== 'automation'" :key="entity.entityId">
+        <template slot="title">
+          <div class="device-content">
+            <div class="icon" :class="[!entity.image && colorClass(entity.type)]">
+              <img v-if="entity.image" :src="entity.image" style="width: 100%">
+              <svgicon
+                v-else
+                :icon="entity.icon"
+                width="26"
+                height="26"
+              />
+            </div>
+            <div class="title">
+              {{ entity.name }}
+            </div>
+            <div class="group">
+              {{ entity.group }}
+            </div>
+          </div>
+        </template>
+        <el-button type="success" size="small" @click="selectCondition(entity, true)">ON</el-button>
+        <el-button type="danger" size="small" @click="selectCondition(entity, false)">OFF</el-button>
+      </el-collapse-item>
+    </el-collapse>
+  </component>
+</template>
+
+<style lang="scss">
+.condition-model {
+  .title {
+    padding: 0 .5rem;
+  }
+  .group {
+    font-weight: 200;
+  }
+}
+</style>

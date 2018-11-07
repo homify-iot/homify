@@ -31,7 +31,8 @@
       "error",
       "always"
     ],
-    "no-multiple-empty-lines": "error"
+    "no-multiple-empty-lines": "error",
+    "vue/no-use-v-if-with-v-for": "off"
   },
   "extends": [
     "@vue/typescript",

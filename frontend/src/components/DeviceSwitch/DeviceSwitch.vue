@@ -88,7 +88,7 @@ export default class DeviceSwitch extends Vue {
   </el-card>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/styles/themes/default.scss";
 @import "@/styles/mixins/button.scss";
 .card {

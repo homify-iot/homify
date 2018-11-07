@@ -119,6 +119,16 @@ const actions = {
     const service = state.statePool[entity.entityId].state ? "turnOff" : "turnOn";
     callService(entity.entityId, service).subscribe();
   },
+
+  addCondition: async ({ commit }, { id, type, condition }) => {
+    try {
+      const url = `entities/automation/${id}/${type}`;
+      const { data } = await Http.put(url, Object.freeze(condition));
+      commit(SET_ENTITY, data);
+    } catch (e) {
+      console.log(e);
+    }
+  },
 };
 
 export const entities = {

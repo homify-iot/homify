@@ -37,6 +37,7 @@
     />
     <automation-modal v-if="automation.visible" />
     <settings-modal v-if="settings.visible" />
+    <condition-modal v-if="condition.visible" />
   </div>
 </template>
 
@@ -47,9 +48,11 @@ import DeviceSwitch from "@/components/DeviceSwitch/DeviceSwitch.vue";
 import InfoModal from "@/components/Modal/InfoModal.vue";
 import AutomationModal from "@/components/Modal/AutomationModal.vue";
 import SettingsModal from "@/components/Modal/SettingsModal.vue";
+import ConditionModal from "@/components/Modal/ConditionModal.vue";
 
 @Component({
   components: {
+    ConditionModal,
     DeviceSwitch,
     InfoModal,
     AutomationModal,
@@ -68,6 +71,8 @@ export default class Home extends Vue {
   @Modal.State settings;
 
   @Modal.State info;
+
+  @Modal.State condition;
 
   @Modal.State automation;
 }

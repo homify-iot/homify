@@ -1,7 +1,7 @@
 import * as express from "express";
 import {
-  getAllAutomations,
-  getAllEntities, getLogs, getOnlinePool, getStatePool, updateAutomation, updateEntity
+  addCondition,
+  getAllAutomations, getAllEntities, getLogs, getOnlinePool, getStatePool, updateAutomation, updateEntity
 } from "../controllers/entity.controller";
 
 const router = express.Router();
@@ -17,6 +17,9 @@ router
 router
   .route("/automation/:id")
   .put(updateAutomation);
+router
+  .route("/automation/:id/:type")
+  .put(addCondition);
 
 router
   .route("/states")

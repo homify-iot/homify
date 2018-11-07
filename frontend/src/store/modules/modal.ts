@@ -6,6 +6,10 @@ const state = {
   automation: {
     visible: false
   },
+  condition: {
+    visible: false,
+    type: "if"
+  },
   settings: {
     visible: false
   }
@@ -16,9 +20,10 @@ const getters = {
   }
 };
 const mutations = {
-  toggleModal: (state, { name, visible, entityId }) => {
+  toggleModal: (state, { name, visible, type, entityId }) => {
     state[name] = {
       visible: visible === undefined ? !state[name].visible : visible,
+      type
     };
     if (entityId !== undefined) { state.entityId = entityId; }
   }
