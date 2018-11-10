@@ -13,6 +13,8 @@ import { Settings, Modal, Entities } from "@/store/vuex-decorators";
 export default class SettingsModal extends Vue {
   @Settings.Getter isMobile;
 
+  @Modal.State entityId;
+
   @Modal.State settings;
 
   @Modal.Getter entity;
@@ -21,14 +23,20 @@ export default class SettingsModal extends Vue {
 
   @Entities.Action updateSettings;
 
-  updatedEntities = {};
+  @Entities.Action addAutomation;
+
+  updatedEntities = { name: "" };
 
   save() {
-    this.updateSettings({ _id: this.entity._id, type: this.entity.type, ...this.updatedEntities }).then(
-      () => {
+    if (this.entityId) {
+      this.updateSettings({ _id: this.entity._id, type: this.entity.type, ...this.updatedEntities }).then(() => {
         this.toggleModal({ name: "settings" });
-      }
-    );
+      });
+    } else if (this.settings.type === "automation") {
+      this.addAutomation(this.updatedEntities.name).then(() => {
+        this.toggleModal({ name: "settings" });
+      });
+    }
   }
 
   update(obj) {
@@ -48,7 +56,7 @@ export default class SettingsModal extends Vue {
     <div slot="right-icon" @click="save()"><el-button type="text" class="button-save" :disabled="!changed">Save</el-button></div>
     <div class="input-fields">
       <el-input 
-        v-if="entity.type !== 'automation'" 
+        v-if="settings.type !== 'automation'"
         placeholder="Please input" 
         :value="entity.group" 
         @input="group => update({group})"
@@ -58,7 +66,12 @@ export default class SettingsModal extends Vue {
       <el-input placeholder="Please input" :value="entity.name" @input="name => update({name})">
         <template slot="prepend">Name</template>
       </el-input>
-      <el-input placeholder="Please input" :disabled="true" :value="entity.type">
+      <el-input 
+        v-if="settings.type !== 'automation'" 
+        placeholder="Please input" 
+        :disabled="true" 
+        :value="entity.type"
+      >
         <template slot="prepend">Type</template>
       </el-input>
     </div>

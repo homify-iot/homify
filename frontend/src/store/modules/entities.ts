@@ -7,6 +7,7 @@ import splitEvery from "ramda/es/splitEvery";
 
 const SET_ENTITIES = "setEntities";
 const SET_ENTITY = "setEntity";
+const ADD_ENTITY = "addEntity";
 const SET_STATES = "setStates";
 const SET_ONLINE = "setOnline";
 const SET_LOGS = "setLogs";
@@ -53,6 +54,9 @@ const mutations = {
       }
       return e;
     });
+  },
+  [ADD_ENTITY]: (state, entity) => {
+    state.list = state.list.concat(entity);
   },
   [SET_STATES]: (state, pool) => {
     state.statePool = pool;
@@ -115,6 +119,16 @@ const actions = {
     }
   },
 
+  addAutomation: async ({ commit }, name) => {
+    try {
+      const url = `entities/automations`;
+      const { data } = await Http.post(url, {name});
+      commit(ADD_ENTITY, data);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
   toggleDevice: ({ state }, entity) => {
     const service = state.statePool[entity.entityId].state ? "turnOff" : "turnOn";
     callService(entity.entityId, service).subscribe();
@@ -124,6 +138,16 @@ const actions = {
     try {
       const url = `entities/automation/${id}/${type}`;
       const { data } = await Http.put(url, Object.freeze(condition));
+      commit(SET_ENTITY, data);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  removeCondition: async ({ commit }, { id, type, entityId }) => {
+    try {
+      const url = `entities/automation/${id}/${type}`;
+      const { data } = await Http.delete(url, { data: {entityId}});
       commit(SET_ENTITY, data);
     } catch (e) {
       console.log(e);

@@ -21,6 +21,8 @@ export default class AutomationModal extends Vue {
 
   @Entities.Action updateSettings;
 
+  @Entities.Action removeCondition;
+
   @Entities.Getter entityById;
 
   updatedEntities = {};
@@ -33,21 +35,26 @@ export default class AutomationModal extends Vue {
     return Boolean(Object.keys(this.updatedEntities).length);
   }
 
-  get triggerText() {
-    return this.entity.status ? "打开" : "关闭";
-  }
-
-  get textClass() {
-    return this.entity.status ? "on" : "off";
+  remove(type, entityId) {
+    this.removeCondition({
+      id: this.entity.entityId,
+      type,
+      entityId
+    });
   }
 }
 </script>
 
 <template>
-  <component class="auto-modal" :is="isMobile ? 'modal-mobile' : 'modal-desktop'" :visible="automation.visible">
+  <component 
+    class="auto-modal" 
+    :is="isMobile ? 'modal-mobile' : 'modal-desktop'" 
+    :visible="automation.visible" 
+    @visible-change="(visible) => toggleModal({name:'automation',visible})"
+  >
     <svgicon slot="left-icon" icon='left' @click="toggleModal({name:'automation'})" />
     <div slot="header">{{ entity.name }}</div>
-    <svgicon slot="right-icon" icon='settings' @click="toggleModal({name:'settings'})" />
+    <svgicon slot="right-icon" icon='settings' @click="toggleModal({name:'settings', type:'automation'})" />
     <el-card :body-style="{ padding: '0px' }">
       <div slot="header" class="panel-row">
         <div class="label">If</div>
@@ -72,8 +79,15 @@ export default class AutomationModal extends Vue {
           </div>
           <div>{{ entityById(trigger.entityId).name }}</div>
         </div>
-        <div :class="[textClass]">
-          {{ triggerText }}
+        <div>
+          {{ trigger.to ? "打开" : "关闭" }}
+          <el-button
+            type="danger"
+            icon="el-icon-minus"
+            circle
+            @click.native="remove('if', trigger.entityId)"
+            size="mini"
+          />
         </div>
       </div>
     </el-card>
@@ -84,12 +98,13 @@ export default class AutomationModal extends Vue {
           type="primary"
           icon="el-icon-plus"
           circle
+          @click.native="toggleModal({name:'condition', type:'then'})"
           size="mini"
         />
       </div>
       <div class="automation-row" v-for="action in entity.actions" :key="action.entityId">
-        <div :class="[textClass]">
-          {{ triggerText }}
+        <div>
+          {{ action.service }}
         </div>
         <div class="device-block">
           <div class="icon">
@@ -102,6 +117,13 @@ export default class AutomationModal extends Vue {
             />
           </div>
           <div>{{ entityById(action.entityId).name }}</div>
+          <el-button
+            type="danger"
+            icon="el-icon-minus"
+            circle
+            @click.native="remove('then', action.entityId)"
+            size="mini"
+          />
         </div>
       </div>
     </el-card>
@@ -109,7 +131,6 @@ export default class AutomationModal extends Vue {
 </template>
 
 <style lang="scss">
-  @import "@/styles/themes/default.scss";
   .auto-modal {
     .el-card__header {
       padding: 10px;
@@ -138,9 +159,6 @@ export default class AutomationModal extends Vue {
           border-radius: 0.375rem;
           transition: width 0.4s ease;
         }
-      }
-      .on {
-        color: $color-success
       }
     }
     .action-panel {

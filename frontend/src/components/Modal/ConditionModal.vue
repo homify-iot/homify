@@ -36,17 +36,22 @@ export default class ConditionModal extends Vue {
     ]);
   }
 
-  selectCondition(entity, state) {
+  selectCondition(entityId, state) {
+    const condition = this.condition.type === "if" ?
+      {
+        entityId,
+        type: "state",
+        to: state
+      } : {
+        entityId,
+        service: state ? "turnOn" : "turnOff"
+      };
     this.addCondition({
       id: this.entity.entityId,
       type: this.condition.type,
-      condition: {
-        entityId: entity.entityId,
-        type: "state",
-        to: state
-      }
+      condition
     }).then(() => {
-      this.toggleModal({name:"condition"});
+      this.toggleModal({ name: "condition" });
     });
   }
 }
@@ -78,8 +83,8 @@ export default class ConditionModal extends Vue {
             </div>
           </div>
         </template>
-        <el-button type="success" size="small" @click="selectCondition(entity, true)">ON</el-button>
-        <el-button type="danger" size="small" @click="selectCondition(entity, false)">OFF</el-button>
+        <el-button type="success" size="small" @click="selectCondition(entity.entityId, true)">ON</el-button>
+        <el-button type="danger" size="small" @click="selectCondition(entity.entityId, false)">OFF</el-button>
       </el-collapse-item>
     </el-collapse>
   </component>

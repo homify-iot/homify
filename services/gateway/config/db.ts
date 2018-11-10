@@ -25,10 +25,11 @@ const EntitySchema = new Schema({
 export const Entities = mongoose.model("entities", EntitySchema);
 
 const AutomationSchema = new Schema({
-  _id: ObjectId,
+  _id: { type: ObjectId, auto: true },
   entityId: ObjectId,
   name: String,
   status: Boolean,
+  type: String,
   triggers: {},
   actions: {}
 });

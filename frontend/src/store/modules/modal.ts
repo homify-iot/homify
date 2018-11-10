@@ -7,8 +7,7 @@ const state = {
     visible: false
   },
   condition: {
-    visible: false,
-    type: "if"
+    visible: false
   },
   settings: {
     visible: false

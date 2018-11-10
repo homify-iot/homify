@@ -11,8 +11,18 @@
         v-for="group in column" 
         :key="group"
       >
-        <div slot="header" class="header">
-          <span class="card-title">{{ group }}</span>
+        <div slot="header" class="panel-row">
+          <div class="card-title">
+            {{ group }}
+          </div>
+          <el-button
+            v-if="group === 'automation'"
+            type="primary"
+            icon="el-icon-plus"
+            circle
+            @click.native="toggleModal({name:'settings', type: 'automation', entityId: null})"
+            size="mini"
+          />
         </div>
         <div class="device-list">
           <div 
@@ -75,6 +85,8 @@ export default class Home extends Vue {
   @Modal.State condition;
 
   @Modal.State automation;
+
+  @Modal.Mutation toggleModal;
 }
 </script>
 
@@ -93,8 +105,12 @@ export default class Home extends Vue {
     .el-card__header {
       border-bottom: none;
     }
-    .card-title {
-      text-transform: capitalize;
+    .panel-row {
+      display: flex;
+      justify-content: space-between;
+      .card-title {
+        text-transform: capitalize;
+      }
     }
   }
   .device-list {

@@ -1,7 +1,15 @@
 import * as express from "express";
 import {
+  addAutomation,
   addCondition,
-  getAllAutomations, getAllEntities, getLogs, getOnlinePool, getStatePool, updateAutomation, updateEntity
+  getAllAutomations,
+  getAllEntities,
+  getLogs,
+  getOnlinePool,
+  getStatePool,
+  removeCondition,
+  updateAutomation,
+  updateEntity
 } from "../controllers/entity.controller";
 
 const router = express.Router();
@@ -12,14 +20,17 @@ router
 
 router
   .route("/automations")
-  .get(getAllAutomations);
+  .get(getAllAutomations)
+  .post(addAutomation);
 
 router
   .route("/automation/:id")
   .put(updateAutomation);
+
 router
   .route("/automation/:id/:type")
-  .put(addCondition);
+  .put(addCondition)
+  .delete(removeCondition);
 
 router
   .route("/states")
