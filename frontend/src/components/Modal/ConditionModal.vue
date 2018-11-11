@@ -36,6 +36,10 @@ export default class ConditionModal extends Vue {
     ]);
   }
 
+  isThenable(entity) {
+    return entity.type === "switch";
+  }
+
   selectCondition(entityId, state) {
     const condition = this.condition.type === "if" ?
       {
@@ -63,7 +67,7 @@ export default class ConditionModal extends Vue {
     <div slot="header">Select conditions --- {{ condition.type }}</div>
     <div slot="right-icon" />
     <el-collapse>
-      <el-collapse-item v-for="entity in list" v-if="entity.type !== 'automation'" :key="entity.entityId">
+      <el-collapse-item v-for="entity in list" v-if="isThenable(entity)" :key="entity.entityId">
         <template slot="title">
           <div class="device-content">
             <div class="icon" :class="[!entity.image && colorClass(entity.type)]">
