@@ -1,3 +1,4 @@
+import {broadcastAutomationChange} from "@/core/EventBus";
 import { Automations, Entities, Logs} from "config/db";
 import homify from "core/Homify";
 
@@ -22,17 +23,17 @@ export const addAutomation = (req, res) => {
     type: "automation",
     triggers: [],
     actions: []
-  }).then((automations) => {
-    return Automations.findOneAndUpdate({_id: automations._id}, {entityId: automations._id});
-  }).then((automations) => {
-    res.json(automations);
+  }).then((automation) => {
+    return Automations.findOneAndUpdate({_id: automation._id}, {entityId: automation._id});
+  }).then((automation) => {
+    res.json(automation);
   });
 };
 
 export const updateAutomation = (req, res) => {
   Automations.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-    .then((automations) => {
-      res.json(automations);
+    .then((automation) => {
+      res.json(automation);
     });
 };
 
@@ -42,8 +43,9 @@ export const addCondition = (req, res) => {
     { _id: req.params.id },
     { $addToSet: {[key]: req.body}},
     { new: true })
-    .then((automations) => {
-      res.json(automations);
+    .then((automation) => {
+      broadcastAutomationChange(automation).subscribe();
+      res.json(automation);
     });
 };
 
@@ -53,8 +55,9 @@ export const removeCondition = (req, res) => {
     { _id: req.params.id },
     { $pull: {[key]: {entityId: req.body.entityId}}},
     { new: true })
-    .then((automations) => {
-      res.json(automations);
+    .then((automation) => {
+      broadcastAutomationChange(automation).subscribe();
+      res.json(automation);
     });
 };
 

@@ -19,6 +19,12 @@ export const broadcastAutomationStateChange = (automation: Automation, stateInfo
   return homify.mqttService.publish(topic, JSON.stringify(stateInfo));
 };
 
+export const broadcastAutomationChange = (automation: Automation) => {
+  const topic = `automation/${automation._id}/config_changed`;
+  log(topic);
+  return homify.mqttService.publish(topic, JSON.stringify(automation));
+};
+
 export const broadcastEntitiesChange = (entities: any[]) => {
   const topic = `entity/entities_changed`;
   log(topic);
@@ -47,11 +53,15 @@ export const callService = (entityId: string, service: string) => {
 };
 
 export const getStateListener = (entityId: string) => {
-  return homify.mqttService.observe(`entity/${entityId}/state_changed`);
+  return homify.mqttService.observeRetained(`entity/${entityId}/state_changed`);
 };
 
 export const getAutomationStateListener = (id: string) => {
   return homify.mqttService.observe(`automation/${id}/state_changed`);
+};
+
+export const getAutomationListener = (id: string) => {
+  return homify.mqttService.observe(`automation/${id}/config_changed`);
 };
 
 

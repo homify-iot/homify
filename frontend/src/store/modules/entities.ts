@@ -135,7 +135,8 @@ const actions = {
   },
 
   toggleAutomation: ({ state }, entity) => {
-    callAutomation(entity.entityId, !state.statePool[entity.entityId].state).subscribe();
+    const targetState = state.statePool[entity.entityId] ? !state.statePool[entity.entityId].state : false;
+    callAutomation(entity.entityId, targetState).subscribe();
   },
 
   addCondition: async ({ commit }, { id, type, condition }) => {

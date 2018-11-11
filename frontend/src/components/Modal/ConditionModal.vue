@@ -37,7 +37,7 @@ export default class ConditionModal extends Vue {
   }
 
   isThenable(entity) {
-    return entity.type === "switch";
+    return this.condition.type === "then" ? entity.type === "switch" : entity.type !== "automation";
   }
 
   selectCondition(entityId, state) {
@@ -62,7 +62,12 @@ export default class ConditionModal extends Vue {
 </script>
 
 <template>
-  <component class="condition-model" :is="isMobile ? 'modal-mobile' : 'modal-desktop'" :visible="condition.visible">
+  <component 
+    class="condition-model" 
+    :is="isMobile ? 'modal-mobile' : 'modal-desktop'" 
+    :visible="condition.visible" 
+    @visible-change="(visible) => toggleModal({name:'condition',visible})"
+  >
     <svgicon slot="left-icon" icon='left' @click="toggleModal({name:'condition'})" />
     <div slot="header">Select conditions --- {{ condition.type }}</div>
     <div slot="right-icon" />
