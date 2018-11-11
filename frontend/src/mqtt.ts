@@ -26,6 +26,11 @@ export const callService = (entityId: string, service: string) => {
   return mqttClient.publish(topic, JSON.stringify(service));
 };
 
+export const callAutomation = (entityId: string, state: boolean) => {
+  const topic = `automation/${entityId}/state_changed`;
+  return mqttClient.publish(topic, JSON.stringify({state}));
+};
+
 export const updateDevice = device => {
   const topic = `devices/${device._id}/update`;
   const target = Object.assign({}, device.state, {

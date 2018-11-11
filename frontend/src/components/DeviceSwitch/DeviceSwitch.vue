@@ -10,6 +10,8 @@ import T from "ramda/es/T";
 export default class DeviceSwitch extends Vue {
   @Entities.Action toggleDevice;
 
+  @Entities.Action toggleAutomation;
+
   @Modal.Mutation toggleModal;
 
   @Prop({ default: () => ({}) })
@@ -47,6 +49,13 @@ export default class DeviceSwitch extends Vue {
       entityId: entity.entityId
     });
   }
+
+  switchDevice(entity) {
+    if (!this.isSwitchable) {
+      return;
+    }
+    entity.type === "automation" ? this.toggleAutomation(entity) : this.toggleDevice(entity);
+  }
 }
 </script>
 
@@ -78,7 +87,7 @@ export default class DeviceSwitch extends Vue {
         <el-switch 
           v-if="isSwitchable" 
           :active-value="!isOn" 
-          @click.native="isSwitchable && toggleDevice(entity)"
+          @click.native="switchDevice(entity)"
         />
         <div v-else>
           <strong>{{ stateInfo.state.value }}</strong> <span v-html="stateInfo.state.unit" />

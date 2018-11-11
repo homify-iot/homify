@@ -1,4 +1,4 @@
-import { callService } from "@/mqtt";
+import { callAutomation, callService } from "@/mqtt";
 import { Http } from "@/services/http.service";
 import find from "ramda/es/find";
 import propEq from "ramda/es/propEq";
@@ -132,6 +132,10 @@ const actions = {
   toggleDevice: ({ state }, entity) => {
     const service = state.statePool[entity.entityId].state ? "turnOff" : "turnOn";
     callService(entity.entityId, service).subscribe();
+  },
+
+  toggleAutomation: ({ state }, entity) => {
+    callAutomation(entity.entityId, !state.statePool[entity.entityId].state).subscribe();
   },
 
   addCondition: async ({ commit }, { id, type, condition }) => {

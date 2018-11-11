@@ -50,7 +50,12 @@ export default class SettingsModal extends Vue {
 </script>
 
 <template>
-  <component class="settings-modal" :is="isMobile ? 'modal-mobile' : 'modal-desktop'" :visible="settings.visible">
+  <component 
+    class="settings-modal" 
+    :is="isMobile ? 'modal-mobile' : 'modal-desktop'" 
+    :visible="settings.visible" 
+    @visible-change="(visible) => toggleModal({name:'settings',visible})"
+  >
     <div slot="left-icon" icon='left' @click="toggleModal({name:'settings'})">Cancel</div>
     <div slot="header">Settings</div>
     <div slot="right-icon" @click="save()"><el-button type="text" class="button-save" :disabled="!changed">Save</el-button></div>

@@ -1,8 +1,8 @@
 import * as EventBus from "core/EventBus";
 import homify from "core/Homify";
 import * as R from "ramda";
-import { combineLatest } from "rxjs";
-import { filter, map, takeWhile } from "rxjs/operators";
+import {combineLatest} from "rxjs";
+import { filter, map } from "rxjs/operators";
 import { createDebug } from "services/debug.service";
 import { IMqttMessage } from "types/mqtt";
 
@@ -29,13 +29,13 @@ export default class Automation {
     combineLatest(
       ...this.job.triggers.map(this.attachTrigger)
     ).pipe(
-      takeWhile(() => this.status),
+      filter(() => this.status),
       filter((stateArray) => stateArray.every(Boolean))
     )
       .subscribe(() => R.map(this.triggerAction, this.job.actions));
   }
 
-  private attachTrigger = (trigger) => {
+  private attachTrigger(trigger) {
     return EventBus.getStateListener(trigger.entityId)
       .pipe(
         map((packet: IMqttMessage) => JSON.parse(packet.payload.toString())),
@@ -43,7 +43,7 @@ export default class Automation {
       );
   }
 
-  private triggerAction = (action) => {
+  private triggerAction(action) {
     log(action.entityId, action.service);
     EventBus.callService(action.entityId, action.service).subscribe();
   }
