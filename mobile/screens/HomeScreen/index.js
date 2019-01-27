@@ -21,25 +21,11 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
 
-  showHorizontalList() {
-    return (
-      <View style={{top: -20}}>
-        <FlatList
-          data={[{title: 'Title Text', key: 'item1'},{title: 'Title Text1', key: 'item2'},{title: 'Title Text1', key: 'item3'},{title: 'Title Text1', key: 'item4'},{title: 'Title Text1', key: 'item5'}]}
-          horizontal={true}
-          renderItem={({item}) => (
-            <StyledButton text={item.title}>
-            </StyledButton>
-          )}
-        />
-      </View>
-    )
-  }
   render() {
     return (
       <View style={styles.container}>
         <HomeHeader />
-        {this.showHorizontalList()}
+        {this._showHorizontalList()}
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
@@ -84,6 +70,20 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  _showHorizontalList() {
+    return (
+      <View>
+        <FlatList
+          data={[{title: 'Title Text', key: 'item1'},{title: 'Title Text1', key: 'item2'},{title: 'Title Text1', key: 'item3'},{title: 'Title Text1', key: 'item4'},{title: 'Title Text1', key: 'item5'}]}
+          horizontal={true}
+          renderItem={({item}) => (
+            <StyledButton text={item.title}>
+            </StyledButton>
+          )}
+        />
+      </View>
+    )
+  }
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
       const learnMoreButton = (

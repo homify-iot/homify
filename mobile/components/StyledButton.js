@@ -1,9 +1,9 @@
 import React from "react";
 import {
   TouchableOpacity,
-  View,
-  Text
+  Text,
 } from "react-native";
+import SvgUri from './SvgUri';
 
 export class StyledButton extends React.Component {
   render() {
@@ -16,11 +16,15 @@ export class StyledButton extends React.Component {
       <TouchableOpacity
         disabled={disabled}
         onPress={onPress}>
-        <View>
-          <Text disabled={disabled}>
-            {text}
-          </Text>
-        </View>
+        <Text disabled={disabled} style={{color: 'red'}}>
+          {text}
+        </Text>
+        <SvgUri
+          width="50"
+          height="50"
+          fill="yellow"
+          source={require('../assets/images/living-room.svg')}
+        />
       </TouchableOpacity>
     );
   }
