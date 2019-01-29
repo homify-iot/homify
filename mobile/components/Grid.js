@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
   gridContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
-    top: -100,
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
