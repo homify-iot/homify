@@ -1,18 +1,12 @@
 import React from 'react';
 import {
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   FlatList,
-  Button
 } from 'react-native';
-import { WebBrowser } from 'expo';
 
-import { MonoText } from '../../components/StyledText';
 import { HomeHeader } from "./HomeHeader";
 import { StyledButton } from "../../components/StyledButton";
 import { Grid } from "../../components/Grid";
@@ -63,7 +57,6 @@ const styles = StyleSheet.create({
   },
   horizontalListTitle: {
     fontSize: 18,
-    paddingVertical: 6,
     fontWeight: '500'
   }
 });

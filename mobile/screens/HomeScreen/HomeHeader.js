@@ -4,34 +4,31 @@ import {
   Text,
   View,
   Image,
+  ImageBackground,
   StyleSheet,
 } from 'react-native';
-import { LinearGradient } from 'expo';
 
 export class HomeHeader extends React.Component {
   render() {
     return (
-      <LinearGradient
-        colors={['#6F86D6', '#48C6EF']}
-        start={{ x: 0.0, y: 0.25 }}
-        end={{ x: 0.5, y: 1.0 }}
-        style={styles.header}
+      <ImageBackground
+        source={require('../../assets/images/bedroom.jpeg')}
+        style={{width: '100%', height: 200}}
       >
         <View style={styles.headerContent}>
+          <Image style={styles.avatar}
+                 source={require('../../assets/images/avatar.jpeg')}/>
           <Text style={styles.name}>
             Welcome Home, Andrew
           </Text>
-          <Image style={styles.avatar}
-                 source={require('../../assets/images/avatar.jpeg')}/>
         </View>
-      </LinearGradient>
+      </ImageBackground>
     );
   }
 }
 
 const styles = StyleSheet.create({
   header: {
-    borderRadius: 20,
     paddingBottom: 40
   },
   headerContent: {
