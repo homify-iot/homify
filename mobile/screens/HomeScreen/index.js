@@ -15,6 +15,7 @@ import { WebBrowser } from 'expo';
 import { MonoText } from '../../components/StyledText';
 import { HomeHeader } from "./HomeHeader";
 import { StyledButton } from "../../components/StyledButton";
+import { Grid } from "../../components/Grid";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -25,6 +26,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <HomeHeader />
+        <Grid />
         {this._showHorizontalList()}
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
@@ -74,7 +76,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View>
         <FlatList
-          data={[{title: 'Title Text', key: 'item1'},{title: 'Title Text1', key: 'item2'},{title: 'Title Text1', key: 'item3'},{title: 'Title Text1', key: 'item4'},{title: 'Title Text1', key: 'item5'}]}
+          data={[{title: 'Living room', key: 'item1'},{title: 'Bathroom', key: 'item2'},{title: 'Bedroom', key: 'item3'},{title: 'Master room', key: 'item4'}]}
           horizontal={true}
           renderItem={({item}) => (
             <StyledButton text={item.title}>

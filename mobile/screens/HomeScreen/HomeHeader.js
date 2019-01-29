@@ -6,11 +6,17 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
+import { LinearGradient } from 'expo';
 
 export class HomeHeader extends React.Component {
   render() {
     return (
-      <View style={styles.header}>
+      <LinearGradient
+        colors={['#6F86D6', '#48C6EF']}
+        start={{ x: 0.0, y: 0.25 }}
+        end={{ x: 0.5, y: 1.0 }}
+        style={styles.header}
+      >
         <View style={styles.headerContent}>
           <Text style={styles.name}>
             Welcome Home, Andrew
@@ -18,20 +24,17 @@ export class HomeHeader extends React.Component {
           <Image style={styles.avatar}
                  source={require('../../assets/images/avatar.jpeg')}/>
         </View>
-      </View>
+      </LinearGradient>
     );
   }
 }
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#6779e3",
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50
-
+    borderRadius: 20,
+    paddingBottom: 40
   },
   headerContent: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 50,
@@ -39,9 +42,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30
+    width: 50,
+    height: 50,
+    borderRadius: 25
   },
   name: {
     fontSize: 22,
