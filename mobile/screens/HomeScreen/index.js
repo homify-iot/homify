@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 
 import { HomeHeader } from "./HomeHeader";
-import { StyledButton } from "../../components/StyledButton";
 import { Grid } from "../../components/Grid";
 import { Room } from "./Room";
+import { Accessory } from "./Accessory";
+import images from "../../assets/images";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -53,14 +54,14 @@ export default class HomeScreen extends React.Component {
         <Text style={styles.horizontalListTitle}>Recently used devices</Text>
         <FlatList
           data={[
-            { id: "00", name: "Relâmpago McQueen" },
-            { id: "01", name: "Agente Tom Mate" },
-            { id: "02", name: "Doc Hudson" },
-            { id: "03", name: "Cruz Ramirez" }
+            { id: "00", name: "Living room aircon", icon: images['air-conditioner'] },
+            { id: "01", name: "Bedroom lights", icon: images['ceiling-lamp'] },
+            { id: "02", name: "Living room lights", icon: images['ceiling-lamp'] },
+            { id: "03", name: "Kitchen light", icon: images['ceiling-lamp'] }
           ]}
-          numColumns={2}
+          numColumns={3}
           renderItem={({item}) => (
-            <StyledButton text={item.name} />
+            <Accessory item={item} />
           )}
         />
       </View>

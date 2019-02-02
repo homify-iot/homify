@@ -15,14 +15,14 @@ export class Room extends React.Component {
       name,
     } = this.props;
     return (
-      <StyledButton text={this.props.name} style={{ marginRight: 10}}>
+      <StyledButton style={{ marginRight: 10}}>
         <View style={styles.container}>
           <LinearGradient colors={['#000046', '#1CB5E0']} start={[0.5, 0.1]} style={styles.roundedIcon}>
             <SvgUri
               width="30"
               height="30"
               fill={'white'}
-              source={require('../../assets/images/svg/living-room.svg')}
+              source={require('../../assets/images/room/living-room.svg')}
             />
           </LinearGradient>
           <View style={styles.roomInfo}>
@@ -35,7 +35,7 @@ export class Room extends React.Component {
                   width="16"
                   height="16"
                   fill={'#1CB5E0'}
-                  source={require('../../assets/images/svg/thermometer.svg')}
+                  source={require('../../assets/images/room/thermometer.svg')}
                 />
                 <Text>24&#8451;</Text>
               </View>
@@ -44,7 +44,7 @@ export class Room extends React.Component {
                   width="16"
                   height="16"
                   fill={'#1CB5E0'}
-                  source={require('../../assets/images/svg/humidity.svg')}
+                  source={require('../../assets/images/room/humidity.svg')}
                 />
                 <Text>69%</Text>
               </View>
