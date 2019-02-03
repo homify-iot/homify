@@ -1,10 +1,9 @@
+import { accessoryRoutes } from "@/routes/accessory.route";
 import express from "express";
-import entityRoutes from "./entity.route";
-import floorplanRoutes from "./floorplan.route";
 
 const router = express.Router();
 
-router.use("/entities", entityRoutes);
-router.use("/floorplan", floorplanRoutes);
+router.use("/accessories", accessoryRoutes);
+// router.use("/floorplan", floorplanRoutes);
 
 export default router;

@@ -28,10 +28,6 @@
       2
     ],
     "object-literal-sort-keys": false,
-    "variable-name": [
-      true,
-      "allow-leading-underscore"
-    ],
     "interface-name": false,
     "no-empty-interface": false,
     "trailing-comma": false
