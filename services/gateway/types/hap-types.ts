@@ -333,6 +333,7 @@ export const Characteristics = {
     "000000B5-0000-1000-8000-0026BB765291": "WaterLevel",
     "WaterLevel": "000000B5-0000-1000-8000-0026BB765291",
 };
+
 export interface HapAccessoriesRespType {
     accessories: Array<{
         aid: number;

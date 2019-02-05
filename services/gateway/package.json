@@ -12,6 +12,7 @@
     "axios": "^0.18.0",
     "decamelize": "^2.0.0",
     "dotenv": "^6.0.0",
+    "eslint-plugin-typescript": "^0.14.0",
     "express": "^4.16.3",
     "homebridge": "^0.4.45",
     "inflection": "^1.12.0",

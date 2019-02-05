@@ -643,6 +643,12 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
+eslint-plugin-typescript@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-typescript/-/eslint-plugin-typescript-0.14.0.tgz#068549c3f4c7f3f85d88d398c29fa96bf500884c"
+  dependencies:
+    requireindex "~1.1.0"
+
 eslint-scope@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-4.0.0.tgz#50bf3071e9338bcdc43331794a0cb533f0136172"
@@ -2099,6 +2105,10 @@ require_optional@^1.0.1:
   dependencies:
     resolve-from "^2.0.0"
     semver "^5.1.0"
+
+requireindex@~1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/requireindex/-/requireindex-1.1.0.tgz#e5404b81557ef75db6e49c5a72004893fe03e162"
 
 resolve-from@^1.0.0:
   version "1.0.1"

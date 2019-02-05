@@ -1,7 +1,7 @@
-import {Characteristics, CharacteristicType, Services, ServiceType} from "@/types/hap-types";
+import { Characteristics, CharacteristicType, Services, ServiceType } from "@/types/hap-types";
 import axios from "axios";
-import * as decamelize from "decamelize";
-import * as inflection from "inflection";
+import decamelize from "decamelize";
+import inflection from "inflection";
 
 export const getAccessories = (_req, res) => {
     axios.get("http://localhost:1124/accessories")
@@ -20,8 +20,8 @@ const hiddenCharacteristics = [
     Characteristics.Name
 ];
 
-function humanizeString(string: string) {
-    return inflection.titleize(decamelize(string));
+function humanizeString(s: string) {
+    return inflection.titleize(decamelize(s));
 }
 function getAllServices(accessories) {
     const services = [];
@@ -91,15 +91,15 @@ function getAllServices(accessories) {
                     values: {},
                 };
 
-                /* Helper function to trigger a call to the accessory to get all the characteristic values */
-                service.refreshCharacteristics = () => {
-                    return refreshServiceCharacteristics.bind(this)(service);
-                };
-
-                /* Helper function to set the value of a characteristic */
-                service.setCharacteristic = (iid: number, value: number | string | boolean) => {
-                    return setCharacteristic.bind(this)(service, iid, value);
-                };
+                // /* Helper function to trigger a call to the accessory to get all the characteristic values */
+                // service.refreshCharacteristics = () => {
+                //     return refreshServiceCharacteristics.bind(this)(service);
+                // };
+                //
+                // /* Helper function to set the value of a characteristic */
+                // service.setCharacteristic = (iid: number, value: number | string | boolean) => {
+                //     return setCharacteristic.bind(this)(service, iid, value);
+                // };
 
                 /* Helper function to returns a characteristic by it's type name */
                 service.getCharacteristic = (type: string) => {
@@ -107,15 +107,15 @@ function getAllServices(accessories) {
                 };
 
                 service.serviceCharacteristics.forEach((c) => {
-                    /* Helper function to set the value of a characteristic */
-                    c.setValue = async (value: number | string | boolean) => {
-                        return await setCharacteristic.bind(this)(service, c.iid, value);
-                    };
-
-                    /* Helper function to get the value of a characteristic from the accessory */
-                    c.getValue = async () => {
-                        return await getCharacteristic.bind(this)(service, c.iid);
-                    };
+                    // /* Helper function to set the value of a characteristic */
+                    // c.setValue = async (value: number | string | boolean) => {
+                    //     return await setCharacteristic.bind(this)(service, c.iid, value);
+                    // };
+                    //
+                    // /* Helper function to get the value of a characteristic from the accessory */
+                    // c.getValue = async () => {
+                    //     return await getCharacteristic.bind(this)(service, c.iid);
+                    // };
 
                     /* set the values for each characteristic type in an easy-to-access object */
                     service.values[c.type] = c.value;
@@ -126,64 +126,8 @@ function getAllServices(accessories) {
     });
     return services;
 }
-async; getService(iid: number); {
-    const services = await this.getAllServices();
-    return services.find((x) => x.iid === iid);
-}
 
-function getServiceByName(serviceName: string) {
-    const services = await this.getAllServices();
-    return services.find((x) => x.serviceName === serviceName);
-}
 
-function refreshServiceCharacteristics(service: ServiceType) {
-    const iids: number[] = service.serviceCharacteristics.map((c) => c.iid);
 
-    const resp = await get(`${this.endpoint}/characteristics`, {
-        qs: {
-            id: iids.map((iid) => `${service.aid}.${iid}`).join(",")
-        },
-        json: true
-    });
 
-    resp.characteristics.forEach((c) => {
-        const characteristic = service.serviceCharacteristics.find((x) => x.iid === c.iid && x.aid === service.aid);
-        characteristic.value = c.value;
-    });
-
-    return service;
-}
-
-function getCharacteristic(service: ServiceType, iid: number) {
-    const resp = await get(`${this.endpoint}/characteristics`, {
-        qs: {
-            id: `${service.aid}.${iid}`
-        },
-        json: true
-    });
-
-    const characteristic = service.serviceCharacteristics.find((x) => x.iid === resp.characteristics[0].iid && x.aid === service.aid);
-    characteristic.value = resp.characteristics[0].value;
-
-    return characteristic;
-}
-
-function setCharacteristic(service: ServiceType, iid: number, value: number | string | boolean) {
-    await put(`${this.endpoint}/characteristics`, {
-        headers: {
-            Authorization: this.pin
-        },
-        json: {
-            characteristics: [
-                {
-                    aid: service.aid,
-                    iid,
-                    value
-                }
-            ]
-        }
-    });
-
-    return this.getCharacteristic(service, iid);
-}
 
