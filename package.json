@@ -4,8 +4,7 @@
   "description": "Homify is a home automation platform which allows you to control and track all internet devices at home.",
   "main": "index.js",
   "scripts": {
-    "docker": "docker-compose up",
-    "web": "cd frontend && npm run start",
+    "mobile": "cd mobile && npm run start",
     "gateway": "cd services/gateway && npm run start"
   },
   "repository": {
